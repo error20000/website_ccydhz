@@ -8,7 +8,7 @@
 		<version>2.0.0.RELEASE</version>
 	</parent>
 
-	<groupId>com.jian</groupId>
+	<groupId>com.ccydhz</groupId>
 	<artifactId>website_ccydhz</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
