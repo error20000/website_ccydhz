@@ -1,4 +1,4 @@
-package com.jian.ccydhz;
+package com.ccydhz;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

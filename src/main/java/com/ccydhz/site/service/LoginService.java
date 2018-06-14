@@ -15,7 +15,7 @@ import com.jian.tools.core.Tips;
 @Service
 public class LoginService {
 	
-	private static String loginUserKey = "login_user";
+	public static String loginUserKey = "login_user";
 	
 	public static Map<String, Object> verifyLogin(HttpServletRequest req){
 		HttpSession session = req.getSession();
