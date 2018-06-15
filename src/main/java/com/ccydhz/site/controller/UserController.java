@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ccydhz.site.entity.User;
-import com.ccydhz.site.exception.ServiceException;
 import com.ccydhz.site.service.LoginService;
 import com.ccydhz.site.service.UserService;
 import com.jian.tools.core.JsonTools;
@@ -58,14 +57,15 @@ public class UserController extends BaseController<User> {
 		//检查重复
 		User test = service.findOne(MapTools.custom().put("username", obj.getUsername()).build());
 		if(test != null){
-//			return ResultTools.custom(Tips.ERROR105, "username").toJSONString(); 
-			throw new ServiceException(Tips.ERROR105, "username");
+			return ResultTools.custom(Tips.ERROR105, "username").toJSONString(); 
 		}
 		// 如果登录人不是超管，则不能加超管
 		if(!isSystem(luser)){
 			obj.setSystem(0);
 		}
-		obj.setPassword(Tools.md5(obj.getPassword()));
+		if(!Tools.isNullOrEmpty(obj.getPassword())){
+			obj.setPassword(Tools.md5(obj.getPassword()));
+		}
 		int res = service.add(obj);
 		if(res > 0){
 			return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, res).toJSONString();
@@ -104,7 +104,9 @@ public class UserController extends BaseController<User> {
 		if(!isSystem(luser)){
 			obj.setSystem(0);
 		}
-		obj.setPassword(Tools.md5(obj.getPassword()));
+		if(!Tools.isNullOrEmpty(obj.getPassword())){
+			obj.setPassword(Tools.md5(obj.getPassword()));
+		}
 		User res = service.add2(obj);
 		if(res != null){
 			return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, res).toJSONString();

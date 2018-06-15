@@ -3,14 +3,14 @@ package com.ccydhz.site.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ccydhz.site.dao.UserDao;
-import com.ccydhz.site.entity.User;
+import com.ccydhz.site.dao.ActiveDao;
+import com.ccydhz.site.entity.Active;
 
 @Service
-public class UserService extends BaseService<User> {
+public class ActiveService extends BaseService<Active> {
 
 	@Autowired
-	private UserDao dao;
+	private ActiveDao dao;
 	
 	@Override
 	public void initDao() {

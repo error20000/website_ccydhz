@@ -4,14 +4,15 @@ import com.jian.tools.annotation.PrimaryKey;
 import com.jian.tools.annotation.PrimaryKeyType;
 import com.jian.tools.annotation.Table;
 
-@Table("s_share")
-public class Share extends Base<Share> {
+@Table("s_active")
+public class Active extends Base<Active> {
 
-	@PrimaryKey(type=PrimaryKeyType.AUTO_INCREMENT)
+	@PrimaryKey(type=PrimaryKeyType.NORMAL)
 	private int pid;
 	private String date;
 	private String ip;
 	private String phone;
+	private int config;
 	private String info;
 	
 	
@@ -38,6 +39,12 @@ public class Share extends Base<Share> {
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	public int getConfig() {
+		return config;
+	}
+	public void setConfig(int config) {
+		this.config = config;
 	}
 	public String getInfo() {
 		return info;

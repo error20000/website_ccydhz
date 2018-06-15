@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50515
 File Encoding         : 65001
 
-Date: 2018-06-12 18:36:41
+Date: 2018-06-15 18:44:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,11 +24,8 @@ CREATE TABLE `s_active` (
   `date` varchar(20) DEFAULT '' COMMENT '日期  yyyy-MM-dd HH:mm:ss',
   `ip` varchar(255) DEFAULT '' COMMENT 'IP',
   `phone` varchar(255) DEFAULT '' COMMENT '参与人',
+  `config` int(11) DEFAULT '0' COMMENT '奖励pid',
   `info` varchar(255) DEFAULT '' COMMENT '附件信息',
-  `info1` varchar(255) DEFAULT '' COMMENT '附件信息1',
-  `info2` text COMMENT '附件信息2',
-  `info3` text COMMENT '附件信息3',
-  `info4` text COMMENT '附件信息4',
   PRIMARY KEY (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -86,22 +83,20 @@ INSERT INTO `s_active_config` VALUES ('217', '15', '200元京东卡', '', '1007'
 DROP TABLE IF EXISTS `s_active_type`;
 CREATE TABLE `s_active_type` (
   `pid` int(10) NOT NULL COMMENT '主键',
-  `name` varchar(255) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '名称',
-  `start` varchar(20) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '开始时间  yyyy-MM-dd HH:mm:ss',
-  `end` varchar(20) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '结束时间  yyyy-MM-dd HH:mm:ss',
+  `name` varchar(255) DEFAULT '' COMMENT '名称',
+  `start` varchar(20) DEFAULT '' COMMENT '开始时间  yyyy-MM-dd HH:mm:ss',
+  `end` varchar(20) DEFAULT '' COMMENT '结束时间  yyyy-MM-dd HH:mm:ss',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态   0 -- 关闭  1 --开启',
   `count` int(11) DEFAULT '0' COMMENT '参加次数   小于0 --- 无限',
   `sCount` int(11) DEFAULT '0' COMMENT '分享次数 ',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_active_type
 -- ----------------------------
 INSERT INTO `s_active_type` VALUES ('1', '预约', '', '2017-08-25 10:00:00', '1', '0', '0');
-INSERT INTO `s_active_type` VALUES ('2', '圣捞人形限定大选--A组', '', '', '0', '0', '0');
-INSERT INTO `s_active_type` VALUES ('14', '2017周年庆抽奖', '2017-05-03 00:00:00', '2017-05-30 00:00:00', '0', '0', '0');
-INSERT INTO `s_active_type` VALUES ('15', '猎兔行动抽奖', '2017-06-17 00:00:00', '2017-06-20 00:00:00', '0', '0', '0');
+INSERT INTO `s_active_type` VALUES ('2', '扭蛋', '', '', '1', '1', '5');
 
 -- ----------------------------
 -- Table structure for `s_bespeak`
@@ -585,12 +580,12 @@ CREATE TABLE `s_strategy_type` (
 -- ----------------------------
 DROP TABLE IF EXISTS `s_user`;
 CREATE TABLE `s_user` (
-  `pid` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(20) DEFAULT '' COMMENT '用户名',
-  `password` varchar(32) DEFAULT '' COMMENT '密码（md5）',
-  `admin` tinyint(4) DEFAULT '0' COMMENT '超管  0--否 1--是',
+  `pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+  `username` varchar(20) CHARACTER SET utf8 DEFAULT '' COMMENT '用户名',
+  `password` varchar(32) CHARACTER SET utf8 DEFAULT '' COMMENT '密码（md5）',
+  `system` tinyint(4) DEFAULT '0' COMMENT '超管  0--否 1--是',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_user
@@ -606,7 +601,7 @@ CREATE TABLE `s_user_role` (
   `user` int(11) DEFAULT '0' COMMENT '用户id',
   `menu` int(11) DEFAULT '0' COMMENT '用户的菜单id',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=261 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=261 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_user_role
