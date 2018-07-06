@@ -30,7 +30,7 @@ body {
 .container .header {
 	height: 60px;
 	line-height: 60px;
-	background: #20a0ff;
+	background: #34425b;
 	color: #fff;
 }
 
@@ -78,7 +78,7 @@ body {
 }
 
 .container .header	.logo-collapse-width {
-	width: 60px
+	width: 65px
 }
 
 .container .header	.tools {
@@ -124,13 +124,15 @@ body {
 }
 
 .main .menu-collapsed {
-	flex: 0 0 60px;
-	width: 60px;
+	flex: 0 0 65px;
+	width: 65px;
+	overflow: auto;
 }
 
 .main .menu-expanded {
 	flex: 0 0 230px;
 	width: 230px;
+	overflow: auto;
 }
 
 .content-container {
@@ -143,7 +145,7 @@ body {
 }
 
 .content-container .breadcrumb-container {
-	
+	margin-bottom: 10px;
 }
 
 .content-container .breadcrumb-container .title {
@@ -160,6 +162,7 @@ body {
 	background-color: #fff;
 	box-sizing: border-box;
 	height: 99%;
+    border: 1px solid #eeee;
 }
 
 .content-container .content-wrapper .content-iframe{

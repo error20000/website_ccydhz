@@ -48,7 +48,7 @@ new Vue({
 		        path: '',
 		        component: "",
 		        name: '基础管理',
-		        iconCls: 'fa fa-gear',
+		        iconCls: 'el-icon-menu',
 		        children: [
 		            { path: 'area.html', component: "", name: '角色管理'},
 		            { path: 'areaAD.html', component: "", name: '角色AD栏配置'},
@@ -59,19 +59,25 @@ new Vue({
 		        path: '',
 		        component: "",
 		        name: '帖子管理',
-		        iconCls: 'fa fa-gear',
+		        iconCls: 'el-icon-menu',
 		        children: [
 		            { path: 'hot.html', component: "", name: '热度配置'},
 		            { path: 'source.html', component: "", name: '来源配置'},
 		            { path: 'article.html', component: "", name: '帖子管理'},
 		            { path: 'discuss.html', component: "", name: '评论管理'},
-		            { path: 'reply.html', component: "", name: '回复管理'}
+		            { path: 'reply.html', component: "", name: '回复管理',children: [
+			            { path: 'hot.html', component: "", name: '热度配置'},
+			            { path: 'source.html', component: "", name: '来源配置'},
+			            { path: 'article.html', component: "", name: '帖子管理'},
+			            { path: 'discuss.html', component: "", name: '评论管理'},
+			            { path: 'reply.html', component: "", name: '回复管理'}
+			        ]}
 		        ]
 		    },{
 		        path: '',
 		        component: "",
 		        name: '举报管理',
-		        iconCls: 'fa fa-gear',
+		        iconCls: 'el-icon-menu',
 		        children: [
 		            { path: 'reportArticle.html', component: "", name: '帖子举报'},
 		            { path: 'reportDiscuss.html', component: "", name: '评论举报'},
@@ -81,7 +87,7 @@ new Vue({
 		        path: '',
 		        component: "",
 		        name: '用户管理',
-		        iconCls: 'fa fa-gear',
+		        iconCls: 'el-icon-menu',
 		        children: [
 		        	{ path: 'user.html', component: "", name: '管理员'},
 		        	{ path: 'player.html', component: "", name: '帐号信息'}
@@ -90,7 +96,7 @@ new Vue({
 		        path: '',
 		        component: "",
 		        name: '活动管理',
-		        iconCls: 'fa fa-gear',
+		        iconCls: 'el-icon-menu',
 		        children: [
 		        	{ path: 'commentReward.html', component: "", name: '评论奖励活动'},
 		        ]
@@ -98,12 +104,44 @@ new Vue({
 		        path: '',
 		        component: "",
 		        name: '系统管理',
-		        iconCls: 'fa fa-gear',
+		        iconCls: 'el-icon-menu',
 		        children: [
 		        	{ path: 'roleItf.html', component: "", name: '角色攻略'},
 		        	{ path: 'welcome.html', component: "", name: '首页'}
 		        ]
-		    }]
+		    },{
+		        path: '',
+		        component: "",
+		        name: '系统管理',
+		        iconCls: 'el-icon-menu',
+		        children: []
+		    }],
+		    //pwd
+		    pwdFormVisible: false,
+		    pwdLoading: false,
+		    pwdFormRules:{
+				oldPwd: [
+					{ required: true, message: '请输入原始密码', trigger: 'blur' }
+				],
+				newPwd: [
+					{ required: true, message: '请输入新密码', trigger: 'blur' }
+				],
+				newPwd2: [
+					{ required: true, message: '请再次输入新密码', trigger: 'blur' },
+					{ validator: (rule, value, callback) => {
+				          if (value !== this.pwdForm.newPwd) {
+				            callback(new Error('两次输入密码不一致!'));
+				          } else {
+				            callback();
+				          }
+					}, trigger: 'blur' }
+				]
+			},
+			pwdForm:{
+				oldPwd: '',
+				newPwd: '',
+				newPwd2: ''
+			}
 		}
 	},
 	methods: {
@@ -116,8 +154,53 @@ new Vue({
 		handleclose() {
 			//console.log('handleclose');
 		},
-		handleselect: function (a, b) {
+		handleselect: function (a) {
 			this.showIframe(a);
+		},
+		//修改密码
+		handlepwdChange: function(){
+			this.pwdFormVisible = true;
+			this.pwdForm = {
+					oldPwd: '',
+					newPwd: '',
+					newPwd2: ''
+				};
+		},
+		pwdChangeClose: function(){
+			this.pwdFormVisible = false;
+			this.pwdLoading = false;
+			this.$refs.pwdForm.resetFields();
+		},
+		pwdChange: function(){
+			this.$refs.pwdForm.validate((valid) => {
+				if (valid) {
+					this.$confirm('确认提交吗？', '提示', {}).then(() => {
+						var params = Object.assign({}, this.addForm);
+						params.token = token;
+						params.uid = uid;
+						delete params.pwd2;
+						var self = this;
+						this.pwdLoading = true;
+						var url = baseUrl+"manage/user/add.json";
+						ajaxReq(url, params, function(res){
+							self.addLoading = false;
+							if(res.code > 0){
+								self.$message({
+									message: '新增成功',
+									type: 'success'
+								});
+								self.addFormVisible = false;
+								self.getList();
+							}else{
+								self.$message({
+									message: res.msg,
+									type: 'warning'
+								})
+							}
+						});
+					});
+				}
+			});
 		},
 		//退出登录
 		logout: function () {
@@ -147,7 +230,7 @@ new Vue({
 			});
 		},
 		//折叠导航栏
-		collapse:function(){
+		handlecollapse:function(){
 			this.collapsed=!this.collapsed;
 		},
 		showMenu(i,status){
@@ -158,17 +241,31 @@ new Vue({
 			this.menuNames = []; //面包屑
 			var name = "";
 			var url = "";
-			if(items.length == 1){
+			
+			switch (items.length) {
+			case 1:
 				this.menuNames.push(this.authMenu[Number(items[0])].name);
 				name = this.authMenu[Number(items[0])].name;
 				url = this.authMenu[Number(items[0])].path;
-			}else if(items.length == 2){
+				break;
+			case 2:
 				this.menuNames.push(this.authMenu[Number(items[0])].name);
 				this.menuNames.push(this.authMenu[Number(items[0])].children[Number(items[1])].name);
 				name = this.authMenu[Number(items[0])].children[Number(items[1])].name;
 				url = this.authMenu[Number(items[0])].children[Number(items[1])].path;
+				break;
+			case 3:
+				this.menuNames.push(this.authMenu[Number(items[0])].name);
+				this.menuNames.push(this.authMenu[Number(items[0])].children[Number(items[1])].name);
+				this.menuNames.push(this.authMenu[Number(items[0])].children[Number(items[1])].children[Number(items[2])].name);
+				name = this.authMenu[Number(items[0])].children[Number(items[1])].children[Number(items[2])].name;
+				url = this.authMenu[Number(items[0])].children[Number(items[1])].children[Number(items[2])].path;
+				break;
+				
+			default:
+				break;
 			}
-			$('.breadcrumb-container .title').html(name);
+//			$('.breadcrumb-container .title').html(name);
 			$('.content-iframe').attr('src', url);
 		}
 	},
@@ -180,7 +277,7 @@ new Vue({
 			uid = user.pid || '';
 			this.sysUserName = user.name;
 		}else{
-			window.location.href = 'login.html';
+			//window.location.href = 'login.html';
 		}
 	}
   });
