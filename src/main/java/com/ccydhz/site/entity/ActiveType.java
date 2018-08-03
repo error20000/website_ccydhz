@@ -1,22 +1,36 @@
 package com.ccydhz.site.entity;
 
-import com.jian.tools.annotation.PrimaryKey;
-import com.jian.tools.annotation.PrimaryKeyType;
-import com.jian.tools.annotation.Table;
+//import
+import com.jian.annotation.PrimaryKey;
+import com.jian.annotation.PrimaryKeyType;
+import com.jian.annotation.Table;
+import com.jian.annotation.Excel;
 
+/**
+ * @author liujian
+ * @Date 
+ */
 @Table("s_active_type")
-public class ActiveType extends Base<ActiveType> {
-
+public class ActiveType  extends Base<ActiveType> {
+	
+	//field
 	@PrimaryKey(type=PrimaryKeyType.NORMAL)
+	@Excel(name="主键", sort=0, length="10", isNull=0 )
 	private int pid;
+	@Excel(name="名称", sort=1, length="255", isNull=1 )
 	private String name;
+	@Excel(name="开始时间  yyyy-MM-dd HH:mm:ss", sort=2, length="20", isNull=1 )
 	private String start;
+	@Excel(name="结束时间  yyyy-MM-dd HH:mm:ss", sort=3, length="20", isNull=1 )
 	private String end;
-	private String status;
+	@Excel(name="状态   0 -- 关闭  1 --开启", sort=4, value="0", length="4", isNull=1 )
+	private int status;
+	@Excel(name="参加次数   小于0 --- 无限", sort=5, value="0", length="11", isNull=1 )
 	private int count;
+	@Excel(name="每次分享获得的次数 ", sort=6, value="0", length="11", isNull=1 )
 	private int sCount;
 	
-	
+	//get set
 	public int getPid() {
 		return pid;
 	}
@@ -41,10 +55,10 @@ public class ActiveType extends Base<ActiveType> {
 	public void setEnd(String end) {
 		this.end = end;
 	}
-	public String getStatus() {
+	public int getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 	public int getCount() {
@@ -53,11 +67,11 @@ public class ActiveType extends Base<ActiveType> {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	public int getsCount() {
+	public int getSCount() {
 		return sCount;
 	}
-	public void setsCount(int sCount) {
+	public void setSCount(int sCount) {
 		this.sCount = sCount;
 	}
-	
+
 }

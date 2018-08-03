@@ -108,7 +108,7 @@
     </root> 
     
     
-   <!--  <root name="com.digisky">  
+   <!--  <root name="com.jian">  
         <level value="error" />  
         <appender-ref ref="console" />  
         <appender-ref ref="FILE_ERROR" />  

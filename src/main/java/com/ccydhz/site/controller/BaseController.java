@@ -1,57 +1,61 @@
 package com.ccydhz.site.controller;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.ccydhz.site.entity.User;
-import com.ccydhz.site.service.BaseService;
-import com.ccydhz.site.service.LoginService;
+import com.jian.annotation.Excel;
 import com.jian.tools.core.JsonTools;
-import com.jian.tools.core.MapTools;
 import com.jian.tools.core.ResultKey;
 import com.jian.tools.core.ResultTools;
 import com.jian.tools.core.Tips;
 import com.jian.tools.core.Tools;
 
+import com.ccydhz.site.service.BaseService;
+import com.ccydhz.site.config.VerifyConfig;
+import com.ccydhz.site.util.Utils;
+
 public abstract class BaseController<T> {
 	
 	protected BaseService<T> service;
 	
-	public BaseController(){
-		super();
-		initService();
-	}
-
 	public abstract void initService();
 
 	//登录验证
-	public static Map<String, Object> verifyLogin(HttpServletRequest req){
+	public Map<String, Object> verifyLogin(HttpServletRequest req){
 		
-		return LoginService.verifyLogin(req);
+		return VerifyConfig.verifyLogin(req);
 	}
 	
 	//sign验证
-	public static Map<String, Object> verifySign(HttpServletRequest req){
+	public Map<String, Object> verifySign(HttpServletRequest req){
+		
+		return VerifyConfig.verifySign(req);
+	}
+	
+	//权限验证
+	public Map<String, Object> verifyAuth(HttpServletRequest req){
+		//TODO 权限验证
 		
 		return null;
 	}
 	
 	//获取用户信息
-	public static User getUserInfo(HttpServletRequest req){
-		return JsonTools.jsonToObj(LoginService.getUserInfo(req), User.class) ;
+	public String getUserInfo(HttpServletRequest req){
+		return VerifyConfig.getUserInfo(req);
 	}
 	
 	
-	@RequestMapping("/add")
-    @ResponseBody
+	
     public String add(HttpServletRequest req) {
 		initService();
 		
@@ -66,11 +70,15 @@ public abstract class BaseController<T> {
 		if(vMap != null){
 			return JsonTools.toJsonString(vMap);
 		}
+		//权限
+		vMap = verifyAuth(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
 		
 		//保存
 		try {
-			Map<String, Object> tmp = Tools.getReqParamsToMap(req);
-			T obj = JsonTools.jsonToObj(JsonTools.toJsonString(tmp), getObejctClass());
+			T obj = Tools.getReqParamsToObject(req, getObejctClass().newInstance());
 			int res = service.add(obj);
 			if(res > 0){
 				return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, res).toJSONString();
@@ -83,8 +91,7 @@ public abstract class BaseController<T> {
 		return ResultTools.custom(Tips.ERROR0).toJSONString();
     }
 	
-	@RequestMapping("/add2")
-    @ResponseBody
+	
     public String add2(HttpServletRequest req) {
 		initService();
 		
@@ -99,11 +106,15 @@ public abstract class BaseController<T> {
 		if(vMap != null){
 			return JsonTools.toJsonString(vMap);
 		}
+		//权限
+		vMap = verifyAuth(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
 		
 		//保存
 		try {
-			Map<String, Object> tmp = Tools.getReqParamsToMap(req);
-			T obj = JsonTools.jsonToObj(JsonTools.toJsonString(tmp), getObejctClass());
+			T obj = Tools.getReqParamsToObject(req, getObejctClass().newInstance());
 			T res = service.add2(obj);
 			if(res != null){
 				return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, res).toJSONString();
@@ -116,8 +127,7 @@ public abstract class BaseController<T> {
 		return ResultTools.custom(Tips.ERROR0).toJSONString();
     }
 	
-	@RequestMapping("/update")
-    @ResponseBody
+	
     public String update(HttpServletRequest req) {
 		initService();
 		
@@ -132,17 +142,28 @@ public abstract class BaseController<T> {
 		if(vMap != null){
 			return JsonTools.toJsonString(vMap);
 		}
-		
-		//参数
-		String pid = Tools.getReqParamSafe(req, "pid");
-		vMap = Tools.verifyParam("pid", pid, 0, 0);
+		//权限
+		vMap = verifyAuth(req);
 		if(vMap != null){
 			return JsonTools.toJsonString(vMap);
 		}
-		//保存
+		
+		//参数
+		List<String> pkeys = Utils.getPrimaryKeys(getObejctClass());//获取主键
+		if(pkeys == null || pkeys.isEmpty()){
+			return ResultTools.custom(Tips.ERROR206).toJSONString();
+		}
 		Map<String, Object> condition = new HashMap<String, Object>();
-		condition.put("pid", pid);
+		for (String str : pkeys) {
+			String strv = Tools.getReqParamSafe(req, str);
+			vMap = Tools.verifyParam(str, strv, 0, 0);
+			if(vMap != null){
+				return ResultTools.custom(Tips.ERROR206, str).toJSONString();
+			}
+			condition.put(str, strv);
+		}
 		Map<String, Object> setValues = Tools.getReqParamsToMap(req, getObejctClass());
+		//保存
 		int res = service.modify(setValues, condition);
 		if(res > 0){
 			return ResultTools.custom(Tips.ERROR1).toJSONString();
@@ -152,8 +173,7 @@ public abstract class BaseController<T> {
     }
 	
 	
-	@RequestMapping("/delete")
-    @ResponseBody
+	
     public String delete(HttpServletRequest req) {
 		initService();
 		
@@ -168,15 +188,28 @@ public abstract class BaseController<T> {
 		if(vMap != null){
 			return JsonTools.toJsonString(vMap);
 		}
-		
-		//参数
-		String pid = Tools.getReqParamSafe(req, "pid");
-		vMap = Tools.verifyParam("pid", pid, 0, 0);
+		//权限
+		vMap = verifyAuth(req);
 		if(vMap != null){
 			return JsonTools.toJsonString(vMap);
 		}
+		
+		//参数
+		List<String> pkeys = Utils.getPrimaryKeys(getObejctClass());//获取主键
+		if(pkeys == null || pkeys.isEmpty()){
+			return ResultTools.custom(Tips.ERROR206).toJSONString();
+		}
+		Map<String, Object> condition = new HashMap<String, Object>();
+		for (String str : pkeys) {
+			String strv = Tools.getReqParamSafe(req, str);
+			vMap = Tools.verifyParam(str, strv, 0, 0);
+			if(vMap != null){
+				return ResultTools.custom(Tips.ERROR206, str).toJSONString();
+			}
+			condition.put(str, strv);
+		}
 		//保存
-		int res = service.delete(MapTools.custom().put("pid", pid).build());
+		int res = service.delete(condition);
 		if(res > 0){
 			return ResultTools.custom(Tips.ERROR1).toJSONString();
 		}else{
@@ -184,8 +217,7 @@ public abstract class BaseController<T> {
 		}
     }
 	
-	@RequestMapping("/deleteBy")
-    @ResponseBody
+	
     public String deleteBy(HttpServletRequest req) {
 		initService();
 		
@@ -197,6 +229,11 @@ public abstract class BaseController<T> {
 		}
 		//sign
 		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//权限
+		vMap = verifyAuth(req);
 		if(vMap != null){
 			return JsonTools.toJsonString(vMap);
 		}
@@ -215,19 +252,23 @@ public abstract class BaseController<T> {
 		}
     }
 	
-	@RequestMapping("/findAll")
-    @ResponseBody
+	
     public String findAll(HttpServletRequest req) {
 		initService();
 		
 		Map<String, Object> vMap = null;
 		//登录
-		/*vMap = verifyLogin(req);
+		vMap = verifyLogin(req);
 		if(vMap != null){
 			return JsonTools.toJsonString(vMap);
-		}*/
+		}
 		//sign
 		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//权限
+		vMap = verifyAuth(req);
 		if(vMap != null){
 			return JsonTools.toJsonString(vMap);
 		}
@@ -237,19 +278,22 @@ public abstract class BaseController<T> {
     }
 	
 	
-	@RequestMapping("/findPage")
-    @ResponseBody
     public String findPage(HttpServletRequest req) {
 		initService();
 		
 		Map<String, Object> vMap = null;
 		//登录
-		/*vMap = verifyLogin(req);
+		vMap = verifyLogin(req);
 		if(vMap != null){
 			return JsonTools.toJsonString(vMap);
-		}*/
+		}
 		//sign
 		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//权限
+		vMap = verifyAuth(req);
 		if(vMap != null){
 			return JsonTools.toJsonString(vMap);
 		}
@@ -274,58 +318,228 @@ public abstract class BaseController<T> {
         return ResultTools.custom(Tips.ERROR1).put(ResultKey.TOTAL, total).put(ResultKey.DATA, list).toJSONString();
     }
 	
-	@RequestMapping("/findObject")
-    @ResponseBody
-    public String findObject(HttpServletRequest req) {
+	
+    public String findOne(HttpServletRequest req) {
 		initService();
 		
 		Map<String, Object> vMap = null;
 		//登录
-		/*vMap = verifyLogin(req);
+		vMap = verifyLogin(req);
 		if(vMap != null){
 			return JsonTools.toJsonString(vMap);
-		}*/
+		}
 		//sign
 		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//权限
+		vMap = verifyAuth(req);
 		if(vMap != null){
 			return JsonTools.toJsonString(vMap);
 		}
 		
 		//参数
 		Map<String, Object> condition = Tools.getReqParamsToMap(req, getObejctClass());
+		if(condition == null || condition.isEmpty()){
+			return ResultTools.custom(Tips.ERROR211, "查询条件").toJSONString();
+		}
 		T res = service.findOne(condition);
         return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, res).toJSONString();
     }
 	
-	@RequestMapping("/findList")
-    @ResponseBody
+	
     public String findList(HttpServletRequest req) {
 		initService();
 		
 		Map<String, Object> vMap = null;
+		//登录
+		vMap = verifyLogin(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
 		//sign
 		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//权限
+		vMap = verifyAuth(req);
 		if(vMap != null){
 			return JsonTools.toJsonString(vMap);
 		}
 		
 		//参数
 		Map<String, Object> condition = Tools.getReqParamsToMap(req, getObejctClass());
+		if(condition == null || condition.isEmpty()){
+			return ResultTools.custom(Tips.ERROR211, "查询条件").toJSONString();
+		}
 		List<T> list = service.findList(condition);
         return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, list).toJSONString();
     }
+    
+    
+    public String excelHeader(HttpServletRequest req){
+		initService();
+		
+		Map<String, Object> vMap = null;
+		//登录
+		vMap = verifyLogin(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//sign
+		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//权限
+		vMap = verifyAuth(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		
+		//执行
+		List<Map<String, Object>> excels = new ArrayList<Map<String, Object>>(); //获取导出字段
+		Field[] fields = Tools.getFields(getObejctClass());
+		for (Field f : fields) {
+			if(f.isAnnotationPresent(Excel.class)){
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("sort", f.getAnnotation(Excel.class).sort());
+				map.put("name", f.getAnnotation(Excel.class).name());
+				map.put("field", f.getName());
+				excels.add(map);
+			}
+		}
+		//排序
+		for (int i = 0; i < excels.size(); i++) {
+			for (int j = i; j < excels.size(); j++) {
+				if((Integer)excels.get(i).get("sort") > (Integer)excels.get(j).get("sort")){
+					Map<String, Object> tmp = excels.get(i);
+					excels.set(i, excels.get(j));
+					excels.set(j, tmp);
+				}
+			}
+		}
+		return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, excels).toJSONString();
+	}
 	
-	@SuppressWarnings("unchecked")
-	private Class<T> getObejctClass(){
-		Type type = getClass().getGenericSuperclass();
-		Class<T> clss = null;
+	public String excelFree(HttpServletRequest req, HttpServletResponse resp){
+		initService();
+		
+		Map<String, Object> vMap = null;
+		//登录
+		vMap = verifyLogin(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//sign
+		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//权限
+		vMap = verifyAuth(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		
+		//执行
+		Map<String, Object> condition = Tools.getReqParamsToMap(req, getObejctClass());
+		List<T> res = service.findList(condition);
+		String name = getObejctClass().getSimpleName().toLowerCase();
+		resp.addHeader("Content-Disposition","attachment;filename="+name+".csv");
+		// response.addHeader("Content-Length", "" + JSONArray.fromObject(list).toString().getBytes().length);
+		resp.setContentType("application/octet-stream;charset=utf-8");
 		try {
-			Class<?>[] clsses = Tools.getGenericClass((ParameterizedType) type);
-			clss = (Class<T>) clsses[0];
-		} catch (ClassNotFoundException e) {
+			List<Map<String, Object>> excels = new ArrayList<Map<String, Object>>(); //获取导出字段
+			OutputStream toClient = new BufferedOutputStream(resp.getOutputStream());
+			//header
+			Field[] fields = Tools.getFields(getObejctClass());
+			for (Field f : fields) {
+				if(f.isAnnotationPresent(Excel.class)){
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("sort", f.getAnnotation(Excel.class).sort());
+					map.put("name", f.getAnnotation(Excel.class).name());
+					map.put("field", f.getName());
+					excels.add(map);
+				}
+			}
+			//排序
+			for (int i = 0; i < excels.size(); i++) {
+				for (int j = i; j < excels.size(); j++) {
+					if((Integer)excels.get(i).get("sort") > (Integer)excels.get(j).get("sort")){
+						Map<String, Object> tmp = excels.get(i);
+						excels.set(i, excels.get(j));
+						excels.set(j, tmp);
+					}
+				}
+			}
+			
+			String headers = Tools.getReqParamSafe(req, "fields"); //可选导出项。
+			
+			String head = "";
+			for (int i = 0; i < excels.size(); i++) {
+				if(Tools.isNullOrEmpty(headers)){
+					head += "," + "\"" + (excels.get(i).get("name") == null ? "" :excels.get(i).get("name").toString().replace("\"", "\"\""))+ "\"";
+				}else{
+					String[] hs = headers.replace("，", ",").split(",");
+					for (String tmp : hs) {
+						if(tmp.equals(excels.get(i).get("field"))){
+							head += "," + "\"" + (excels.get(i).get("name") == null ? "" :excels.get(i).get("name").toString().replace("\"", "\"\""))+ "\"";
+						}
+					}
+				}
+			}
+			head = Tools.isNullOrEmpty(head) ? "" : head.substring(1);
+			head += "\n";
+			toClient.write(head.getBytes("utf-8"));
+			//遍历导出数据
+			//可导项
+			List<Map<String, Object>> temps = new ArrayList<Map<String, Object>>(); //获取导出字段
+			if(!Tools.isNullOrEmpty(headers)){
+				String[] hs = headers.replace("，", ",").split(",");
+				for (String tmp : hs) {
+					for (int i = 0; i < excels.size(); i++) {
+						if(tmp.equals(excels.get(i).get("field"))){
+							temps.add(excels.get(i));
+							break;
+						}
+					}
+				}
+				excels = temps;
+			}
+			//可导数据
+			for (T node : res) { //遍历导出数据
+				String str = "";
+				for (int j = 0; j < excels.size(); j++) { //遍历导出字段
+					String excelField = excels.get(j).get("field").toString();
+					String getMethodName = "get" + excelField.substring(0, 1).toUpperCase() + excelField.substring(1);
+					Object value = null;
+					try{
+						Method method = Tools.findMethod(node.getClass(), getMethodName);
+						value = method.invoke(node);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					//如果内容有逗号，将这个字段整体用双引号括起来；如果里面还有双引号就替换成两个双引号。
+					str += "," + "\"" + (value == null ? "" : value.toString().replace("\"", "\"\""))+ "\"";
+				}
+				str = Tools.isNullOrEmpty(str) ? "" : str.substring(1);
+				str +=  "\n";
+				toClient.write(str.getBytes("utf-8"));
+			}
+			
+			toClient.flush();
+			toClient.close();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return clss;
+		return "";
+	}
+	
+	private Class<T> getObejctClass(){
+		return Utils.getObejctClass(getClass());
 	}
 	
 }

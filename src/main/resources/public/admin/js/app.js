@@ -1,6 +1,9 @@
 var baseUrl = parent.window.baseUrl || '../';
-var token = parent.window.token || "";
-var uid = parent.window.uid || "";
+
+var queryUrl = baseUrl + "api/app/findPage";
+var addUrl = baseUrl + "api/app/add";
+var modUrl = baseUrl + "api/app/update";
+var delUrl = baseUrl + "api/app/delete";
 
 var ajaxReq = parent.window.ajaxReq || "";
 
@@ -25,17 +28,28 @@ var ajaxReq = parent.window.ajaxReq || "";
 				addForm: {},
 				//效验
 				addFormRules: {
-					name: [
-						{ required: true, message: '请输入名称', trigger: 'blur' }
-					],
 					appId: [
 						{ required: true, message: '请输入appId', trigger: 'blur' }
 					],
-					description: [
-						{ required: true, message: '请输入描述', trigger: 'blur' }
+					captchaType: [
+						{ validator: (rule, value, callback) => {
+							console.log(String(value).replace(/[0-9]/g, "") != '');
+					          if (String(value).replace(/[0-9]/g, "") != '' || value < 0) {
+					            callback(new Error('请输入数字，默认值：9'));
+					          } else {
+					            callback();
+					          }
+						}, trigger: 'blur' }
 					],
-					sortId: [
-						{ required: true, message: '请输入排序序号', trigger: 'blur' }
+					disturbLevel: [
+						{ validator: (rule, value, callback) => {
+							console.log(String(value).replace(/[0-9]/g, "") != '');
+					          if (String(value).replace(/[0-9]/g, "") != '' || value < 0) {
+					            callback(new Error('请输入数字，默认值：1'));
+					          } else {
+					            callback();
+					          }
+						}, trigger: 'blur' }
 					]
 				},
 				//编辑界面数据
@@ -45,17 +59,28 @@ var ajaxReq = parent.window.ajaxReq || "";
 				editForm: {},
 				//效验
 				editFormRules: {
-					name: [
-						{ required: true, message: '请输入名称', trigger: 'blur' }
-					],
 					appId: [
 						{ required: true, message: '请输入appId', trigger: 'blur' }
 					],
-					description: [
-						{ required: true, message: '请输入描述', trigger: 'blur' }
+					captchaType: [
+						{ validator: (rule, value, callback) => {
+							console.log(String(value).replace(/[0-9]/g, "") != '');
+					          if (String(value).replace(/[0-9]/g, "") != '' || value < 0) {
+					            callback(new Error('请输入数字，默认值：9'));
+					          } else {
+					            callback();
+					          }
+						}, trigger: 'blur' }
 					],
-					sortId: [
-						{ required: true, message: '请输入排序序号', trigger: 'blur' }
+					disturbLevel: [
+						{ validator: (rule, value, callback) => {
+							console.log(String(value).replace(/[0-9]/g, "") != '');
+					          if (String(value).replace(/[0-9]/g, "") != '' || value < 0) {
+					            callback(new Error('请输入数字，默认值：1'));
+					          } else {
+					            callback();
+					          }
+						}, trigger: 'blur' }
 					]
 				},
 				//查看界面数据
@@ -63,21 +88,9 @@ var ajaxReq = parent.window.ajaxReq || "";
 				viewLoading: false, //loading
 				//数据
 				viewForm: {},
-				//审核界面数据
-				authFormVisible: false,//编辑界面是否显示
-				authLoading: false, //loading
-				//标签界面数据
-				labelFormVisible: false,//编辑界面是否显示
-				labelLoading: false, //loading
-				labelName: '', 
-				//数据
-				labelForm: {},
-				//效验
-				labelFormRules: {},
-				indeterminate: false,
-				items: [],
-				checkedItems: {},
-				checkAll: false
+				
+				
+				end: ''
 				
 			}
 		},
@@ -101,13 +114,11 @@ var ajaxReq = parent.window.ajaxReq || "";
 					rows: this.rows
 				};
 				this.listLoading = true;
-				
-				var url = baseUrl+"manage/app/find_paged_infos.json";
-				ajaxReq(url, {rows : params.rows, pageIndex: params.page,token: token, uid: uid, sortKeys: JSON.stringify({"timeCreate":-1}) }, function(res){
+				ajaxReq(queryUrl, params, function(res){
 					self.listLoading = false;
 					if(res.code > 0){
-						self.total = res.data.dataTotal;
-						self.list = res.data.entityList;
+						self.total = res.total;
+						self.list = res.data;
 					}else{
 						self.$message({
 							message: res.msg,
@@ -122,9 +133,11 @@ var ajaxReq = parent.window.ajaxReq || "";
 				this.addForm = {
 						name: '',
 						appId: '',
-						description: '',
-						status: 0,
-						sortId: ''
+						captchaType: 9,
+						disturbLevel: 1,
+						isHttps: 0,
+						clientType: 2,
+						status: 0
 				};
 			},
 			//显示查看界面
@@ -144,35 +157,7 @@ var ajaxReq = parent.window.ajaxReq || "";
 				}).then(() => {
 					var self = this;
 					this.listLoading = true;
-					var url = baseUrl+"manage/app/update.json";
-					ajaxReq(url, {token: token, uid: uid, pid: row.pid, isDelete: 1 }, function(res){
-						self.listLoading = false;
-						if(res.code > 0){
-							self.$message({
-								message: '删除成功',
-								type: 'success'
-							});
-							self.getList();
-						}else{
-							self.$message({
-								message: res.msg,
-								type: 'warning'
-							})
-						}
-					});
-					
-				}).catch(() => {
-				});
-			},
-			//彻底删除
-			handleRealDel: function (index, row) {
-				this.$confirm('确认删除该记录吗？删除后不可恢复。', '提示', {
-					type: 'warning'
-				}).then(() => {
-					var self = this;
-					this.listLoading = true;
-					var url = baseUrl+"manage/app/delete.json";
-					ajaxReq(url, {token: token, uid: uid, pid: row.pid }, function(res){
+					ajaxReq(delUrl, {pid: row.pid }, function(res){
 						self.listLoading = false;
 						if(res.code > 0){
 							self.$message({
@@ -192,17 +177,19 @@ var ajaxReq = parent.window.ajaxReq || "";
 				});
 			},
 			//新增
+			addClose: function () {
+				this.addFormVisible = false;
+				this.addLoading = false;
+				this.$refs.addForm.resetFields();
+			},
 			addSubmit: function () {
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							var params = Object.assign({}, this.addForm);
-							params.token = token;
-							params.uid = uid;
 							var self = this;
 							this.addLoading = true;
-							var url = baseUrl+"manage/app/add.json";
-							ajaxReq(url, params, function(res){
+							ajaxReq(addUrl, params, function(res){
 								self.addLoading = false;
 								if(res.code > 0){
 									self.$message({
@@ -223,17 +210,19 @@ var ajaxReq = parent.window.ajaxReq || "";
 				});
 			},
 			//编辑
+			editClose: function () {
+				this.editFormVisible = false;
+				this.editLoading = false;
+				this.$refs.editForm.resetFields();
+			},
 			editSubmit: function () {
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							var self = this;
 							this.editLoading = true;
-							var url = baseUrl+"manage/app/update.json";
 							var params = Object.assign({}, this.editForm);
-							params.token = token;
-							params.uid = uid;
-							ajaxReq(url, params, function(res){
+							ajaxReq(modUrl, params, function(res){
 								self.editLoading = false;
 								if(res.code > 0){
 									self.$message({
@@ -254,141 +243,8 @@ var ajaxReq = parent.window.ajaxReq || "";
 					}
 				});
 			},
-			//标签
-			handleBind: function (index, row) {
-				var self = this;
-
-				var url = baseUrl+"manage/role/find_by_keys.json";
-				var params = {};
-				params.token = token;
-				params.uid = uid;
-				params.isDelete = 0;
-				ajaxReq(url, params, function(res){
-					if(res.code > 0){
-						self.items = res.data;  //初始化总数据
-						var url = baseUrl+"manage/role_bind/find_by_keys.json";
-						var params = {};
-						params.token = token;
-						params.uid = uid;
-						params.appId = row.appId;
-						ajaxReq(url, params, function(res){
-							if(res.code > 0 || res.code == -1000){
-								//初始化选中
-								self.checkedItems = [];
-								for (var i = 0; i < res.data.length; i++) {
-									self.checkedItems.push(res.data[i].roleId);
-								}
-								//初始化全选
-								if(self.checkedItems.length > 0 && self.checkedItems.length < self.items.length){
-									self.indeterminate = true;
-								}else{
-									self.indeterminate = false;
-								}
-								if(self.checkedItems.length == self.items.length){
-									self.checkAll = true;
-								}else{
-									self.checkAll = false;
-								}
-								self.labelFormVisible = true;
-								self.labelForm = row;
-								self.labelName = row.name;
-							}else{
-								self.$message({
-									message: res.msg,
-									type: 'warning'
-								})
-							}
-						});
-					}else{
-						self.$message({
-							message: res.msg,
-							type: 'warning'
-						})
-					}
-					
-				});
-			},
-			handleCheckAllChange: function(){
-				if(this.checkAll){
-					this.indeterminate = false;
-					this.checkedItems = [];
-					for (var i = 0; i < this.items.length; i++) {
-						this.checkedItems.push(this.items[i].pid)
-					}
-				}else{
-					this.checkedItems = [];
-				}
-			},
-			handleCheckItemChange: function(){
-				if(this.checkedItems.length > 0 && this.checkedItems.length < this.items.length){
-					this.indeterminate = true;
-				}else{
-					this.indeterminate = false;
-				}
-				if(this.checkedItems.length == this.items.length){
-					this.checkAll = true;
-				}else{
-					this.checkAll = false;
-				}
-			},
-			labelSubmit: function (index, row) {
-				this.$confirm('确认提交吗？', '提示', {}).then(() => {
-					var self = this;
-					this.labelLoading = true;
-					var url = baseUrl+"manage/role_bind/add.json";
-					var params = {};
-					params.token = token;
-					params.uid = uid;
-					params.appId = this.labelForm.appId;
-					params.roleIdList = JSON.stringify(this.checkedItems);
-					ajaxReq(url, params, function(res){
-						self.labelLoading = false;
-						if(res.code > 0){
-							self.$message({
-								message: '提交成功',
-								type: 'success'
-							});
-							self.labelFormVisible = false;
-						}else{
-							self.$message({
-								message: res.msg,
-								type: 'warning'
-							})
-						}
-					});
-					
-				});
-			},
 			selsChange: function (sels) {
 				this.sels = sels;
-			},
-			//批量删除
-			batchRemove: function () {
-				var pids = this.sels.map(item => item.pid).toString();
-				this.$confirm('确认删除选中记录吗？', '提示', {
-					type: 'warning'
-				}).then(() => {
-					this.listLoading = true;
-					//NProgress.start();
-					var params = { pids: pids };
-					batchRemove(params).then((res) => {
-						this.listLoading = false;
-						if(res.code > 0){
-							//NProgress.done();
-							this.$message({
-								message: '删除成功',
-								type: 'success'
-							});
-							this.getList();
-						}else{
-							this.$message({
-								message: res.msg,
-								type: 'warning'
-							})
-						}
-					});
-				}).catch(() => {
-				});
 			}
 		},
 		mounted: function() {

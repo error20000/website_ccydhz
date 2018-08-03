@@ -28,9 +28,9 @@
 					<el-dropdown-menu slot="dropdown">
 						<!--<el-dropdown-item>我的消息</el-dropdown-item>
 						<el-dropdown-item>设置</el-dropdown-item>-->
-						<!-- <el-dropdown-item><i class="fa fa-address-card fa-fw"></i>&nbsp; 个人信息</el-dropdown-item> -->
-						<el-dropdown-item @click.native="handlepwdChange"><i class="fa fa-key fa-fw"></i>&nbsp; 修改密码</el-dropdown-item>
-						<el-dropdown-item @click.native="logout" divided><i class="fa fa-power-off fa-fw"></i>&nbsp; 退出登录</el-dropdown-item>
+						<!-- <el-dropdown-item><i class="fa fa-address-card fa-fw"></i>&nbsp; 个人信息</el-dropdown-item>
+						<el-dropdown-item @click.native="handlepwdChange"><i class="fa fa-key fa-fw"></i>&nbsp; 修改密码</el-dropdown-item> -->
+						<el-dropdown-item @click.native="logout"><i class="fa fa-power-off fa-fw"></i>&nbsp; 退出登录</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
 			</el-col>
@@ -39,7 +39,7 @@
 			<aside :class="collapsed ? 'menu-collapsed' : 'menu-expanded el-scrollbar'">
 				<transition name="el-collapse-transition">
 				<!--导航菜单-->
-				<el-menu default-active="0" class="el-menu-vertical" @open="handleopen" @close="handleclose" @select="handleselect"
+				<el-menu default-active="" class="el-menu-vertical" @open="handleopen" @close="handleclose" @select="handleselect"
 					 :collapse="collapsed" background-color="#eeeeee">
 					 <!-- 一层 -->
 					<template v-for="(item,index) in authMenu" v-show="!item.hidden">

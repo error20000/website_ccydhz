@@ -2,20 +2,24 @@ package com.ccydhz.site.entity;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 import com.jian.tools.core.JsonTools;
 import com.jian.tools.core.Tools;
 
-public class Base<T> implements Cloneable{
+/**
+ * @author liujian
+ * @Date  
+ */
+public class Base<T> implements Cloneable {
 
-	
 	public String serialize() {
 		return JsonTools.toJsonString(this);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void unserialize(String str) {
-		T base = (T) JsonTools.jsonToObj(str, this.getClass());
+		T base = JsonTools.jsonToObj(str, getObejctClass());
 		Field[] fs = Tools.getFields(this.getClass());
 		for (Field field : fs) {
 			Method[] setMethods = Tools.getMethods(this.getClass(), "set"+field.getName().substring(0, 1).toUpperCase()+field.getName().substring(1));
@@ -39,6 +43,19 @@ public class Base<T> implements Cloneable{
             e.printStackTrace();  
         }  
         return base;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private Class<T> getObejctClass(){
+		Type type = getClass().getGenericSuperclass();
+		Class<T> clss = null;
+		try {
+			Class<?>[] clsses = Tools.getGenericClass((ParameterizedType) type);
+			clss = (Class<T>) clsses[0];
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return clss;
 	}
 	
 }

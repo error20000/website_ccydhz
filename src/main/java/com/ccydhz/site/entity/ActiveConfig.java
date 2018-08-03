@@ -1,29 +1,50 @@
 package com.ccydhz.site.entity;
 
-import com.jian.tools.annotation.PrimaryKey;
-import com.jian.tools.annotation.PrimaryKeyType;
-import com.jian.tools.annotation.Table;
+//import
+import com.jian.annotation.PrimaryKey;
+import com.jian.annotation.PrimaryKeyType;
+import com.jian.annotation.Table;
+import com.jian.annotation.Excel;
 
+/**
+ * @author liujian
+ * @Date 
+ */
 @Table("s_active_config")
-public class ActiveConfig extends Base<ActiveConfig> {
-
+public class ActiveConfig  extends Base<ActiveConfig> {
+	
+	//field
 	@PrimaryKey(type=PrimaryKeyType.NORMAL)
+	@Excel(name="主键", sort=0, length="11", isNull=0 )
 	private int pid;
+	@Excel(name="分类", sort=1, value="0", length="11", isNull=1 )
 	private int type;
+	@Excel(name="名称", sort=2, length="255", isNull=1 )
 	private String name;
+	@Excel(name="画师", sort=3, length="255", isNull=1 )
 	private String painter;
+	@Excel(name="CV", sort=4, length="255", isNull=1 )
 	private String cv;
+	@Excel(name="舰种", sort=5, length="255", isNull=1 )
 	private String ship;
+	@Excel(name="星级", sort=6, value="0", length="4", isNull=1 )
 	private int star;
+	@Excel(name="图片", sort=7, length="255", isNull=1 )
 	private String pic;
+	@Excel(name="描述", sort=8, length="", isNull=1 )
 	private String desc;
+	@Excel(name="附加信息", sort=9, length="255", isNull=1 )
 	private String info;
+	@Excel(name="排序", sort=10, value="999", length="10", isNull=1 )
 	private int sort;
+	@Excel(name="概率", sort=11, value="0", length="", isNull=1 )
 	private double chance;
+	@Excel(name="中奖区间", sort=12, length="255", isNull=1 )
 	private String chance_z;
+	@Excel(name="数量  -1  不限", sort=13, value="0", length="10", isNull=1 )
 	private int count;
 	
-	
+	//get set
 	public int getPid() {
 		return pid;
 	}
@@ -108,5 +129,5 @@ public class ActiveConfig extends Base<ActiveConfig> {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	
+
 }

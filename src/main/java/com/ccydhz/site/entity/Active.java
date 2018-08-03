@@ -1,21 +1,34 @@
 package com.ccydhz.site.entity;
 
-import com.jian.tools.annotation.PrimaryKey;
-import com.jian.tools.annotation.PrimaryKeyType;
-import com.jian.tools.annotation.Table;
+//import
+import com.jian.annotation.PrimaryKey;
+import com.jian.annotation.PrimaryKeyType;
+import com.jian.annotation.Table;
+import com.jian.annotation.Excel;
 
+/**
+ * @author liujian
+ * @Date 
+ */
 @Table("s_active")
-public class Active extends Base<Active> {
-
-	@PrimaryKey(type=PrimaryKeyType.NORMAL)
+public class Active  extends Base<Active> {
+	
+	//field
+	@PrimaryKey(type=PrimaryKeyType.AUTO_INCREMENT)
+	@Excel(name="自增主键", sort=0, length="11", isNull=0 )
 	private int pid;
+	@Excel(name="日期  yyyy-MM-dd HH:mm:ss", sort=1, length="20", isNull=1 )
 	private String date;
+	@Excel(name="IP", sort=2, length="255", isNull=1 )
 	private String ip;
+	@Excel(name="参与人", sort=3, length="255", isNull=1 )
 	private String phone;
+	@Excel(name="奖励pid", sort=4, value="0", length="11", isNull=1 )
 	private int config;
+	@Excel(name="附件信息", sort=5, length="255", isNull=1 )
 	private String info;
 	
-	
+	//get set
 	public int getPid() {
 		return pid;
 	}
@@ -52,5 +65,5 @@ public class Active extends Base<Active> {
 	public void setInfo(String info) {
 		this.info = info;
 	}
-	
+
 }

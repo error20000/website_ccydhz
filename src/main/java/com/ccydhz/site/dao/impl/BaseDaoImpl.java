@@ -22,8 +22,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -38,17 +38,19 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import com.ccydhz.site.dao.BaseDao;
-import com.ccydhz.site.dao.PrimaryKeyCondition;
-import com.jian.tools.annotation.Column;
-import com.jian.tools.annotation.PrimaryKey;
-import com.jian.tools.annotation.PrimaryKeyType;
-import com.jian.tools.annotation.Table;
+import com.jian.annotation.Column;
+import com.jian.annotation.PrimaryKey;
+import com.jian.annotation.PrimaryKeyCondition;
+import com.jian.annotation.Table;
 import com.jian.tools.core.DateTools;
 import com.jian.tools.core.JsonTools;
 import com.jian.tools.core.Tools;
+import com.ccydhz.site.dao.BaseDao;
 
-
+/**
+ * @author liujian
+ * @Date  
+ */
 public class BaseDaoImpl<T> implements BaseDao<T> {
 	
 	@Autowired
@@ -109,7 +111,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 			return res;
 		}
 		String sql = parseInsert(object, tableName);
-
 		//解析主键
 		parsePrimateKey(object, pkeys);
 		
@@ -120,45 +121,33 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 			List<String> sqlParams = getSqlParams(sql);
 			String pSql = preparedSql(sql);
 			Map<String, Object> params = Tools.parseObjectToMap(object);
-			boolean flag = false;
-			for (PrimaryKeyCondition pkc : pkeys) {
-				if(pkc.getKeyType() == PrimaryKeyType.AUTO_INCREMENT) {
-					flag = true;
-					break;
+			
+			/*KeyHolder keyHolder = new GeneratedKeyHolder();  
+			jdbcTemplate.update(new PreparedStatementCreator() {
+				
+				@Override
+				public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+					PreparedStatement preState = con.prepareStatement(pSql, PreparedStatement.RETURN_GENERATED_KEYS);
+					setPreparedParams(preState, sqlParams, params);
+					return preState;
 				}
-			}
-			
-			if(flag){
-				KeyHolder keyHolder = new GeneratedKeyHolder();  
-				jdbcTemplate.update(new PreparedStatementCreator() {
-					
-					@Override
-					public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-						PreparedStatement preState = con.prepareStatement(pSql, PreparedStatement.RETURN_GENERATED_KEYS);
-						setPreparedParams(preState, sqlParams, params);
-						return preState;
-					}
-					
-				}, keyHolder);
 				
-				res = keyHolder.getKey().intValue();
-				
-			}else{
-				res = jdbcTemplate.update(new PreparedStatementCreator() {
-					
-					@Override
-					public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-						PreparedStatement preState = con.prepareStatement(pSql);
-						setPreparedParams(preState, sqlParams, params);
-						return preState;
-					}
-					
-				});
-			}
+			}, keyHolder);
 			
+			autoIncId = keyHolder.getKey().intValue(); */
+			
+			res = jdbcTemplate.update(new PreparedStatementCreator() {
+				
+				@Override
+				public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+					PreparedStatement preState = con.prepareStatement(pSql);
+					setPreparedParams(preState, sqlParams, params);
+					return preState;
+				}
+				
+			});
 			
 		} catch (Exception e) {
-			res = 0;
 			e.printStackTrace();
 			debug(tableName, "SAVE ERROR", e.getMessage());
 		}
@@ -384,7 +373,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 				}
 			}
 		} catch (Exception e) {
-			object = null;
 			e.printStackTrace();
 			debug(tableName, "SAVE ERROR", e.getMessage());
 		}
@@ -1579,6 +1567,43 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         });
 	}
 	
+	public List<Map<String, Object>> baseQuery(String sql, Map<String, Object> params){
+
+		try {
+			//验证SQL
+			if(!sql.trim().toLowerCase().startsWith("select ")){
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			System.out.println("Query excution SQL Error! \n SQL is (select ): \n\t" + sql + "\n");
+		}
+		
+		List<String> sqlParams = getSqlParams(sql);
+		String pSql = preparedSql(sql);
+		
+		return jdbcTemplate.query(new PreparedStatementCreator() {
+			
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement preState = con.prepareStatement(pSql);
+				setPreparedParams(preState, sqlParams, params);
+				return preState;
+			}
+			
+		}, new RowMapper<Map<String, Object>>(){
+			@Override
+            public Map<String, Object> mapRow(ResultSet rs, int rowNum) throws SQLException {
+            	try {
+            		return getOneRowWithMap(rs);
+            	} catch (ReflectiveOperationException e) {
+            		e.printStackTrace();
+            	}
+				return null;
+            }
+
+        });
+	}
+	
 	public <E> List<E> basePage(String sql, Map<String, Object> params, Class<E> clzz, int start, int rows){
 
 		try {
@@ -1611,6 +1636,44 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
             	} catch (ReflectiveOperationException e) {
             		e.printStackTrace();
             	} catch (ParseException e) {
+            		e.printStackTrace();
+            	}
+				return null;
+            }
+
+        });
+	}
+	
+	public List<Map<String, Object>> basePage(String sql, Map<String, Object> params, int start, int rows){
+
+		try {
+			//验证SQL
+			if(!sql.trim().toLowerCase().startsWith("select ")){
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			System.out.println("Query excution SQL Error! \n SQL is (select ): \n\t" + sql + "\n");
+		}
+		
+		sql = sql + " limit " + start + ", " + rows;
+		List<String> sqlParams = getSqlParams(sql);
+		String pSql = preparedSql(sql);
+		
+		return jdbcTemplate.query(new PreparedStatementCreator() {
+			
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement preState = con.prepareStatement(pSql);
+				setPreparedParams(preState, sqlParams, params);
+				return preState;
+			}
+			
+		}, new RowMapper<Map<String, Object>>(){
+			@Override
+            public Map<String, Object> mapRow(ResultSet rs, int rowNum) throws SQLException {
+            	try {
+            		return getOneRowWithMap(rs);
+            	} catch (ReflectiveOperationException e) {
             		e.printStackTrace();
             	}
 				return null;
@@ -2148,10 +2211,11 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 		}
 	}
 
+	
 	public static void main(String[] args) {
-		String sqlStr = "select * from table where   x=:x and   y!=:y and   z like '%:z%' and w in (:w)";
+		String sqlStr = "select * from table where   x=:x and   y!=:y and   z like '%:z%' and w in (:w) and u=':u'";
 		System.out.println(sqlStr.replaceAll(":[^,\\s\\)%]+", "?"));
-		List<String> params = Tools.parseRegEx(sqlStr, ":[^,\\s\\)%]+");
+		List<String> params = Tools.parseRegEx(sqlStr, ":[^,\\s\\)%']+");
 		System.out.println(JsonTools.toJsonString(params));
 	}
 	

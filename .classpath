@@ -27,11 +27,11 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/tools-core-1.1.0.jar"/>
 	<classpathentry excluding="**" kind="src" output="target/classes" path="lib">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/tools-core-2.0.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

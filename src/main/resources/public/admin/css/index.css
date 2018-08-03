@@ -162,7 +162,7 @@ body {
 	background-color: #fff;
 	box-sizing: border-box;
 	height: 99%;
-    border: 1px solid #eeee;
+    /* border: 1px solid #eeee; */
 }
 
 .content-container .content-wrapper .content-iframe{

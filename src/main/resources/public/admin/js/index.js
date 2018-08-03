@@ -1,9 +1,5 @@
 var baseUrl = '../';
-//var baseUrl = 'http://192.168.106.78:8080/palace_bbs/';
-var token = "123";
-var uid = "123";
-var user = sessionStorage.getItem('user') || "";
-user = user ? JSON.parse(user) : "";
+var ssoUrl = 'http://sso.digisky.com';
 
 function ajaxReq(url, param, callback, cp){
 	$.ajax({
@@ -13,8 +9,7 @@ function ajaxReq(url, param, callback, cp){
 		   data: param,
 		   success: function(data){
 			   	if(data.code == -203 || data.code == -111){ // token 超时
-			   		sessionStorage.removeItem('user');
-			   		parent.window.location.href = "login.html";
+			   		parent.window.location.href = ssoUrl+"/login";
 			   	}
 				if (typeof callback === "function") {
 					callback(data, cp);
@@ -45,75 +40,16 @@ new Vue({
 			},
 			menuNames: [],
 			authMenu: [{
-		        path: '',
+		        path: 'app.html',
 		        component: "",
-		        name: '基础管理',
+		        name: '应用管理',
 		        iconCls: 'el-icon-menu',
-		        children: [
-		            { path: 'area.html', component: "", name: '角色管理'},
-		            { path: 'areaAD.html', component: "", name: '角色AD栏配置'},
-		            { path: 'app.html', component: "", name: '应用管理'},
-		            { path: 'appAD.html', component: "", name: '说说AD栏配置'}
-		        ]
+		        children: []
 		    },{
-		        path: '',
+		        path: 'config.html',
 		        component: "",
-		        name: '帖子管理',
-		        iconCls: 'el-icon-menu',
-		        children: [
-		            { path: 'hot.html', component: "", name: '热度配置'},
-		            { path: 'source.html', component: "", name: '来源配置'},
-		            { path: 'article.html', component: "", name: '帖子管理'},
-		            { path: 'discuss.html', component: "", name: '评论管理'},
-		            { path: 'reply.html', component: "", name: '回复管理',children: [
-			            { path: 'hot.html', component: "", name: '热度配置'},
-			            { path: 'source.html', component: "", name: '来源配置'},
-			            { path: 'article.html', component: "", name: '帖子管理'},
-			            { path: 'discuss.html', component: "", name: '评论管理'},
-			            { path: 'reply.html', component: "", name: '回复管理'}
-			        ]}
-		        ]
-		    },{
-		        path: '',
-		        component: "",
-		        name: '举报管理',
-		        iconCls: 'el-icon-menu',
-		        children: [
-		            { path: 'reportArticle.html', component: "", name: '帖子举报'},
-		            { path: 'reportDiscuss.html', component: "", name: '评论举报'},
-		            { path: 'reportReply.html', component: "", name: '回复举报'}
-		        ]
-		    },{
-		        path: '',
-		        component: "",
-		        name: '用户管理',
-		        iconCls: 'el-icon-menu',
-		        children: [
-		        	{ path: 'user.html', component: "", name: '管理员'},
-		        	{ path: 'player.html', component: "", name: '帐号信息'}
-		        ]
-		    },{
-		        path: '',
-		        component: "",
-		        name: '活动管理',
-		        iconCls: 'el-icon-menu',
-		        children: [
-		        	{ path: 'commentReward.html', component: "", name: '评论奖励活动'},
-		        ]
-		    },{
-		        path: '',
-		        component: "",
-		        name: '系统管理',
-		        iconCls: 'el-icon-menu',
-		        children: [
-		        	{ path: 'roleItf.html', component: "", name: '角色攻略'},
-		        	{ path: 'welcome.html', component: "", name: '首页'}
-		        ]
-		    },{
-		        path: '',
-		        component: "",
-		        name: '系统管理',
-		        iconCls: 'el-icon-menu',
+		        name: '系统配置',
+		        iconCls: 'el-icon-setting',
 		        children: []
 		    }],
 		    //pwd
@@ -208,23 +144,12 @@ new Vue({
 			this.$confirm('确认退出吗?', '提示', {
 				//type: 'warning'
 			}).then(() => {
-				sessionStorage.removeItem('user');
-				window.location.href = 'login.html';
-				//日志
-				if (user) {
-					var logParams = {
-							serverId: '',
-							accountId: user.name,
-							characterId: '',
-							platformChannelId: '0001000600020025',
-							isLogin: 0, //0：登出 1：登入
-							onlineTime: 0,
-							level: 0,
-							vipLevel: 0
-					};
-					ajaxReq(baseUrl+"manage/log/login.json", logParams, function(res){});
-				}
-				
+				/*var url = ssoUrl + "/api/user/logout";
+				var logParams = {};
+				ajaxReq(url, logParams, function(res){
+			   		parent.window.location.href = ssoUrl+"/login";
+				});*/
+				parent.window.location.href = ssoUrl;
 			}).catch(() => {
 
 			});
@@ -270,15 +195,7 @@ new Vue({
 		}
 	},
 	mounted: function() {
-		var user = sessionStorage.getItem('user');
-		if (user) {
-			user = JSON.parse(user);
-			token = user.token || '';
-			uid = user.pid || '';
-			this.sysUserName = user.name;
-		}else{
-			//window.location.href = 'login.html';
-		}
+		
 	}
   });
 

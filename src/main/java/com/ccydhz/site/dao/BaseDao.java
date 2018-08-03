@@ -3,6 +3,12 @@ package com.ccydhz.site.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.jian.annotation.PrimaryKeyCondition;
+
+/**
+ * @author liujian
+ * @Date  
+ */
 public interface BaseDao<T>  {
 	
 	public int add(T object);
@@ -73,7 +79,9 @@ public interface BaseDao<T>  {
 	//支持sql
 	public int baseUpdate(String sql, Map<String, Object> condition);
 	public <E> List<E> baseQuery(String sql, Map<String, Object> condition, Class<E> clzz);
+	public List<Map<String, Object>> baseQuery(String sql, Map<String, Object> condition);
 	public <E> List<E> basePage(String sql, Map<String, Object> condition, Class<E> clzz, int start, int rows);
+	public List<Map<String, Object>> basePage(String sql, Map<String, Object> condition, int start, int rows);
 	public long baseSize(String sql, Map<String, Object> condition);
 	
 }
