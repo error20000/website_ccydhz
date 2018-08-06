@@ -23,6 +23,8 @@ public class User  extends Base<User> {
 	private String password;
 	@Excel(name="超管  0--否 1--是", sort=3, value="0", length="4", isNull=1 )
 	private int system;
+	@Excel(name="状态  0--禁用 1--启用", sort=4, value="0", length="4", isNull=1 )
+	private int status;
 	
 	//get set
 	public int getPid() {
@@ -48,6 +50,12 @@ public class User  extends Base<User> {
 	}
 	public void setSystem(int system) {
 		this.system = system;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 }

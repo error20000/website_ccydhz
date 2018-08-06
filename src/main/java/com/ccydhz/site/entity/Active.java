@@ -27,6 +27,8 @@ public class Active  extends Base<Active> {
 	private int config;
 	@Excel(name="附件信息", sort=5, length="255", isNull=1 )
 	private String info;
+	@Excel(name="附加信息2", sort=6, length="255", isNull=1 )
+	private String info2;
 	
 	//get set
 	public int getPid() {
@@ -64,6 +66,12 @@ public class Active  extends Base<Active> {
 	}
 	public void setInfo(String info) {
 		this.info = info;
+	}
+	public String getInfo2() {
+		return info2;
+	}
+	public void setInfo2(String info2) {
+		this.info2 = info2;
 	}
 
 }

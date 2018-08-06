@@ -50,8 +50,9 @@ public abstract class BaseController<T> {
 	}
 	
 	//获取用户信息
-	public String getUserInfo(HttpServletRequest req){
-		return VerifyConfig.getUserInfo(req);
+	@SuppressWarnings("hiding")
+	public <T> T getUserInfo(HttpServletRequest req, Class<T> clss){
+		return VerifyConfig.getUserInfo(req, clss);
 	}
 	
 	

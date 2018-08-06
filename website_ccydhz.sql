@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50515
 File Encoding         : 65001
 
-Date: 2018-08-03 18:39:50
+Date: 2018-08-06 18:38:58
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,6 +26,7 @@ CREATE TABLE `s_active` (
   `phone` varchar(255) DEFAULT '' COMMENT '参与人',
   `config` int(11) DEFAULT '0' COMMENT '奖励pid',
   `info` varchar(255) DEFAULT '' COMMENT '附件信息',
+  `info2` varchar(255) DEFAULT '' COMMENT '附加信息2',
   PRIMARY KEY (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -95,7 +96,6 @@ CREATE TABLE `s_active_type` (
 -- ----------------------------
 -- Records of s_active_type
 -- ----------------------------
-INSERT INTO `s_active_type` VALUES ('1', '预约', '', '2017-08-25 10:00:00', '1', '0', '0');
 INSERT INTO `s_active_type` VALUES ('2', '扭蛋', '', '', '1', '1', '5');
 
 -- ----------------------------
@@ -108,12 +108,32 @@ CREATE TABLE `s_bespeak` (
   `ip` varchar(255) DEFAULT '' COMMENT 'ip',
   `phone` varchar(20) DEFAULT '' COMMENT '手机号',
   `info` varchar(255) DEFAULT '' COMMENT '附加信息',
+  `info2` varchar(255) DEFAULT '' COMMENT '附加信息2',
   PRIMARY KEY (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='预约';
 
 -- ----------------------------
 -- Records of s_bespeak
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `s_bespeak_config`
+-- ----------------------------
+DROP TABLE IF EXISTS `s_bespeak_config`;
+CREATE TABLE `s_bespeak_config` (
+  `pid` int(10) NOT NULL COMMENT '主键',
+  `name` varchar(255) DEFAULT '' COMMENT '名称',
+  `start` varchar(20) DEFAULT '' COMMENT '开始时间  yyyy-MM-dd HH:mm:ss',
+  `end` varchar(20) DEFAULT '' COMMENT '结束时间  yyyy-MM-dd HH:mm:ss',
+  `status` tinyint(4) DEFAULT '0' COMMENT '状态   0 -- 关闭  1 --开启',
+  `offset` int(11) DEFAULT '0' COMMENT '偏移量',
+  PRIMARY KEY (`pid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of s_bespeak_config
+-- ----------------------------
+INSERT INTO `s_bespeak_config` VALUES ('1', '预约', '', '2017-08-25 10:00:00', '1', '0');
 
 -- ----------------------------
 -- Table structure for `s_business`
@@ -650,17 +670,14 @@ CREATE TABLE `s_user` (
   `username` varchar(20) DEFAULT '' COMMENT '用户名',
   `password` varchar(32) CHARACTER SET utf8 DEFAULT '' COMMENT '密码（md5）',
   `system` tinyint(4) DEFAULT '0' COMMENT '超管  0--否 1--是',
+  `status` tinyint(4) DEFAULT '0' COMMENT '状态  0--禁用 1--启用',
   PRIMARY KEY (`pid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_user
 -- ----------------------------
-INSERT INTO `s_user` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '1');
-INSERT INTO `s_user` VALUES ('2', 'admin', '', '0');
-INSERT INTO `s_user` VALUES ('3', 'admin', '', '0');
-INSERT INTO `s_user` VALUES ('4', 'admin', '', '0');
-INSERT INTO `s_user` VALUES ('11', 'admin', '', '0');
+INSERT INTO `s_user` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '1', '1');
 
 -- ----------------------------
 -- Table structure for `s_user_menu`

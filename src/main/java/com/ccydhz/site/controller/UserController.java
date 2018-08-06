@@ -1,6 +1,11 @@
 package com.ccydhz.site.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,10 +14,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jian.annotation.API;
 import com.jian.annotation.ParamsInfo;
+import com.jian.tools.core.CacheObject;
+import com.jian.tools.core.CacheTools;
+import com.jian.tools.core.JsonTools;
+import com.jian.tools.core.MapTools;
 import com.jian.tools.core.ResultKey;
-
+import com.jian.tools.core.ResultTools;
+import com.jian.tools.core.Tips;
+import com.jian.tools.core.Tools;
+import com.ccydhz.site.config.Config;
 import com.ccydhz.site.entity.User;
 import com.ccydhz.site.service.UserService;
+import com.ccydhz.site.util.Utils;
 
 @Controller
 @RequestMapping("/api/user")
@@ -46,7 +59,33 @@ public class UserController extends BaseController<User> {
 				@ParamsInfo(name=ResultKey.DATA, type="", info="数据集"),
 		})
 	public String add(HttpServletRequest req) {
-		return super.add(req);
+		Map<String, Object> vMap = null;
+		//登录
+		vMap = verifyLogin(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//sign
+		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//权限
+		vMap = verifyAuth(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		
+		//保存
+		User obj = Tools.getReqParamsToObject(req, new User());
+		obj.setPassword(Tools.md5(obj.getPassword()));
+		obj.setSystem(0);
+		int res = service.add(obj);
+		if(res > 0){
+			return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, res).toJSONString();
+		}else{
+			return ResultTools.custom(Tips.ERROR0).toJSONString();
+		}
 	}
 
 
@@ -70,7 +109,66 @@ public class UserController extends BaseController<User> {
 				@ParamsInfo(name=ResultKey.DATA, type="", info="数据集"),
 		})
 	public String update(HttpServletRequest req) {
-		return super.update(req);
+		Map<String, Object> vMap = null;
+		//登录
+		vMap = verifyLogin(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//sign
+		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//权限
+		vMap = verifyAuth(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		
+		//参数
+		List<String> pkeys = Utils.getPrimaryKeys(User.class);//获取主键
+		if(pkeys == null || pkeys.isEmpty()){
+			return ResultTools.custom(Tips.ERROR206).toJSONString();
+		}
+		Map<String, Object> condition = new HashMap<String, Object>();
+		for (String str : pkeys) {
+			String strv = Tools.getReqParamSafe(req, str);
+			vMap = Tools.verifyParam(str, strv, 0, 0);
+			if(vMap != null){
+				return ResultTools.custom(Tips.ERROR206, str).toJSONString();
+			}
+			condition.put(str, strv);
+		}
+		//检测重复
+		String username = Tools.getReqParamSafe(req, "username");
+		User old = service.findOne(condition);
+		if(old == null){
+			return ResultTools.custom(Tips.ERROR106).toJSONString();
+		}
+		User test = service.findOne(MapTools.custom().put("username", username).build());
+		if(test != null && old.getPid() != test.getPid()){
+			return ResultTools.custom(Tips.ERROR105, "username").toJSONString();
+		}
+		Map<String, Object> setValues = Tools.getReqParamsToMap(req, User.class);
+		//修改密码
+		if(!old.getPassword().equals(setValues.get("password"))){
+			setValues.put("password", Tools.md5(setValues.get("password")+""));
+		}
+		if(old.getSystem() == 1){
+			setValues.put("system", 1);
+			setValues.put("status", 1);
+		}else{
+			setValues.put("system", 0);
+		}
+		
+		//保存
+		int res = service.modify(setValues, condition);
+		if(res > 0){
+			return ResultTools.custom(Tips.ERROR1).toJSONString();
+		}else{
+			return ResultTools.custom(Tips.ERROR0).put(ResultKey.DATA, res).toJSONString();
+		}
 	}
 
 	@Override
@@ -88,7 +186,49 @@ public class UserController extends BaseController<User> {
 				@ParamsInfo(name=ResultKey.DATA, type="", info="数据集"),
 		})
 	public String delete(HttpServletRequest req) {
-		return super.delete(req);
+		Map<String, Object> vMap = null;
+		//登录
+		vMap = verifyLogin(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//sign
+		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//权限
+		vMap = verifyAuth(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		
+		//参数
+		List<String> pkeys = Utils.getPrimaryKeys(User.class);//获取主键
+		if(pkeys == null || pkeys.isEmpty()){
+			return ResultTools.custom(Tips.ERROR206).toJSONString();
+		}
+		Map<String, Object> condition = new HashMap<String, Object>();
+		for (String str : pkeys) {
+			String strv = Tools.getReqParamSafe(req, str);
+			vMap = Tools.verifyParam(str, strv, 0, 0);
+			if(vMap != null){
+				return ResultTools.custom(Tips.ERROR206, str).toJSONString();
+			}
+			condition.put(str, strv);
+		}
+		//检查
+		User old = service.findOne(condition);
+		if(old.getSystem() == 1){
+			return ResultTools.custom(Tips.ERROR104, "系统管理员不能删除。").toJSONString();
+		}
+		//保存
+		int res = service.delete(condition);
+		if(res > 0){
+			return ResultTools.custom(Tips.ERROR1).toJSONString();
+		}else{
+			return ResultTools.custom(Tips.ERROR0).put(ResultKey.DATA, res).toJSONString();
+		}
 	}
 
 	@Override
@@ -163,5 +303,139 @@ public class UserController extends BaseController<User> {
 	}
 	
 	//TODO 自定义方法
+	
+	@RequestMapping("/login")
+    @ResponseBody
+	@API(name="登录", 
+		info="", 
+		request={
+				@ParamsInfo(name="username", type="String", isNull=0,  info="用户名"),
+				@ParamsInfo(name="password", type="String", isNull=0,  info="密码"),
+		}, 
+		response={
+				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
+				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
+				@ParamsInfo(name=ResultKey.DATA, type="Array", info="数据集"),
+		})
+	public String login(HttpServletRequest req) {
+		Map<String, Object> vMap = null;
+		//sign
+		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		
+		//参数
+		String username = Tools.getReqParamSafe(req, "username");
+		String password = Tools.getReqParamSafe(req, "password");
+		vMap = Tools.verifyParam("username", username, 0, 0);
+		if(vMap != null){
+			return ResultTools.custom(Tips.ERROR206, "username").toJSONString();
+		}
+		vMap = Tools.verifyParam("password", password, 0, 0);
+		if(vMap != null){
+			return ResultTools.custom(Tips.ERROR206, "password").toJSONString();
+		}
+		
+		//检查
+		User user = service.findOne(MapTools.custom().put("username", username).build());
+		if(user == null){
+			return ResultTools.custom(Tips.ERROR109).toJSONString();
+		}
+		if(user.getStatus() == 0){
+			return ResultTools.custom(Tips.ERROR107, "账号").toJSONString();
+		}
+		if(!user.getPassword().equals(Tools.md5(password))){
+			//限制错误次数
+			String ckey = "user_"+user.getPid();
+			CacheObject cobj = CacheTools.getCacheObj(ckey);
+			if(cobj == null){
+				CacheTools.setCacheObj(ckey, 10 - 1);
+			}else{
+				int loinTime = Tools.parseInt(cobj.getValue()+"");
+				loinTime--;
+				if(loinTime <= 0){
+					user.setStatus(0);
+					service.modify(user);
+					CacheTools.clearCacheObj(ckey); //解除禁用
+				}else{
+					CacheTools.setCacheObj(ckey, loinTime);
+				}
+			}
+			return ResultTools.custom(Tips.ERROR110).toJSONString();
+		}
+		
+		//保存
+		HttpSession session = req.getSession();
+		session.setAttribute(Config.login_session_key, user);
+		
+		user.setPassword("");
+		return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, user).toJSONString();
+	}
+	
+	@RequestMapping("/logout")
+    @ResponseBody
+	@API(name="退出", 
+		info="", 
+		request={
+		}, 
+		response={
+				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
+				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
+				@ParamsInfo(name=ResultKey.DATA, type="Array", info="数据集"),
+		})
+	public String logout(HttpServletRequest req) {
+		//保存
+		HttpSession session = req.getSession();
+		session.removeAttribute(Config.login_session_key);
+		
+		return ResultTools.custom(Tips.ERROR1).toJSONString();
+	}
+	
+	@RequestMapping("/changePWD")
+    @ResponseBody
+	@API(name="修改密码", 
+		info="需登录", 
+		request={
+				@ParamsInfo(name="password", type="String", isNull=0,  info="密码"),
+		}, 
+		response={
+				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
+				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
+				@ParamsInfo(name=ResultKey.DATA, type="", info="数据集"),
+		})
+	public String changePWD(HttpServletRequest req) {
+		Map<String, Object> vMap = null;
+		//登录
+		vMap = verifyLogin(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//sign
+		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+
+		User loginUser = getUserInfo(req, User.class);
+		if(loginUser == null){
+			return ResultTools.custom(Tips.ERROR111).toJSONString();
+		}
+		
+		//参数
+		String password = Tools.getReqParamSafe(req, "password");
+		vMap = Tools.verifyParam("password", password, 0, 0);
+		if(vMap != null){
+			return ResultTools.custom(Tips.ERROR206, "password").toJSONString();
+		}
+		
+		//保存
+		int res = service.modify(MapTools.custom().put("password", Tools.md5(password)).build(), MapTools.custom().put("pid", loginUser.getPid()).build());
+		if(res > 0){
+			return ResultTools.custom(Tips.ERROR1).toJSONString();
+		}else{
+			return ResultTools.custom(Tips.ERROR0).put(ResultKey.DATA, res).toJSONString();
+		}
+	}
 	
 }

@@ -1,7 +1,12 @@
 package com.ccydhz.site.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,9 +14,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jian.annotation.API;
 import com.jian.annotation.ParamsInfo;
+import com.jian.tools.core.CacheObject;
+import com.jian.tools.core.CacheTools;
+import com.jian.tools.core.DateTools;
+import com.jian.tools.core.HttpTools;
+import com.jian.tools.core.JsonTools;
+import com.jian.tools.core.MapTools;
 import com.jian.tools.core.ResultKey;
-
+import com.jian.tools.core.ResultTools;
+import com.jian.tools.core.Tips;
+import com.jian.tools.core.Tools;
+import com.ccydhz.site.config.Config;
 import com.ccydhz.site.entity.Bespeak;
+import com.ccydhz.site.entity.BespeakConfig;
+import com.ccydhz.site.service.BespeakConfigService;
 import com.ccydhz.site.service.BespeakService;
 
 @Controller
@@ -21,6 +37,10 @@ public class BespeakController extends BaseController<Bespeak> {
 
 	@Autowired
 	private BespeakService service;
+	@Autowired
+	private BespeakConfigService cService;
+	
+	private int bespeakConfigPid = 1;
 	
 	@Override
 	public void initService() {
@@ -29,68 +49,6 @@ public class BespeakController extends BaseController<Bespeak> {
 	
 	//TODO 基本方法
 	
-	@Override
-	@RequestMapping("/add")
-    @ResponseBody
-	@API(name="新增", 
-		info="需登录认证", 
-		request={
-				//add request
-				@ParamsInfo(name="ip", type="String", isNull=0,  info="ip"),
-				@ParamsInfo(name="phone", type="String", isNull=0,  info="手机号"),
-				@ParamsInfo(name="info", type="String", isNull=0,  info="附加信息"),
-		}, 
-		response={
-				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
-				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
-				@ParamsInfo(name=ResultKey.DATA, type="", info="数据集"),
-		})
-	public String add(HttpServletRequest req) {
-		return super.add(req);
-	}
-
-
-	@Override
-	@RequestMapping("/update")
-    @ResponseBody
-	@API(name="修改", 
-		info="需登录认证", 
-		request={
-				//modify request
-				@ParamsInfo(info="修改条件："),
-				@ParamsInfo(name="pid", type="int", isNull=1,  info="自增主键"),
-				@ParamsInfo(info="可修改字段："),
-				@ParamsInfo(name="ip", type="String", isNull=0,  info="ip"),
-				@ParamsInfo(name="phone", type="String", isNull=0,  info="手机号"),
-				@ParamsInfo(name="info", type="String", isNull=0,  info="附加信息"),
-		}, 
-		response={
-				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
-				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
-				@ParamsInfo(name=ResultKey.DATA, type="", info="数据集"),
-		})
-	public String update(HttpServletRequest req) {
-		return super.update(req);
-	}
-
-	@Override
-	@RequestMapping("/delete")
-    @ResponseBody
-	@API(name="删除", 
-		info="需登录认证", 
-		request={
-				//delete request
-				@ParamsInfo(name="pid", type="int", isNull=1,  info="自增主键"),
-		}, 
-		response={
-				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
-				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
-				@ParamsInfo(name=ResultKey.DATA, type="", info="数据集"),
-		})
-	public String delete(HttpServletRequest req) {
-		return super.delete(req);
-	}
-
 	@Override
 	@RequestMapping("/findPage")
     @ResponseBody
@@ -167,4 +125,214 @@ public class BespeakController extends BaseController<Bespeak> {
 	
 	//TODO 自定义方法
 	
+	@RequestMapping("/vcode")
+    @ResponseBody
+	@API(name="预约验证码", 
+		info="", 
+		request={
+				@ParamsInfo(name="phone", type="String", isNull=0,  info="手机号"),
+		}, 
+		response={
+				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
+				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
+				@ParamsInfo(name=ResultKey.DATA, type="", info="数据集"),
+		})
+	public String vcode(HttpServletRequest req) {
+		Map<String, Object> vMap = null;
+		//sign
+		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		
+		//参数
+		String phone = Tools.getReqParamSafe(req, "phone");
+		vMap = Tools.verifyParam("phone", phone, 0, 0);
+		if(vMap != null){
+			return ResultTools.custom(Tips.ERROR206, "phone").toJSONString();
+		}
+		
+		//获取活动配置
+		BespeakConfig config = cService.findOne(MapTools.custom().put("pid", bespeakConfigPid).build());
+		if(config == null){
+			return ResultTools.custom(Tips.ERROR200).toJSONString();
+		}
+		if(config.getStatus() == 0){
+			return ResultTools.custom(Tips.ERROR302).toJSONString();
+		}
+		
+		String cur = DateTools.formatDate();
+		if(!Tools.isNullOrEmpty(config.getStart()) && config.getStart().compareTo(cur) > 0){
+			return ResultTools.custom(Tips.ERROR301).toJSONString();
+		}
+		if(!Tools.isNullOrEmpty(config.getEnd()) && config.getEnd().compareTo(cur) < 0){
+			return ResultTools.custom(Tips.ERROR302).toJSONString();
+		}
+		
+		Bespeak old = service.findOne(MapTools.custom().put("phone", phone).build());
+		if(old != null){
+			return ResultTools.custom(Tips.ERROR303).toJSONString();
+		}
+		
+		String vcode = Tools.createVCodeNumber(6);
+		String key = "vcode_"+phone;
+		CacheTools.setCacheObj(key, vcode);
+		String content = Config.sms_vcode_content.replace("{vcode}", vcode);
+		//发送短信
+		sendSMS(phone, content);
+		return ResultTools.custom(Tips.ERROR1).toJSONString();
+	}
+	
+
+	@RequestMapping("/save")
+    @ResponseBody
+	@API(name="预约", 
+		info="", 
+		request={
+				@ParamsInfo(name="phone", type="String", isNull=0,  info="手机号"),
+				@ParamsInfo(name="vcode", type="String", isNull=0,  info="验证码"),
+				@ParamsInfo(name="info", type="String", isNull=0,  info="附加信息"),
+				@ParamsInfo(name="info2", type="String", isNull=0,  info="附加信息2"),
+		}, 
+		response={
+				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
+				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
+				@ParamsInfo(name=ResultKey.DATA, type="", info="数据集"),
+		})
+	public String save(HttpServletRequest req) {
+		Map<String, Object> vMap = null;
+		//sign
+		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		
+		//参数
+		String phone = Tools.getReqParamSafe(req, "phone");
+		String vcode = Tools.getReqParamSafe(req, "vcode");
+		String info = Tools.getReqParamSafe(req, "info");
+		String info2 = Tools.getReqParamSafe(req, "info2");
+		vMap = Tools.verifyParam("phone", phone, 0, 0);
+		if(vMap != null){
+			return ResultTools.custom(Tips.ERROR206, "phone").toJSONString();
+		}
+		vMap = Tools.verifyParam("vcode", vcode, 0, 0);
+		if(vMap != null){
+			return ResultTools.custom(Tips.ERROR206, "vcode").toJSONString();
+		}
+		
+		//获取活动配置
+		BespeakConfig config = cService.findOne(MapTools.custom().put("pid", bespeakConfigPid).build());
+		if(config == null){
+			return ResultTools.custom(Tips.ERROR200).toJSONString();
+		}
+		if(config.getStatus() == 0){
+			return ResultTools.custom(Tips.ERROR302).toJSONString();
+		}
+		
+		String cur = DateTools.formatDate();
+		if(!Tools.isNullOrEmpty(config.getStart()) && config.getStart().compareTo(cur) > 0){
+			return ResultTools.custom(Tips.ERROR301).toJSONString();
+		}
+		if(!Tools.isNullOrEmpty(config.getEnd()) && config.getEnd().compareTo(cur) < 0){
+			return ResultTools.custom(Tips.ERROR302).toJSONString();
+		}
+		
+		Bespeak old = service.findOne(MapTools.custom().put("phone", phone).build());
+		if(old != null){
+			return ResultTools.custom(Tips.ERROR303).toJSONString();
+		}
+		
+		//验证短信码
+		String key = "vcode_"+phone;
+		CacheObject cobj = CacheTools.getCacheObj(key);
+		if(cobj == null){
+			return ResultTools.custom(Tips.ERROR208).toJSONString();
+		}
+		if(!vcode.equals(cobj.getValue())){
+			//限制错误次数
+			String ckey = "vcode_error_"+phone;
+			CacheObject cobj2 = CacheTools.getCacheObj(ckey);
+			if(cobj2 == null){
+				CacheTools.setCacheObj(ckey, 5 - 1);
+			}else{
+				int time = Tools.parseInt(cobj.getValue()+"");
+				time--;
+				if(time <= 0){
+					CacheTools.clearCacheObj(key);
+					CacheTools.clearCacheObj(ckey); //解除禁用
+				}else{
+					CacheTools.setCacheObj(ckey, time);
+				}
+			}
+			return ResultTools.custom(Tips.ERROR205).toJSONString();
+		}
+		CacheTools.clearCacheObj(key);
+		
+		//保存
+		Bespeak obj = new Bespeak();
+		obj.setDate(DateTools.formatDate());
+		obj.setIp(Tools.getIp(req));
+		obj.setPhone(phone);
+		obj.setInfo(info);
+		obj.setInfo2(info2);
+		int res = service.add(obj);
+		if(res > 0){
+			//发送短信
+			return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, res).toJSONString();
+		}else{
+			return ResultTools.custom(Tips.ERROR0).toJSONString();
+		}
+	}
+	
+	@RequestMapping("/count")
+    @ResponseBody
+	@API(name="预约量", 
+		info="", 
+		request={
+		}, 
+		response={
+				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
+				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
+				@ParamsInfo(name=ResultKey.DATA, type="", info="数据集"),
+		})
+	public String count(HttpServletRequest req) {
+		Map<String, Object> vMap = null;
+		//sign
+		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		
+		//获取活动配置
+		BespeakConfig config = cService.findOne(MapTools.custom().put("pid", bespeakConfigPid).build());
+		if(config == null){
+			return ResultTools.custom(Tips.ERROR200).toJSONString();
+		}
+		
+		long count = service.getDao().size();
+		
+		count += config.getOffset();
+		
+		return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, count).toJSONString();
+	}
+	
+	private void sendSMS(String phone, String content){
+		List<String> phones = new ArrayList<>();
+		phones.add(phone);
+		Map<String, Object> params = MapTools.custom()
+				.put("accessKey", Config.sms_accessKey)
+				.put("secretKey", Config.sms_secretKey)
+				.put("serviceId", Config.sms_serviceId)
+				.put("orgId", Config.sms_orgId)
+				.put("reqId", Config.sms_reqId)
+				.put("srcId", Config.sms_srcId)
+				.put("regReport", Config.sms_regReport)
+				.put("expireTime", Config.sms_expireTime)
+				.put("mobiles", phones)
+				.put("content", content)
+				.build();
+		String res = HttpTools.getInstance().sendHttpPost(Config.sms_url, JsonTools.toJsonString(params), ContentType.APPLICATION_JSON);
+		System.out.println(res);
+	}
 }

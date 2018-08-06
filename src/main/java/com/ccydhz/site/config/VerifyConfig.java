@@ -26,11 +26,11 @@ public class VerifyConfig {
 	 */
 	public static Map<String, Object> verifyLogin(HttpServletRequest req){
 		if(Tools.isNullOrEmpty(ssoUrl)){
-			//单点登录验证.
-			return verifyLoginSSO(req);
-		}else{
 			//本地session验证.
 			return verifyLoginNormal(req);
+		}else{
+			//单点登录验证.
+			return verifyLoginSSO(req);
 		}
 //		return null; 
 	}
@@ -51,16 +51,24 @@ public class VerifyConfig {
 	 * @param req
 	 * @return
 	 */
-	public static String getUserInfo(HttpServletRequest req){
+	@SuppressWarnings("unchecked")
+	public static <T> T getUserInfo(HttpServletRequest req, Class<T> clss){
 		//获取sso用户信息，注意这里是sso用户，可能需要转换成自己项目的用户
 		HttpSession session = req.getSession();
 		Object user = session.getAttribute(loginUserKey);
 		if(user == null){
 			return null;
 		}
-		//TODO do change
+		if(Tools.isNullOrEmpty(ssoUrl)){
+			//本地session验证.
+			return (T) user;
+		}else{
+			//单点登录验证.
+			//TODO do change
+			
+			return null;
+		}
 		
-		return JsonTools.toJsonString(user);
 	}
 	
 	private static Map<String, Object> verifyLoginNormal(HttpServletRequest req){
