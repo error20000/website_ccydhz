@@ -23,9 +23,9 @@ public class Bespeak  extends Base<Bespeak> {
 	private String ip;
 	@Excel(name="手机号", sort=3, length="20", isNull=1 )
 	private String phone;
-	@Excel(name="附加信息", sort=4, length="255", isNull=1 )
+	@Excel(name="来源", sort=4, length="255", isNull=1 )
 	private String info;
-	@Excel(name="附加信息2", sort=5, length="255", isNull=1 )
+	@Excel(name="预约平台", sort=5, length="255", isNull=1 )
 	private String info2;
 	
 	//get set

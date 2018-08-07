@@ -1075,7 +1075,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 			return null;
 		}
 		String sql = "SELECT * FROM `"+tableName+"` WHERE " + wsql;
-		
 		//DEBUG
 		debug(tableName, "QUERY SQL", sql);
 		try {
@@ -2039,7 +2038,8 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     			String key = f.getName();
     			if(rowMap.get(key) != null){
     				for (Method method : methods) {
-    					if(method.getName().replace("set", "").toLowerCase().equals(f.getName().toLowerCase())){
+    					if(method.getName().startsWith("set") && method.getName().substring(3).equalsIgnoreCase(f.getName()) ){
+    						System.out.println(method.getName());
     						try {
     							method.invoke(object, rowMap.get(key));
     						} catch (Exception e) {
@@ -2049,6 +2049,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     				}
     			}
     		}
+			System.out.println(JsonTools.toJsonString(object));
     		return (T) object;
     	}
     	

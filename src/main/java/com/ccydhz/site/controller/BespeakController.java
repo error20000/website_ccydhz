@@ -1,10 +1,17 @@
 package com.ccydhz.site.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jian.annotation.API;
+import com.jian.annotation.Excel;
 import com.jian.annotation.ParamsInfo;
 import com.jian.tools.core.CacheObject;
 import com.jian.tools.core.CacheTools;
@@ -191,8 +199,8 @@ public class BespeakController extends BaseController<Bespeak> {
 		request={
 				@ParamsInfo(name="phone", type="String", isNull=0,  info="手机号"),
 				@ParamsInfo(name="vcode", type="String", isNull=0,  info="验证码"),
-				@ParamsInfo(name="info", type="String", isNull=0,  info="附加信息"),
-				@ParamsInfo(name="info2", type="String", isNull=0,  info="附加信息2"),
+				@ParamsInfo(name="info", type="String", isNull=0,  info="来源"),
+				@ParamsInfo(name="info2", type="String", isNull=0,  info="预约平台"),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -334,5 +342,144 @@ public class BespeakController extends BaseController<Bespeak> {
 				.build();
 		String res = HttpTools.getInstance().sendHttpPost(Config.sms_url, JsonTools.toJsonString(params), ContentType.APPLICATION_JSON);
 		System.out.println(res);
+	}
+	
+	@RequestMapping("/excel")
+    @ResponseBody
+	@API(name="导出", 
+		info="", 
+		request={
+		}, 
+		response={
+				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
+				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
+				@ParamsInfo(name=ResultKey.DATA, type="", info="数据集"),
+		})
+	public String excel(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> vMap = null;
+		//登录
+		vMap = verifyLogin(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//sign
+		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//权限
+		vMap = verifyAuth(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		
+		//执行
+		String startDate = Tools.getReqParamSafe(req, "startDate");
+		String endDate = Tools.getReqParamSafe(req, "endDate");
+		String wsql = " 1 = 1 ";
+		Map<String, Object> condition = Tools.getReqParamsToMap(req, Bespeak.class);
+		if(condition != null){
+			for (String key : condition.keySet()) {
+				wsql += " and `"+key+"`=:"+key;
+			}
+		}
+		if(!Tools.isNullOrEmpty(startDate)){
+			wsql += " and `date` >= :startDate";
+			condition.put("startDate", startDate);
+		}
+		if(!Tools.isNullOrEmpty(endDate)){
+			wsql += " and `date` <= :endDate";
+			condition.put("endDate", endDate);
+		}
+		List<Bespeak> res = service.getDao().findList(wsql, condition);
+		String name = Bespeak.class.getSimpleName().toLowerCase();
+		resp.addHeader("Content-Disposition","attachment;filename="+name+".csv");
+		// response.addHeader("Content-Length", "" + JSONArray.fromObject(list).toString().getBytes().length);
+		resp.setContentType("application/octet-stream;charset=utf-8");
+		try {
+			List<Map<String, Object>> excels = new ArrayList<Map<String, Object>>(); //获取导出字段
+			OutputStream toClient = new BufferedOutputStream(resp.getOutputStream());
+			//header
+			Field[] fields = Tools.getFields(Bespeak.class);
+			for (Field f : fields) {
+				if(f.isAnnotationPresent(Excel.class)){
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("sort", f.getAnnotation(Excel.class).sort());
+					map.put("name", f.getAnnotation(Excel.class).name());
+					map.put("field", f.getName());
+					excels.add(map);
+				}
+			}
+			//排序
+			for (int i = 0; i < excels.size(); i++) {
+				for (int j = i; j < excels.size(); j++) {
+					if((Integer)excels.get(i).get("sort") > (Integer)excels.get(j).get("sort")){
+						Map<String, Object> tmp = excels.get(i);
+						excels.set(i, excels.get(j));
+						excels.set(j, tmp);
+					}
+				}
+			}
+			
+			String headers = Tools.getReqParamSafe(req, "fields"); //可选导出项。
+			
+			String head = "";
+			for (int i = 0; i < excels.size(); i++) {
+				if(Tools.isNullOrEmpty(headers)){
+					head += "," + "\"" + (excels.get(i).get("name") == null ? "" :excels.get(i).get("name").toString().replace("\"", "\"\""))+ "\"";
+				}else{
+					String[] hs = headers.replace("，", ",").split(",");
+					for (String tmp : hs) {
+						if(tmp.equals(excels.get(i).get("field"))){
+							head += "," + "\"" + (excels.get(i).get("name") == null ? "" :excels.get(i).get("name").toString().replace("\"", "\"\""))+ "\"";
+						}
+					}
+				}
+			}
+			head = Tools.isNullOrEmpty(head) ? "" : head.substring(1);
+			head += "\n";
+			toClient.write(head.getBytes("utf-8"));
+			//遍历导出数据
+			//可导项
+			List<Map<String, Object>> temps = new ArrayList<Map<String, Object>>(); //获取导出字段
+			if(!Tools.isNullOrEmpty(headers)){
+				String[] hs = headers.replace("，", ",").split(",");
+				for (String tmp : hs) {
+					for (int i = 0; i < excels.size(); i++) {
+						if(tmp.equals(excels.get(i).get("field"))){
+							temps.add(excels.get(i));
+							break;
+						}
+					}
+				}
+				excels = temps;
+			}
+			//可导数据
+			for (Bespeak node : res) { //遍历导出数据
+				String str = "";
+				for (int j = 0; j < excels.size(); j++) { //遍历导出字段
+					String excelField = excels.get(j).get("field").toString();
+					String getMethodName = "get" + excelField.substring(0, 1).toUpperCase() + excelField.substring(1);
+					Object value = null;
+					try{
+						Method method = Tools.findMethod(node.getClass(), getMethodName);
+						value = method.invoke(node);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					//如果内容有逗号，将这个字段整体用双引号括起来；如果里面还有双引号就替换成两个双引号。
+					str += "," + "\"" + (value == null ? "" : value.toString().replace("\"", "\"\""))+ "\"";
+				}
+				str = Tools.isNullOrEmpty(str) ? "" : str.substring(1);
+				str +=  "\n";
+				toClient.write(str.getBytes("utf-8"));
+			}
+			
+			toClient.flush();
+			toClient.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 }

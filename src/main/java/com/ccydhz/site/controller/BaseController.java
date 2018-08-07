@@ -302,6 +302,8 @@ public abstract class BaseController<T> {
 		//参数
 		String page = Tools.getReqParamSafe(req, "page");
 		String rows = Tools.getReqParamSafe(req, "rows");
+		String startDate = Tools.getReqParamSafe(req, "startDate");
+		String endDate = Tools.getReqParamSafe(req, "endDate");
 		vMap = Tools.verifyParam("page", page, 0, 0, true);
 		if(vMap != null){
 			return JsonTools.toJsonString(vMap);
@@ -312,10 +314,24 @@ public abstract class BaseController<T> {
 		}
 		int start = Tools.parseInt(page) <= 1 ? 0 : (Tools.parseInt(page) - 1) * Tools.parseInt(rows);
 		//参数
+		String wsql = " 1 = 1 ";
 		Map<String, Object> condition = Tools.getReqParamsToMap(req, getObejctClass());
+		if(condition != null){
+			for (String key : condition.keySet()) {
+				wsql += " and `"+key+"`=:"+key;
+			}
+		}
+		if(!Tools.isNullOrEmpty(startDate)){
+			wsql += " and `date` >= :startDate";
+			condition.put("startDate", startDate);
+		}
+		if(!Tools.isNullOrEmpty(endDate)){
+			wsql += " and `date` <= :endDate";
+			condition.put("endDate", endDate);
+		}
 		
-		List<T> list = service.findPage(condition, start, Tools.parseInt(rows));
-		long total = service.size(condition);
+		List<T> list = service.getDao().findList(wsql, condition, start, Tools.parseInt(rows));
+		long total = service.getDao().size(wsql, condition);
         return ResultTools.custom(Tips.ERROR1).put(ResultKey.TOTAL, total).put(ResultKey.DATA, list).toJSONString();
     }
 	

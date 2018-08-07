@@ -1,5 +1,4 @@
 var baseUrl = '../';
-var ssoUrl = 'http://sso.digisky.com';
 
 function ajaxReq(url, param, callback, cp){
 	$.ajax({
@@ -40,18 +39,54 @@ new Vue({
 			},
 			menuNames: [],
 			authMenu: [{
-		        path: 'app.html',
+		        path: '',
 		        component: "",
-		        name: '应用管理',
+		        name: '预约管理',
 		        iconCls: 'el-icon-menu',
-		        children: []
+		        children: [{
+			        path: 'bespeakConfig.html',
+			        component: "",
+			        name: '预约配置',
+			        iconCls: '',
+			        children: []
+			    },{
+			        path: 'bespeak.html',
+			        component: "",
+			        name: '预约记录',
+			        iconCls: '',
+			        children: []
+			    }]
 		    },{
+		        path: '',
+		        component: "",
+		        name: '扭蛋管理',
+		        iconCls: 'el-icon-menu',
+		        children: [{
+			        path: 'activeType.html',
+			        component: "",
+			        name: '扭蛋配置',
+			        iconCls: '',
+			        children: []
+			    },{
+			        path: 'activeConfig.html',
+			        component: "",
+			        name: '扭蛋列表',
+			        iconCls: '',
+			        children: []
+			    },{
+			        path: 'active.html',
+			        component: "",
+			        name: '扭蛋记录',
+			        iconCls: '',
+			        children: []
+			    }]
+		    }/*,{
 		        path: 'config.html',
 		        component: "",
 		        name: '系统配置',
 		        iconCls: 'el-icon-setting',
 		        children: []
-		    }],
+		    }*/],
 		    //pwd
 		    pwdFormVisible: false,
 		    pwdLoading: false,
@@ -111,13 +146,11 @@ new Vue({
 			this.$refs.pwdForm.validate((valid) => {
 				if (valid) {
 					this.$confirm('确认提交吗？', '提示', {}).then(() => {
-						var params = Object.assign({}, this.addForm);
-						params.token = token;
-						params.uid = uid;
-						delete params.pwd2;
+						var params = Object.assign({}, this.pwdForm);
+						delete params.newPwd2;
 						var self = this;
 						this.pwdLoading = true;
-						var url = baseUrl+"manage/user/add.json";
+						var url = baseUrl+"api/user/changePWD";
 						ajaxReq(url, params, function(res){
 							self.addLoading = false;
 							if(res.code > 0){
@@ -126,7 +159,7 @@ new Vue({
 									type: 'success'
 								});
 								self.addFormVisible = false;
-								self.getList();
+								parent.window.location.href = "login.html";
 							}else{
 								self.$message({
 									message: res.msg,
@@ -140,18 +173,28 @@ new Vue({
 		},
 		//退出登录
 		logout: function () {
-			var _this = this;
 			this.$confirm('确认退出吗?', '提示', {
 				//type: 'warning'
 			}).then(() => {
-				/*var url = ssoUrl + "/api/user/logout";
-				var logParams = {};
-				ajaxReq(url, logParams, function(res){
-			   		parent.window.location.href = ssoUrl+"/login";
-				});*/
-				parent.window.location.href = ssoUrl;
+				var url = baseUrl + "api/user/logout";
+				var params = {};
+				ajaxReq(url, params, function(res){
+					if(res.code > 0){
+						parent.window.location.href = "login.html";
+					}
+				});
 			}).catch(() => {
 
+			});
+		},
+		//退出登录
+		isLogin: function () {
+			var url = baseUrl + "api/user/isLogin";
+			var params = {};
+			ajaxReq(url, params, function(res){
+				if(res.code <= 0){
+					parent.window.location.href = "login.html";
+				}
 			});
 		},
 		//折叠导航栏
@@ -195,7 +238,7 @@ new Vue({
 		}
 	},
 	mounted: function() {
-		
+		this.isLogin();
 	}
   });
 
