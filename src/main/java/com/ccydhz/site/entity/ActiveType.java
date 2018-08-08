@@ -1,10 +1,10 @@
 package com.ccydhz.site.entity;
 
+import com.jian.annotation.Excel;
 //import
 import com.jian.annotation.PrimaryKey;
 import com.jian.annotation.PrimaryKeyType;
 import com.jian.annotation.Table;
-import com.jian.annotation.Excel;
 
 /**
  * @author liujian
@@ -28,7 +28,7 @@ public class ActiveType  extends Base<ActiveType> {
 	@Excel(name="参加次数   小于0 --- 无限", sort=5, value="0", length="11", isNull=1 )
 	private int count;
 	@Excel(name="每次分享获得的次数 ", sort=6, value="0", length="11", isNull=1 )
-	private int sCount;
+	private int scount;
 	
 	//get set
 	public int getPid() {
@@ -67,11 +67,11 @@ public class ActiveType  extends Base<ActiveType> {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	public int getSCount() {
-		return sCount;
+	public int getScount() {
+		return scount;
 	}
-	public void setSCount(int sCount) {
-		this.sCount = sCount;
+	public void setScount(int scount) {
+		this.scount = scount;
 	}
 
 }

@@ -41,7 +41,7 @@ public class ActiveTypeController extends BaseController<ActiveType> {
 				@ParamsInfo(name="end", type="String", isNull=0,  info="结束时间  yyyy-MM-dd HH:mm:ss"),
 				@ParamsInfo(name="status", type="int", isNull=0,  info="状态   0 -- 关闭  1 --开启"),
 				@ParamsInfo(name="count", type="int", isNull=0,  info="参加次数   小于0 --- 无限"),
-				@ParamsInfo(name="sCount", type="int", isNull=0,  info="每次分享获得的次数 "),
+				@ParamsInfo(name="scount", type="int", isNull=0,  info="每次分享获得的次数 "),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -68,7 +68,7 @@ public class ActiveTypeController extends BaseController<ActiveType> {
 				@ParamsInfo(name="end", type="String", isNull=0,  info="结束时间  yyyy-MM-dd HH:mm:ss"),
 				@ParamsInfo(name="status", type="int", isNull=0,  info="状态   0 -- 关闭  1 --开启"),
 				@ParamsInfo(name="count", type="int", isNull=0,  info="参加次数   小于0 --- 无限"),
-				@ParamsInfo(name="sCount", type="int", isNull=0,  info="每次分享获得的次数 "),
+				@ParamsInfo(name="scount", type="int", isNull=0,  info="每次分享获得的次数 "),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -113,7 +113,7 @@ public class ActiveTypeController extends BaseController<ActiveType> {
 				@ParamsInfo(name="end", type="String", isNull=0,  info="结束时间  yyyy-MM-dd HH:mm:ss"),
 				@ParamsInfo(name="status", type="int", isNull=0,  info="状态   0 -- 关闭  1 --开启"),
 				@ParamsInfo(name="count", type="int", isNull=0,  info="参加次数   小于0 --- 无限"),
-				@ParamsInfo(name="sCount", type="int", isNull=0,  info="每次分享获得的次数 "),
+				@ParamsInfo(name="scount", type="int", isNull=0,  info="每次分享获得的次数 "),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -139,7 +139,7 @@ public class ActiveTypeController extends BaseController<ActiveType> {
 				@ParamsInfo(name="end", type="String", isNull=0,  info="结束时间  yyyy-MM-dd HH:mm:ss"),
 				@ParamsInfo(name="status", type="int", isNull=0,  info="状态   0 -- 关闭  1 --开启"),
 				@ParamsInfo(name="count", type="int", isNull=0,  info="参加次数   小于0 --- 无限"),
-				@ParamsInfo(name="sCount", type="int", isNull=0,  info="每次分享获得的次数 "),
+				@ParamsInfo(name="scount", type="int", isNull=0,  info="每次分享获得的次数 "),
 				@ParamsInfo(info="注意：以上条件不可同时为空。"),
 		}, 
 		response={
@@ -165,7 +165,7 @@ public class ActiveTypeController extends BaseController<ActiveType> {
 				@ParamsInfo(name="end", type="String", isNull=0,  info="结束时间  yyyy-MM-dd HH:mm:ss"),
 				@ParamsInfo(name="status", type="int", isNull=0,  info="状态   0 -- 关闭  1 --开启"),
 				@ParamsInfo(name="count", type="int", isNull=0,  info="参加次数   小于0 --- 无限"),
-				@ParamsInfo(name="sCount", type="int", isNull=0,  info="每次分享获得的次数 "),
+				@ParamsInfo(name="scount", type="int", isNull=0,  info="每次分享获得的次数 "),
 				@ParamsInfo(info="注意：以上条件不可同时为空。"),
 		}, 
 		response={
@@ -178,5 +178,37 @@ public class ActiveTypeController extends BaseController<ActiveType> {
 	}
 	
 	//TODO 自定义方法
+
+
+	@Override
+	@RequestMapping("/findAll")
+    @ResponseBody
+	@API(name="查询所有", 
+		info="需登录认证", 
+		request={
+		}, 
+		response={
+				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
+				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
+				@ParamsInfo(name=ResultKey.DATA, type="Array", info="数据集"),
+		})
+	public String findAll(HttpServletRequest req) {
+		return super.findAll(req);
+	}
 	
+	@Override
+	@RequestMapping("/add2")
+    @ResponseBody
+	@API(name="查询所有", 
+		info="需登录认证", 
+		request={
+		}, 
+		response={
+				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
+				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
+				@ParamsInfo(name=ResultKey.DATA, type="Array", info="数据集"),
+		})
+	public String add2(HttpServletRequest req) {
+		return super.add2(req);
+	}
 }

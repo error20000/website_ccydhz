@@ -36,7 +36,7 @@
 		<el-table :data="list" highlight-current-row border v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" class="mytable" >
 			<el-table-column type="selection" width="55">
 			</el-table-column>
-			<el-table-column label="PID" prop="pid" width="100">
+			<el-table-column label="PID" prop="pid" width="100" placeholder="唯一">
 			</el-table-column>
 			<el-table-column label="名称" prop="name" min-width="100">
 			</el-table-column>

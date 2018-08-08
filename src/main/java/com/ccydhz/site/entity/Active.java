@@ -25,9 +25,9 @@ public class Active  extends Base<Active> {
 	private String phone;
 	@Excel(name="奖励pid", sort=4, value="0", length="11", isNull=1 )
 	private int config;
-	@Excel(name="附件信息", sort=5, length="255", isNull=1 )
+	@Excel(name="其他信息", sort=5, length="255", isNull=1 )
 	private String info;
-	@Excel(name="附加信息2", sort=6, length="255", isNull=1 )
+	@Excel(name="其他信息2", sort=6, length="255", isNull=1 )
 	private String info2;
 	
 	//get set

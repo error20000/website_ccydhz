@@ -22,8 +22,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -38,6 +38,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import com.ccydhz.site.dao.BaseDao;
 import com.jian.annotation.Column;
 import com.jian.annotation.PrimaryKey;
 import com.jian.annotation.PrimaryKeyCondition;
@@ -45,7 +46,6 @@ import com.jian.annotation.Table;
 import com.jian.tools.core.DateTools;
 import com.jian.tools.core.JsonTools;
 import com.jian.tools.core.Tools;
-import com.ccydhz.site.dao.BaseDao;
 
 /**
  * @author liujian
@@ -122,8 +122,8 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 			String pSql = preparedSql(sql);
 			Map<String, Object> params = Tools.parseObjectToMap(object);
 			
-			/*KeyHolder keyHolder = new GeneratedKeyHolder();  
-			jdbcTemplate.update(new PreparedStatementCreator() {
+			KeyHolder keyHolder = new GeneratedKeyHolder();  
+			int temp = jdbcTemplate.update(new PreparedStatementCreator() {
 				
 				@Override
 				public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
@@ -134,9 +134,13 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 				
 			}, keyHolder);
 			
-			autoIncId = keyHolder.getKey().intValue(); */
+			if(keyHolder.getKey() == null){
+				res = temp;
+			}else{
+				res = keyHolder.getKey().intValue(); 
+			}
 			
-			res = jdbcTemplate.update(new PreparedStatementCreator() {
+			/*res = jdbcTemplate.update(new PreparedStatementCreator() {
 				
 				@Override
 				public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
@@ -145,7 +149,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 					return preState;
 				}
 				
-			});
+			});*/
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2039,7 +2043,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     			if(rowMap.get(key) != null){
     				for (Method method : methods) {
     					if(method.getName().startsWith("set") && method.getName().substring(3).equalsIgnoreCase(f.getName()) ){
-    						System.out.println(method.getName());
     						try {
     							method.invoke(object, rowMap.get(key));
     						} catch (Exception e) {
@@ -2049,7 +2052,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     				}
     			}
     		}
-			System.out.println(JsonTools.toJsonString(object));
     		return (T) object;
     	}
     	

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50515
 File Encoding         : 65001
 
-Date: 2018-08-06 18:38:58
+Date: 2018-08-08 18:41:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,14 +25,19 @@ CREATE TABLE `s_active` (
   `ip` varchar(255) DEFAULT '' COMMENT 'IP',
   `phone` varchar(255) DEFAULT '' COMMENT '参与人',
   `config` int(11) DEFAULT '0' COMMENT '奖励pid',
-  `info` varchar(255) DEFAULT '' COMMENT '附件信息',
+  `info` varchar(255) DEFAULT '' COMMENT '附加信息',
   `info2` varchar(255) DEFAULT '' COMMENT '附加信息2',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_active
 -- ----------------------------
+INSERT INTO `s_active` VALUES ('3', '2018-08-08 17:32:43', '127.0.0.1', '15881146309', '1', '\"test\"', '');
+INSERT INTO `s_active` VALUES ('8', '2018-08-08 17:44:49', '127.0.0.1', '15881146309', '0', '\"test\"', '');
+INSERT INTO `s_active` VALUES ('9', '2018-08-08 17:44:51', '127.0.0.1', '15881146309', '0', '\"test\"', '');
+INSERT INTO `s_active` VALUES ('10', '2018-08-08 17:44:53', '127.0.0.1', '15881146309', '0', '\"test\"', '');
+INSERT INTO `s_active` VALUES ('11', '2018-08-08 17:44:55', '127.0.0.1', '15881146309', '0', '\"test\"', '');
 
 -- ----------------------------
 -- Table structure for `s_active_config`
@@ -60,23 +65,8 @@ CREATE TABLE `s_active_config` (
 -- ----------------------------
 -- Records of s_active_config
 -- ----------------------------
-INSERT INTO `s_active_config` VALUES ('1', '2', 'test11', '', '11', '', '0', '', '', '', '999', null, '', '0');
-INSERT INTO `s_active_config` VALUES ('2', '2', 'test22', '', '2233', '', '0', '', '', '', '999', null, '', '0');
-INSERT INTO `s_active_config` VALUES ('3', '2', 'test33', '', '33', '', '0', '11111', '', '', '999', null, '', '0');
-INSERT INTO `s_active_config` VALUES ('204', '14', '德皇手办', '', '1001', '', '0', null, null, '', '999', null, '[500,502]', '1');
-INSERT INTO `s_active_config` VALUES ('205', '14', '采购币*233', '', '1002', '', '0', null, null, '', '999', null, '[10000,10005]', '40');
-INSERT INTO `s_active_config` VALUES ('206', '14', '铁血狗周边', '', '1003', '', '0', null, null, '', '999', null, '[15000,15020]', '40');
-INSERT INTO `s_active_config` VALUES ('207', '14', '资源大礼包', '', '1004', '', '0', null, null, '', '999', null, '[20000,20004]', '1');
-INSERT INTO `s_active_config` VALUES ('208', '14', '抱枕', '', '1005', '', '0', null, null, '', '999', null, '[25000,25004]', '5');
-INSERT INTO `s_active_config` VALUES ('209', '14', '官方设定集', '', '1006', '', '0', null, null, '', '999', null, '[30000,30004]', '5');
-INSERT INTO `s_active_config` VALUES ('210', '14', 'PS4游戏机', '', '1007', '', '0', null, null, '', '999', null, '[35000,35002]', '0');
-INSERT INTO `s_active_config` VALUES ('211', '15', '德皇手办', '', '1001', '', '0', '', '', '', '999', null, '[500,501]', '1');
-INSERT INTO `s_active_config` VALUES ('212', '15', '采购币*233', '', '1002', '', '0', '', '', '', '999', null, '[10000,10005]', '20');
-INSERT INTO `s_active_config` VALUES ('213', '15', '铁血狗周边', '', '1003', '', '0', '', '', '', '999', null, '[15000,15020]', '5');
-INSERT INTO `s_active_config` VALUES ('214', '15', '资源大礼包', '', '1004', '', '0', '', '', '', '999', null, '[20000,20004]', '1');
-INSERT INTO `s_active_config` VALUES ('215', '15', '官方设定集', '', '1005', '', '0', '', '', '', '999', null, '[25000,25004]', '1');
-INSERT INTO `s_active_config` VALUES ('216', '15', '任天堂switch', '', '1006', '', '0', '', '', '', '999', null, '[30000,30004]', '0');
-INSERT INTO `s_active_config` VALUES ('217', '15', '200元京东卡', '', '1007', '', '0', '', '', '', '999', null, '[35000,35004]', '0');
+INSERT INTO `s_active_config` VALUES ('1', '2', '我们', '1', '1', '1', '1', '20180808/201808081552037190172.jpg', '我们，是您的兵器', '我们，是您的兵器我们，是您的兵器我们，是您的兵器我们，是您的兵器我们，是您的兵器我们，是您的兵器', '999', '1', null, '1');
+INSERT INTO `s_active_config` VALUES ('11', '2', '11', '11', '11', '11', '0', '20180808/201808081538556747422.jpg', '11', '11', '999', '1', '', '1');
 
 -- ----------------------------
 -- Table structure for `s_active_type`
@@ -89,14 +79,14 @@ CREATE TABLE `s_active_type` (
   `end` varchar(20) DEFAULT '' COMMENT '结束时间  yyyy-MM-dd HH:mm:ss',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态   0 -- 关闭  1 --开启',
   `count` int(11) DEFAULT '0' COMMENT '参加次数   小于0 --- 无限',
-  `sCount` int(11) DEFAULT '0' COMMENT '每次分享获得的次数 ',
+  `scount` int(11) DEFAULT '0' COMMENT '每次分享获得的次数 ',
   PRIMARY KEY (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_active_type
 -- ----------------------------
-INSERT INTO `s_active_type` VALUES ('2', '扭蛋', '', '', '1', '1', '5');
+INSERT INTO `s_active_type` VALUES ('2', '扭蛋', '', '', '1', '5', '5');
 
 -- ----------------------------
 -- Table structure for `s_bespeak`
@@ -110,11 +100,12 @@ CREATE TABLE `s_bespeak` (
   `info` varchar(255) DEFAULT '' COMMENT '附加信息',
   `info2` varchar(255) DEFAULT '' COMMENT '附加信息2',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='预约';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='预约';
 
 -- ----------------------------
 -- Records of s_bespeak
 -- ----------------------------
+INSERT INTO `s_bespeak` VALUES ('2', '2018-08-08 17:31:36', '127.0.0.1', '15881146309', 'pc', 'android');
 
 -- ----------------------------
 -- Table structure for `s_bespeak_config`
@@ -133,7 +124,7 @@ CREATE TABLE `s_bespeak_config` (
 -- ----------------------------
 -- Records of s_bespeak_config
 -- ----------------------------
-INSERT INTO `s_bespeak_config` VALUES ('1', '预约', '', '2017-08-25 10:00:00', '1', '0');
+INSERT INTO `s_bespeak_config` VALUES ('1', '预约', '', '2018-08-25 10:00:00', '1', '0');
 
 -- ----------------------------
 -- Table structure for `s_business`
@@ -672,7 +663,7 @@ CREATE TABLE `s_user` (
   `system` tinyint(4) DEFAULT '0' COMMENT '超管  0--否 1--是',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态  0--禁用 1--启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_user

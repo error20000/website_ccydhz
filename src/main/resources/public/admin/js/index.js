@@ -8,7 +8,7 @@ function ajaxReq(url, param, callback, cp){
 		   data: param,
 		   success: function(data){
 			   	if(data.code == -203 || data.code == -111){ // token 超时
-			   		parent.window.location.href = ssoUrl+"/login";
+			   		parent.window.location.href = "login.html";
 			   	}
 				if (typeof callback === "function") {
 					callback(data, cp);

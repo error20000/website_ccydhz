@@ -1,9 +1,12 @@
 var baseUrl = parent.window.baseUrl || '../';
 
-var queryUrl = baseUrl + "api/activetype/findPage";
-var addUrl = baseUrl + "api/activetype/add";
-var modUrl = baseUrl + "api/activetype/update";
-var delUrl = baseUrl + "api/activetype/delete";
+var queryUrl = baseUrl + "api/activeconfig/findPage";
+var addUrl = baseUrl + "api/activeconfig/add";
+var modUrl = baseUrl + "api/activeconfig/update";
+var delUrl = baseUrl + "api/activeconfig/delete";
+var uploadUrl = baseUrl + "api/file/uploadImg";
+var typeUrl = baseUrl + "api/activetype/findAll";
+
 
 var ajaxReq = parent.window.ajaxReq || "";
 
@@ -21,6 +24,8 @@ var myvue = new Vue({
 				rows: 10,
 				listLoading: false,
 				sels: [],//列表选中列
+				typeOptions:[],
+				uploadUrl: uploadUrl,
 				//新增界面数据
 				addFormVisible: false,//新增界面是否显示
 				addLoading: false, //loading
@@ -30,6 +35,22 @@ var myvue = new Vue({
 				addFormRules: {
 					pid: [
 						{  required: true, message: '请输入pid', trigger: 'blur' }
+					],
+					type: [
+						{  required: true, message: '请选择分类', trigger: 'blur' }
+					],
+					name: [
+						{  required: true, message: '请输入名称', trigger: 'blur' }
+					],
+					chance: [
+						{  required: true, message: '请输入概率', trigger: 'blur' },
+						{ validator: (rule, value, callback) => {
+					          if (value < 0 || value > 1) {
+					            callback(new Error('请输入0-1之间的小数！'));
+					          } else {
+					            callback();
+					          }
+						}, trigger: 'blur' }
 					]
 				},
 				//编辑界面数据
@@ -41,6 +62,22 @@ var myvue = new Vue({
 				editFormRules: {
 					pid: [
 						{  required: true, message: '请输入pid', trigger: 'blur' }
+					],
+					type: [
+						{  required: true, message: '请选择分类', trigger: 'blur' }
+					],
+					name: [
+						{  required: true, message: '请输入名称', trigger: 'blur' }
+					],
+					chance: [
+						{  required: true, message: '请输入概率', trigger: 'blur' },
+						{ validator: (rule, value, callback) => {
+					          if (value < 0 || value > 1) {
+					            callback(new Error('请输入0-1之间的小数！'));
+					          } else {
+					            callback();
+					          }
+						}, trigger: 'blur' }
 					]
 					
 				},
@@ -57,6 +94,37 @@ var myvue = new Vue({
 			formatDate: function(date){
 				return parent.window.formatDate(date, 'yyyy-MM-dd HH:mm:ss');
 			},
+			typeFormatter: function(row){
+				var name = row.type;
+				for (var i = 0; i < this.typeOptions.length; i++) {
+					var item = this.typeOptions[i];
+					if(item.value == row.type){
+						name = item.label;
+						break
+					}
+				}
+				return name;
+			},
+			handleAddUpload: function(res){
+				if(res.code > 0){
+					this.addForm.pic = res.data.path;
+				}else{
+					this.$message({
+						message: res.msg,
+						type: 'warning'
+					});
+				}
+			},
+			handleEditUpload: function(res){
+				if(res.code > 0){
+					this.editForm.pic = res.data.path;
+				}else{
+					this.$message({
+						message: res.msg,
+						type: 'warning'
+					});
+				}
+			},
 			handleSizeChange: function (val) {
 				this.rows = val;
 				this.getList();
@@ -64,6 +132,29 @@ var myvue = new Vue({
 			handleCurrentChange: function (val) {
 				this.page = val;
 				this.getList();
+			},
+			handleTypeOptions: function(cb){
+				var self = this;
+				var params = {};
+				ajaxReq(typeUrl, params, function(res){
+					if(res.code > 0){
+						for (var i = 0; i < res.data.length; i++) {
+							var item = {
+									label: res.data[i].name,
+									value: res.data[i].pid
+							};
+							self.typeOptions.push(item);
+						}
+						if(typeof cb == 'function'){
+							cb();
+						}
+					}else{
+						self.$message({
+							message: res.msg,
+							type: 'warning'
+						})
+					}
+				});
 			},
 			//查询
 			getList: function () {
@@ -91,12 +182,18 @@ var myvue = new Vue({
 				this.addFormVisible = true;
 				this.addForm = {
 						pid: '',
+						type: 2,
 						name: '',
-						start: '',
-						end: '',
-						status: 0,
-						count: '',
-						scount: ''
+						painter: '',
+						cv: '',
+						ship: '',
+						star: 0,
+						pic: '',
+						desc: '',
+						info: '',
+						sort: 999,
+						chance: '',
+						count: ''
 				};
 			},
 			//显示编辑界面
@@ -207,7 +304,7 @@ var myvue = new Vue({
 			}
 		},
 		mounted: function() {
-			this.getList();
+			this.handleTypeOptions(this.getList);
 		}
 	  });
 	

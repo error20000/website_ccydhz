@@ -21,7 +21,7 @@
 				</el-form>
 			</el-col>
 			<el-col :span="18">
-				<el-form :inline="true" :model="filters" style="float: right;">
+				<el-form :inline="true" :model="filters" style="float: right;" ref="filters">
 					<el-form-item>
 						<el-date-picker v-model="filters.start" type="datetime"placeholder="开始日期" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
 					</el-form-item>
@@ -30,6 +30,16 @@
 					</el-form-item>
 					<el-form-item>
 						<el-input v-model="filters.phone" placeholder="手机号"></el-input>
+					</el-form-item>
+					<el-form-item>
+						<el-select v-model="filters.config" placeholder="请选择奖励物品">
+						    <el-option
+						      v-for="item in configOptions"
+						      :key="item.value"
+						      :label="item.label"
+						      :value="item.value">
+						    </el-option>
+						 </el-select>
 					</el-form-item>
 					<el-form-item>
 						<el-button type="primary" @click="getList">查询</el-button>
@@ -52,9 +62,11 @@
 			</el-table-column>
 			<el-table-column label="手机号" prop="phone" min-width="200">
 			</el-table-column>
-			<el-table-column label="来源" prop="info" min-width="200">
+			<el-table-column label="奖励物品" prop="config" min-width="200" :formatter="configFormatter">
 			</el-table-column>
-			<el-table-column label="预约平台" prop="info2" min-width="200">
+			<el-table-column label="其他信息" prop="info" min-width="200">
+			</el-table-column>
+			<el-table-column label="其他信息2" prop="info2" min-width="200">
 			</el-table-column>
 			<el-table-column fixed="right" label="操作" width="100">
 				<template scope="scope">
@@ -87,10 +99,13 @@
 				<el-form-item label="手机号" prop="phone">
 					<div v-html="viewForm.phone"></div>
 				</el-form-item>
-				<el-form-item label="来源" prop="info">
+				<el-form-item label="奖励物品" prop="config">
+					<div v-html="configFormatter(viewForm)"></div>
+				</el-form-item>
+				<el-form-item label="其他信息" prop="info">
 					<div v-html="viewForm.info"></div>
 				</el-form-item>
-				<el-form-item label="预约平台" prop="info2">
+				<el-form-item label="其他信息2" prop="info2">
 					<div v-html="viewForm.info2"></div>
 				</el-form-item>
 			</el-form>
@@ -107,6 +122,6 @@
   <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
   <!-- 引入组件库 -->
   <script src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
-  <script type="text/javascript" src="js/bespeak.js"></script>
+  <script type="text/javascript" src="js/active.js"></script>
     
 </html>

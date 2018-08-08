@@ -48,7 +48,7 @@
 			</el-table-column>
 			<el-table-column label="参加次数" prop="count" min-width="200">
 			</el-table-column>
-			<el-table-column label="每次分享获得的次数 " prop="sCount" min-width="200">
+			<el-table-column label="每次分享获得的次数 " prop="scount" min-width="200">
 			</el-table-column>
 			<el-table-column fixed="right" label="操作" width="220">
 				<template scope="scope">
@@ -70,7 +70,7 @@
 		<el-dialog title="新增" :visible.sync="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="100px" :rules="addFormRules" ref="addForm">
 				<el-form-item label="PID" prop="pid">
-					<el-input type="number" v-model="addForm.pid"></el-input>
+					<el-input type="number" v-model="addForm.pid" placeholder="唯一"></el-input>
 				</el-form-item>
 				<el-form-item label="名称" prop="name">
 					<el-input type="text" v-model="addForm.name"></el-input>
@@ -90,8 +90,8 @@
 				<el-form-item label="参加次数" prop="count">
 					<el-input type="number" v-model="addForm.count"></el-input>
 				</el-form-item>
-				<el-form-item label="每次分享获得的次数 " prop="sCount">
-					<el-input type="number" v-model="addForm.sCount"></el-input>
+				<el-form-item label="每次分享获得的次数 " prop="scount">
+					<el-input type="number" v-model="addForm.scount"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -124,8 +124,8 @@
 				<el-form-item label="参加次数" prop="count">
 					<el-input type="number" v-model="editForm.count"></el-input>
 				</el-form-item>
-				<el-form-item label="每次分享获得的次数 " prop="sCount">
-					<el-input type="number" v-model="editForm.sCount"></el-input>
+				<el-form-item label="每次分享获得的次数 " prop="scount">
+					<el-input type="number" v-model="editForm.scount"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -155,8 +155,8 @@
 				<el-form-item label="参加次数" prop="count">
 					<div v-html="viewForm.count"></div>
 				</el-form-item>
-				<el-form-item label="每次分享获得的次数 " prop="sCount">
-					<div v-html="viewForm.sCount"></div>
+				<el-form-item label="每次分享获得的次数 " prop="scount">
+					<div v-html="viewForm.scount"></div>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">

@@ -63,6 +63,14 @@ var myvue = new Vue({
 				this.page = val;
 				this.getList();
 			},
+			handleFilters: function(){
+				this.filters={
+					start: '',
+					end: '',
+					phone: ''
+				};
+				this.getList();
+			},
 			//查询
 			getList: function () {
 				var self = this;

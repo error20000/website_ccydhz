@@ -185,7 +185,7 @@ public class BespeakController extends BaseController<Bespeak> {
 		String vcode = Tools.createVCodeNumber(6);
 		String key = "vcode_"+phone;
 		CacheTools.setCacheObj(key, vcode);
-		String content = Config.sms_vcode_content.replace("{vcode}", vcode);
+		String content = Config.sms_vcode_content.replace("{vcode}", vcode);System.out.println(vcode);
 		//发送短信
 		sendSMS(phone, content);
 		return ResultTools.custom(Tips.ERROR1).toJSONString();

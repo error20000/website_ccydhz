@@ -1,9 +1,11 @@
 var baseUrl = parent.window.baseUrl || '../';
 
-var queryUrl = baseUrl + "api/activetype/findPage";
-var addUrl = baseUrl + "api/activetype/add";
-var modUrl = baseUrl + "api/activetype/update";
-var delUrl = baseUrl + "api/activetype/delete";
+var queryUrl = baseUrl + "api/active/findPage";
+var addUrl = baseUrl + "api/active/add";
+var modUrl = baseUrl + "api/active/update";
+var delUrl = baseUrl + "api/active/delete";
+var excelUrl = baseUrl + "api/active/excel";
+var configUrl = baseUrl + "api/activeconfig/findAll";
 
 var ajaxReq = parent.window.ajaxReq || "";
 
@@ -13,7 +15,10 @@ var myvue = new Vue({
 	    data: function(){
 	    	return {
 				filters: {
-					name: ''
+					start: '',
+					end: '',
+					phone: '',
+					config: ''
 				},
 				list: [],
 				total: 0,
@@ -21,6 +26,7 @@ var myvue = new Vue({
 				rows: 10,
 				listLoading: false,
 				sels: [],//列表选中列
+				configOptions:[],
 				//新增界面数据
 				addFormVisible: false,//新增界面是否显示
 				addLoading: false, //loading
@@ -28,9 +34,7 @@ var myvue = new Vue({
 				addForm: {},
 				//效验
 				addFormRules: {
-					pid: [
-						{  required: true, message: '请输入pid', trigger: 'blur' }
-					]
+					
 				},
 				//编辑界面数据
 				editFormVisible: false,//编辑界面是否显示
@@ -39,9 +43,6 @@ var myvue = new Vue({
 				editForm: {},
 				//效验
 				editFormRules: {
-					pid: [
-						{  required: true, message: '请输入pid', trigger: 'blur' }
-					]
 					
 				},
 				//查看界面数据
@@ -57,6 +58,17 @@ var myvue = new Vue({
 			formatDate: function(date){
 				return parent.window.formatDate(date, 'yyyy-MM-dd HH:mm:ss');
 			},
+			configFormatter: function(row){
+				var name = row.config;
+				for (var i = 0; i < this.configOptions.length; i++) {
+					var item = this.configOptions[i];
+					if(item.value == row.config){
+						name = item.label;
+						break
+					}
+				}
+				return name;
+			},
 			handleSizeChange: function (val) {
 				this.rows = val;
 				this.getList();
@@ -65,6 +77,38 @@ var myvue = new Vue({
 				this.page = val;
 				this.getList();
 			},
+			handleFilters: function(){
+				this.filters={
+					start: '',
+					end: '',
+					phone: '',
+					config: ''
+				};
+				this.getList();
+			},
+			handleConfigOptions: function(cb){
+				var self = this;
+				var params = {};
+				ajaxReq(configUrl, params, function(res){
+					if(res.code > 0){
+						for (var i = 0; i < res.data.length; i++) {
+							var item = {
+									label: res.data[i].name,
+									value: res.data[i].pid
+							};
+							self.configOptions.push(item);
+						}
+						if(typeof cb == 'function'){
+							cb();
+						}
+					}else{
+						self.$message({
+							message: res.msg,
+							type: 'warning'
+						})
+					}
+				});
+			},
 			//查询
 			getList: function () {
 				var self = this;
@@ -72,6 +116,18 @@ var myvue = new Vue({
 					page: this.page,
 					rows: this.rows
 				};
+				if(this.filters.start){
+					params.startDate = this.filters.start;
+				}
+				if(this.filters.end){
+					params.endDate = this.filters.end;
+				}
+				if(this.filters.phone){
+					params.phone = this.filters.phone;
+				}
+				if(this.filters.config){
+					params.config = this.filters.config;
+				}
 				this.listLoading = true;
 				ajaxReq(queryUrl, params, function(res){
 					self.listLoading = false;
@@ -86,17 +142,44 @@ var myvue = new Vue({
 					}
 				});
 			},
+			//导出
+			handleExcel: function () {
+				var self = this;
+				var params = {};
+				if(this.filters.start){
+					params.startDate = this.filters.start;
+				}
+				if(this.filters.end){
+					params.endDate = this.filters.end;
+				}
+				if(this.filters.phone){
+					params.phone = this.filters.phone;
+				}
+				if(this.filters.config){
+					params.config = this.filters.config;
+				}
+				var str = "";
+				for ( var key in params) {
+					str += key + "=" + params[key];
+				}
+				window.location.href = excelUrl + "?" + str;
+				/*ajaxReq(excelUrl, params, function(res){
+					if(res.code > 0){
+						self.total = res.total;
+						self.list = res.data;
+					}else{
+						self.$message({
+							message: res.msg,
+							type: 'warning'
+						})
+					}
+				});*/
+			},
 			//显示新增界面
 			handleAdd: function () {
 				this.addFormVisible = true;
 				this.addForm = {
-						pid: '',
-						name: '',
-						start: '',
-						end: '',
-						status: 0,
-						count: '',
-						scount: ''
+						
 				};
 			},
 			//显示编辑界面
@@ -207,7 +290,7 @@ var myvue = new Vue({
 			}
 		},
 		mounted: function() {
-			this.getList();
+			this.handleConfigOptions(this.getList);
 		}
 	  });
 	
