@@ -37,6 +37,7 @@ import com.ccydhz.site.entity.Bespeak;
 import com.ccydhz.site.entity.BespeakConfig;
 import com.ccydhz.site.service.BespeakConfigService;
 import com.ccydhz.site.service.BespeakService;
+import com.ccydhz.site.util.SmsGateWay;
 
 @Controller
 @RequestMapping("/api/bespeak")
@@ -326,7 +327,7 @@ public class BespeakController extends BaseController<Bespeak> {
 	}
 	
 	private void sendSMS(String phone, String content){
-		List<String> phones = new ArrayList<>();
+		/*List<String> phones = new ArrayList<>();
 		phones.add(phone);
 		Map<String, Object> params = MapTools.custom()
 				.put("accessKey", Config.sms_accessKey)
@@ -341,7 +342,8 @@ public class BespeakController extends BaseController<Bespeak> {
 				.put("content", content)
 				.build();
 		String res = HttpTools.getInstance().sendHttpPost(Config.sms_url, JsonTools.toJsonString(params), ContentType.APPLICATION_JSON);
-		System.out.println(res);
+		System.out.println(res);*/
+		SmsGateWay.sendSms(phone, content);
 	}
 	
 	@RequestMapping("/excel")

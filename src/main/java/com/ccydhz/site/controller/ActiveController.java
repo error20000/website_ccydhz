@@ -144,6 +144,34 @@ public class ActiveController extends BaseController<Active> {
 	
 	//TODO 自定义方法
 	
+	@RequestMapping("/type")
+    @ResponseBody
+	@API(name="抽奖配置", 
+		info="", 
+		request={
+				
+		}, 
+		response={
+				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
+				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
+				@ParamsInfo(name=ResultKey.DATA, type="", info="数据集"),
+		})
+	public String type(HttpServletRequest req) {
+		Map<String, Object> vMap = null;
+		//sign
+		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		
+		//获取活动配置
+		ActiveType at = tService.findOne(MapTools.custom().put("pid", activeTypePid).build());
+		at.setCount(0);
+		at.setScount(0);
+		
+		return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, at).toJSONString();
+	}
+	
 	@RequestMapping("/config")
     @ResponseBody
 	@API(name="抽奖项目", 

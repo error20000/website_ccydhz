@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50515
 File Encoding         : 65001
 
-Date: 2018-08-08 18:41:17
+Date: 2018-08-09 10:57:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,16 +28,11 @@ CREATE TABLE `s_active` (
   `info` varchar(255) DEFAULT '' COMMENT '附加信息',
   `info2` varchar(255) DEFAULT '' COMMENT '附加信息2',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_active
 -- ----------------------------
-INSERT INTO `s_active` VALUES ('3', '2018-08-08 17:32:43', '127.0.0.1', '15881146309', '1', '\"test\"', '');
-INSERT INTO `s_active` VALUES ('8', '2018-08-08 17:44:49', '127.0.0.1', '15881146309', '0', '\"test\"', '');
-INSERT INTO `s_active` VALUES ('9', '2018-08-08 17:44:51', '127.0.0.1', '15881146309', '0', '\"test\"', '');
-INSERT INTO `s_active` VALUES ('10', '2018-08-08 17:44:53', '127.0.0.1', '15881146309', '0', '\"test\"', '');
-INSERT INTO `s_active` VALUES ('11', '2018-08-08 17:44:55', '127.0.0.1', '15881146309', '0', '\"test\"', '');
 
 -- ----------------------------
 -- Table structure for `s_active_config`
@@ -65,8 +60,6 @@ CREATE TABLE `s_active_config` (
 -- ----------------------------
 -- Records of s_active_config
 -- ----------------------------
-INSERT INTO `s_active_config` VALUES ('1', '2', '我们', '1', '1', '1', '1', '20180808/201808081552037190172.jpg', '我们，是您的兵器', '我们，是您的兵器我们，是您的兵器我们，是您的兵器我们，是您的兵器我们，是您的兵器我们，是您的兵器', '999', '1', null, '1');
-INSERT INTO `s_active_config` VALUES ('11', '2', '11', '11', '11', '11', '0', '20180808/201808081538556747422.jpg', '11', '11', '999', '1', '', '1');
 
 -- ----------------------------
 -- Table structure for `s_active_type`
@@ -100,12 +93,11 @@ CREATE TABLE `s_bespeak` (
   `info` varchar(255) DEFAULT '' COMMENT '附加信息',
   `info2` varchar(255) DEFAULT '' COMMENT '附加信息2',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='预约';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='预约';
 
 -- ----------------------------
 -- Records of s_bespeak
 -- ----------------------------
-INSERT INTO `s_bespeak` VALUES ('2', '2018-08-08 17:31:36', '127.0.0.1', '15881146309', 'pc', 'android');
 
 -- ----------------------------
 -- Table structure for `s_bespeak_config`
@@ -462,80 +454,11 @@ CREATE TABLE `s_picture` (
   `highlight` tinyint(2) DEFAULT '0' COMMENT '加精  0--否，1--是',
   `sort` int(11) DEFAULT '999' COMMENT '排序',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of s_picture
 -- ----------------------------
-INSERT INTO `s_picture` VALUES ('1', '3', '铁血工造', '../CKFinderJava/1/files/005Emp0igw1f5udvcu1uvj31kw28g4f4.jpg', '', '呀嗬，我就是建筑师哦~', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('5', '3', '战术少女', '../CKFinderJava/1/files/6c8acad8gw1f5udab15yjj20rs0jmgoq.jpg', '', 'NTW-20', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('6', '3', '同人绘图', '../CKFinderJava/1/files/0068Xz9bgw1f5ud7ran59j30u70joafl.jpg', '', '', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('7', '3', '同人绘图', '../CKFinderJava/1/files/6c577879jw1f5ud3g6kizj21kw148451.jpg', '', '', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('8', '3', '同人绘图', '../CKFinderJava/1/files/9baf001bgw1f5uex15vbnj21jk15xqcb.jpg', '', '', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('9', '3', '同人绘图', '../CKFinderJava/1/files/005Xr8PEgw1f5vw422uc5j31kw0l8qg0.jpg', '', '', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('10', '5', '登录壁纸', '../CKFinderJava/1/files/1%20(1).jpg', '', '誓约烙印', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('11', '5', '登录壁纸', '../CKFinderJava/1/files/1%20(2).png', '', '404小队', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('12', '5', '登录壁纸', '../CKFinderJava/1/files/1%20(1).png', '', 'AR小队', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('13', '5', '登录壁纸', '../CKFinderJava/1/files/1%20(2).jpg', '', '万圣节', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('23', '5', '登录壁纸', '../CKFinderJava/1/files/lihuang.jpg', '', '英皇德皇', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('24', '5', '登录壁纸', '../CKFinderJava/1/files/dongh.jpg', '', '冬日战争版本', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('25', '5', '节日壁纸', '../CKFinderJava/1/files/ump.jpg', '', 'UMP姐妹情人节', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('26', '5', '登录壁纸', '../CKFinderJava/1/files/shengdan(1).jpg', '', '圣诞节', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('27', '5', '手机壁纸', '../CKFinderJava/1/files/9A91.jpg', '', '9A91', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('28', '5', '手机壁纸', '../CKFinderJava/1/files/KP31.jpg', '', '索米', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('29', '5', '手机壁纸', '../CKFinderJava/1/files/mk2.jpg', '', '维尔德', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('30', '5', '手机壁纸', '../CKFinderJava/1/files/ump45.jpg', '', 'UMP45', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('31', '3', '国际象棋', '../CKFinderJava/1/files/01.jpg', '', '维尔德与格林娜小姐~', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('32', '3', '万圣节的WA2000', '../CKFinderJava/1/files/006tSrspgw1f9ilrllyiuj31kw28gahb.jpg', '', '阴影沙发上的少女', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('34', '3', 'UMP9的万圣节祝福', '../CKFinderJava/1/files/010.jpg', '', '指挥官，不给糖就捣蛋哦~', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('35', '3', '婚纱WA2000', '../CKFinderJava/1/files/011.jpg', '', '指挥官，我这个样子……好看吗？', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('36', '3', '婚纱PPK', '../CKFinderJava/1/files/012.jpg', '', '嗯哼哼，你在期待什么呢？', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('37', '3', '战火', '../CKFinderJava/1/files/013.png', '', '为什么……要来保护我呢？', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('38', '3', '少女前线！', '../CKFinderJava/1/files/014.png', '', '战火中的少女', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('39', '3', '春天的田野', '../CKFinderJava/1/files/015.jpg', '', '指挥官，春田能为您做什么，请随时吩咐。', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('40', '3', '废墟与少女', '../CKFinderJava/1/files/016.jpg', '', '我们在这里，我们不会离开你。', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('41', '3', '战场上的97式', '../CKFinderJava/1/files/017.jpg', '', '我，即是您的武器。', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('42', '3', '格里芬小酒馆', '../CKFinderJava/1/files/018.jpg', '', '要一起喝吗？', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('43', '3', '格里芬厨房', '../CKFinderJava/1/files/019.jpg', '', '指挥官，今天要吃点什么呢？', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('44', '3', '婚纱FAL', '../CKFinderJava/1/files/020.jpg', '', '幸福的誓约', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('45', '3', 'G41', '../CKFinderJava/1/files/021.jpg', '', '主人，有想做的事吗？', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('46', '3', '万圣节HK416', '../CKFinderJava/1/files/022.jpg', '', '好看吗？', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('47', '3', '日常', '../CKFinderJava/1/files/024.jpg', '', '索米与波波沙', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('48', '3', '誓约烙印', '../CKFinderJava/1/files/025.jpg', '', '婚纱李恩菲尔德', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('49', '3', '宁静日常', '../CKFinderJava/1/files/026.jpg', '', '小酒馆中的M1加兰德', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('50', '3', '誓约烙印', '../CKFinderJava/1/files/027.jpg', '', 'M4A1', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('51', '3', '誓约烙印', '../CKFinderJava/1/files/028.jpg', '', '内格夫', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('52', '3', '誓约烙印', '../CKFinderJava/1/files/029.jpg', '', 'NTW-20', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('53', '3', '宁静日常', '../CKFinderJava/1/files/03.jpg', '', '拒绝偷吃~', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('54', '3', '誓约烙印', '../CKFinderJava/1/files/030.jpg', '', 'PK', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('55', '3', '战场剪影', '../CKFinderJava/1/files/031.jpg', '', '95式与97式', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('56', '3', '伤痕累累的心', '../CKFinderJava/1/files/032.jpg', '', 'M4A1', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('57', '3', '404 NOT FOUND', '../CKFinderJava/1/files/033.jpg', '', '404 NOT FOUND', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('58', '3', '格里芬小酒馆', '../CKFinderJava/1/files/034.jpg', '', 'KS-23与格林娜小姐', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('59', '3', '战术少女', '../CKFinderJava/1/files/035.jpg', '', 'AR15', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('60', '3', '誓约烙印', '../CKFinderJava/1/files/036.jpg', '', 'SV-98', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('61', '3', '誓约烙印', '../CKFinderJava/1/files/037.jpg', '', '汤姆森', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('62', '3', '誓约烙印', '../CKFinderJava/1/files/038.jpg', '', 'kirakira的汤姆森~', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('63', '3', '誓约烙印', '../CKFinderJava/1/files/039.jpg', '', 'TAR-21', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('64', '3', '宁静日常', '../CKFinderJava/1/files/04.jpg', '', '56-1式的胖次被抢走了……', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('65', '3', '年夜迎春', '../CKFinderJava/1/files/040.jpg', '', '97式与95式', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('66', '3', '誓约烙印', '../CKFinderJava/1/files/041.jpg', '', 'UMP9', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('67', '3', '宁静日常', '../CKFinderJava/1/files/042.jpg', '', 'UMP45', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('68', '3', '宁静……澡堂？', '../CKFinderJava/1/files/043.jpg', '', 'UMP9与UMP45', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('69', '3', '浪漫春日', '../CKFinderJava/1/files/044.jpg', '', 'UMP9与UMP45', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('70', '3', '宁静日常', '../CKFinderJava/1/files/045.jpg', '', 'VICTOR冲锋枪', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('71', '3', '夏日海滩', '../CKFinderJava/1/files/046.jpg', '', 'WA2000', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('72', '3', '战术少女', '../CKFinderJava/1/files/047.jpg', '', '索米❤', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('73', '3', '宁静日常', '../CKFinderJava/1/files/049.jpg', '', '春田', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('74', '3', '战术少女', '../CKFinderJava/1/files/05.jpg', '', 'P7', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('75', '3', '一点也不宁静的日常', '../CKFinderJava/1/files/050.jpg', '', 'MK23和司登', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('76', '3', '格里芬小酒馆', '../CKFinderJava/1/files/051.jpg', '', 'Mk48与格林娜小姐~', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('77', '3', '宁静日常', '../CKFinderJava/1/files/052.png', '', '热热闹闹的格里芬', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('78', '3', '战术少女', '../CKFinderJava/1/files/06.jpg', '', '56-1式', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('80', '3', '誓约烙印', '../CKFinderJava/1/files/07.jpg', '', 'Kar98k', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('81', '3', '誓约烙印', '../CKFinderJava/1/files/08.png', '', 'Kar98k', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('82', '3', '格里芬小酒馆', '../CKFinderJava/1/files/09.jpg', '', '79式与格林娜小姐', '', '', '0', '0', '999');
-INSERT INTO `s_picture` VALUES ('83', '7', 'test', '../CKFinderJava/1/files/09.jpg', '', '', '', '', '0', '0', '999');
 
 -- ----------------------------
 -- Table structure for `s_picture_type`
