@@ -35,6 +35,24 @@ public class Config {
 	
 	public static String sms_vcode_content;
 	
+	//微信
+	public static String appId;
+	public static String appSecret;
+	public static String jssdkDebug;
+	
+	@Value("${appId}")
+	public void setAppId(String appId) {
+		Config.appId = appId;
+	}
+	@Value("${appSecret}")
+	public void setAppSecret(String appSecret) {
+		Config.appSecret = appSecret;
+	}
+	@Value("${jssdkDebug}")
+	public void setJssdkDebug(String jssdkDebug) {
+		Config.jssdkDebug = jssdkDebug;
+	}
+	
 	@Value("${sms_url}")
 	public void setSms_url(String sms_url) {
 		Config.sms_url = sms_url;
