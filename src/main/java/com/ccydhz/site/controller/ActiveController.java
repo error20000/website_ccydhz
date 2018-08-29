@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ccydhz.site.entity.Active;
+import com.ccydhz.site.entity.ActiveCode;
 import com.ccydhz.site.entity.ActiveConfig;
 import com.ccydhz.site.entity.ActiveType;
 import com.ccydhz.site.entity.Bespeak;
 import com.ccydhz.site.entity.Share;
+import com.ccydhz.site.service.ActiveCodeService;
 import com.ccydhz.site.service.ActiveConfigService;
 import com.ccydhz.site.service.ActiveService;
 import com.ccydhz.site.service.ActiveTypeService;
@@ -51,6 +53,8 @@ public class ActiveController extends BaseController<Active> {
 	private ActiveTypeService tService;
 	@Autowired
 	private ActiveConfigService cService;
+	@Autowired
+	private ActiveCodeService acService;
 	@Autowired
 	private BespeakService bService;
 	@Autowired
@@ -257,13 +261,14 @@ public class ActiveController extends BaseController<Active> {
 		
 		//判断活动次数
 		if(type.getCount() >= 0){
-			String date = DateTools.formatDate("yyyy-MM-dd");
-			String wsql = " phone = :phone and date like concat( :date, '%')";
+//			String date = DateTools.formatDate("yyyy-MM-dd");
+//			String wsql = " phone = :phone and date like concat( :date, '%')";
+			String wsql = " phone = :phone ";
 			//	已使用
-			long use = service.getDao().size(wsql, MapTools.custom().put("phone", phone).put("date", date).build());
+			long use = service.getDao().size(wsql, MapTools.custom().put("phone", phone).build());
 			//	可使用
-			long shares =sService.getDao().size(wsql, MapTools.custom().put("phone", phone).put("date", date).build());
-			long total = type.getCount() + shares * type.getScount();
+//			long shares =sService.getDao().size(wsql, MapTools.custom().put("phone", phone).put("date", date).build());
+			long total = type.getCount();// + shares * type.getScount();
 			
 			if(use >= total){
 				return ResultTools.custom(Tips.ERROR304).toJSONString();
@@ -273,16 +278,26 @@ public class ActiveController extends BaseController<Active> {
 		//抽奖
 		ActiveConfig config = chance();
 		
+		//获取礼包码
+		ActiveCode code = acService.findOne(MapTools.custom().put("config", config.getPid()).put("status", 0).build());
+		String giftCode = code == null ? "" : code.getCode();
+		if(code != null){
+			code.setOther(phone);
+			code.setDate(DateTools.formatDate());
+			code.setStatus(1);
+			acService.modify(code);
+		}
 		//保存记录
 		Active obj = new Active();
 		obj.setDate(DateTools.formatDate());
 		obj.setIp(Tools.getIp(req));
 		obj.setPhone(phone);
 		obj.setConfig(config.getPid());
-		obj.setInfo(info);
+		obj.setInfo(giftCode);
+		obj.setInfo2(info);
 		int res = service.add(obj);
 		if(res > 0){
-			return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, MapTools.custom().put("config", config.getPid()).put("active", res).build()).toJSONString();
+			return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, MapTools.custom().put("config", config.getPid()).put("active", res).put("giftCode", giftCode).build()).toJSONString();
 		}else{
 			return ResultTools.custom(Tips.ERROR0).toJSONString();
 		}
@@ -442,6 +457,39 @@ public class ActiveController extends BaseController<Active> {
 		}else{
 			return ResultTools.custom(Tips.ERROR0).toJSONString();
 		}
+	}
+	
+	@RequestMapping("/actived")
+    @ResponseBody
+	@API(name="查询抽奖记录", 
+		info="", 
+		request={
+				@ParamsInfo(name="phone", type="String", isNull=0,  info="手机号"),
+		}, 
+		response={
+				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
+				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
+				@ParamsInfo(name=ResultKey.DATA, type="", info="数据集"),
+		})
+	public String actived(HttpServletRequest req) {
+		Map<String, Object> vMap = null;
+		//sign
+		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		
+		//参数
+		String phone = Tools.getReqParamSafe(req, "phone");
+		vMap = Tools.verifyParam("phone", phone, 0, 0);
+		if(vMap != null){
+			return ResultTools.custom(Tips.ERROR206, "phone").toJSONString();
+		}
+		
+		//查询记录
+		List<Active> res = service.findList(MapTools.custom().put("phone", phone).build());
+		
+		return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, res).toJSONString();
 	}
 	
 	@RequestMapping("/excel")

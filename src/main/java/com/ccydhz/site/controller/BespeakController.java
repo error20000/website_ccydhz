@@ -13,31 +13,29 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jian.annotation.API;
-import com.jian.annotation.Excel;
-import com.jian.annotation.ParamsInfo;
-import com.jian.tools.core.CacheObject;
-import com.jian.tools.core.CacheTools;
-import com.jian.tools.core.DateTools;
-import com.jian.tools.core.HttpTools;
-import com.jian.tools.core.JsonTools;
-import com.jian.tools.core.MapTools;
-import com.jian.tools.core.ResultKey;
-import com.jian.tools.core.ResultTools;
-import com.jian.tools.core.Tips;
-import com.jian.tools.core.Tools;
 import com.ccydhz.site.config.Config;
 import com.ccydhz.site.entity.Bespeak;
 import com.ccydhz.site.entity.BespeakConfig;
 import com.ccydhz.site.service.BespeakConfigService;
 import com.ccydhz.site.service.BespeakService;
 import com.ccydhz.site.util.SmsGateWay;
+import com.jian.annotation.API;
+import com.jian.annotation.Excel;
+import com.jian.annotation.ParamsInfo;
+import com.jian.tools.core.CacheObject;
+import com.jian.tools.core.CacheTools;
+import com.jian.tools.core.DateTools;
+import com.jian.tools.core.JsonTools;
+import com.jian.tools.core.MapTools;
+import com.jian.tools.core.ResultKey;
+import com.jian.tools.core.ResultTools;
+import com.jian.tools.core.Tips;
+import com.jian.tools.core.Tools;
 
 @Controller
 @RequestMapping("/api/bespeak")
