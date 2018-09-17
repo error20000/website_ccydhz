@@ -265,9 +265,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 				}
 			});
 			
-			for (int i : tmp) {
-				res += i;
-			}
+			res = tmp.length;
 		} catch (Exception e) {
 			e.printStackTrace();
 			debug(tableName, "BATCH SAVE ERROR", e.getMessage());

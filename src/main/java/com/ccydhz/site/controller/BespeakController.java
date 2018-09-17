@@ -181,12 +181,20 @@ public class BespeakController extends BaseController<Bespeak> {
 			return ResultTools.custom(Tips.ERROR303).toJSONString();
 		}
 		
+		//发送时间间隔
+		String timekey = "vcode_time_"+phone;
+		CacheObject time = CacheTools.getCacheObj(timekey, 45*1000);
+		if(time != null){
+			return ResultTools.custom(Tips.ERROR308).toJSONString();
+		}
+		
 		String vcode = Tools.createVCodeNumber(6);
 		String key = "vcode_"+phone;
 		CacheTools.setCacheObj(key, vcode);
-		String content = Config.sms_vcode_content.replace("{vcode}", vcode);System.out.println(vcode);
+		String content = Config.sms_vcode_content.replace("{vcode}", vcode);
 		//发送短信
 		sendSMS(phone, content);
+		CacheTools.setCacheObj(timekey, vcode);
 		return ResultTools.custom(Tips.ERROR1).toJSONString();
 	}
 	
@@ -317,9 +325,17 @@ public class BespeakController extends BaseController<Bespeak> {
 			return ResultTools.custom(Tips.ERROR200).toJSONString();
 		}
 		
-		long count = service.getDao().size();
+		//2018-09-17 修改   预约量的增加 从实时改为24点再更新
+//		long count = service.getDao().size();
+//		count += config.getOffset();
+		long count = service.getDao().size(" date < :date", MapTools.custom().put("date", DateTools.formatDate("yyyy-MM-dd 00:00:00")).build());
 		
-		count += config.getOffset();
+		String cacheKey = DateTools.formatDate("yyyy-MM-dd 00:00:00");
+		Integer cacheCount = Config.bespeakCountCache.get(cacheKey);
+		if(cacheCount == null){
+			cacheCount = config.getOffset();
+		}
+		count += cacheCount;
 		
 		return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, count).toJSONString();
 	}

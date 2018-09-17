@@ -79,6 +79,12 @@ new Vue({
 			        name: '扭蛋记录',
 			        iconCls: '',
 			        children: []
+			    },{
+			        path: 'activeCode.html',
+			        component: "",
+			        name: '扭蛋礼包',
+			        iconCls: '',
+			        children: []
 			    }]
 		    }/*,{
 		        path: 'config.html',

@@ -1,5 +1,8 @@
 package com.ccydhz.site.config;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +42,23 @@ public class Config {
 	public static String appId;
 	public static String appSecret;
 	public static String jssdkDebug;
+	
+	//upload
+	public static String maxFileSize;
+	public static String maxRequestSize;
+	
+
+	public static Map<String, Integer> bespeakCountCache = new HashMap<>();
+	
+	
+	@Value("${spring.http.multipart.maxFileSize}")
+	public void setMaxFileSize(String maxFileSize) {
+		Config.maxFileSize = maxFileSize;
+	}
+	@Value("${spring.http.multipart.maxRequestSize}")
+	public void setMaxRequestSize(String maxRequestSize) {
+		Config.maxRequestSize = maxRequestSize;
+	}
 	
 	@Value("${appId}")
 	public void setAppId(String appId) {

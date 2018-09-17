@@ -1,9 +1,11 @@
 var baseUrl = parent.window.baseUrl || '../';
 
 var queryUrl = baseUrl + "api/activecode/findPage";
-var addUrl = baseUrl + "api/activecode/add";
+var addUrl = baseUrl + "api/activecode/batchAdd";
 var modUrl = baseUrl + "api/activecode/update";
 var delUrl = baseUrl + "api/activecode/delete";
+var batchDelUrl = baseUrl + "api/activecode/batchDelete";
+var uploadUrl = baseUrl + "api/file/uploadFile";
 var configUrl = baseUrl + "api/activeconfig/findAll";
 
 
@@ -23,7 +25,9 @@ var myvue = new Vue({
 				rows: 10,
 				listLoading: false,
 				sels: [],//列表选中列
+				batchDelLoading: false,
 				typeOptions:[],
+				uploadUrl: uploadUrl,
 				//新增界面数据
 				addFormVisible: false,//新增界面是否显示
 				addLoading: false, //loading
@@ -31,24 +35,11 @@ var myvue = new Vue({
 				addForm: {},
 				//效验
 				addFormRules: {
-					pid: [
-						{  required: true, message: '请输入pid', trigger: 'blur' }
-					],
-					type: [
+					config: [
 						{  required: true, message: '请选择分类', trigger: 'blur' }
 					],
-					name: [
-						{  required: true, message: '请输入名称', trigger: 'blur' }
-					],
-					chance: [
-						{  required: true, message: '请输入概率', trigger: 'blur' },
-						{ validator: (rule, value, callback) => {
-					          if (value < 0 || value > 1) {
-					            callback(new Error('请输入0-1之间的小数！'));
-					          } else {
-					            callback();
-					          }
-						}, trigger: 'blur' }
+					fileCodes: [
+						{  required: true, message: '请上传礼包码', trigger: 'blur' }
 					]
 				},
 				//编辑界面数据
@@ -58,25 +49,6 @@ var myvue = new Vue({
 				editForm: {},
 				//效验
 				editFormRules: {
-					pid: [
-						{  required: true, message: '请输入pid', trigger: 'blur' }
-					],
-					type: [
-						{  required: true, message: '请选择分类', trigger: 'blur' }
-					],
-					name: [
-						{  required: true, message: '请输入名称', trigger: 'blur' }
-					],
-					chance: [
-						{  required: true, message: '请输入概率', trigger: 'blur' },
-						{ validator: (rule, value, callback) => {
-					          if (value < 0 || value > 1) {
-					            callback(new Error('请输入0-1之间的小数！'));
-					          } else {
-					            callback();
-					          }
-						}, trigger: 'blur' }
-					]
 					
 				},
 				//查看界面数据
@@ -93,10 +65,10 @@ var myvue = new Vue({
 				return parent.window.formatDate(date, 'yyyy-MM-dd HH:mm:ss');
 			},
 			typeFormatter: function(row){
-				var name = row.type;
+				var name = row.config;
 				for (var i = 0; i < this.typeOptions.length; i++) {
 					var item = this.typeOptions[i];
-					if(item.value == row.type){
+					if(item.value == row.config){
 						name = item.label;
 						break
 					}
@@ -105,7 +77,7 @@ var myvue = new Vue({
 			},
 			handleAddUpload: function(res){
 				if(res.code > 0){
-					this.addForm.pic = res.data.path;
+					this.addForm.fileCodes = res.data.path;
 				}else{
 					this.$message({
 						message: res.msg,
@@ -113,14 +85,16 @@ var myvue = new Vue({
 					});
 				}
 			},
-			handleEditUpload: function(res){
-				if(res.code > 0){
-					this.editForm.pic = res.data.path;
-				}else{
-					this.$message({
-						message: res.msg,
-						type: 'warning'
-					});
+			hideContent: function (event) {
+				var e = event || window.event;
+				if(e.ctrlKey && e.keyCode == 86){
+					var data = this.addForm.tempCodes;
+					var ds = data.replace(/，/g, ",").replace(/\n/g, ",").split(",");
+					if(ds.length > 10000){
+						var tmp = new Array(ds[0], ds[1], ds[2], ds[3], ds[4], ds[5], ds[6], ds[7], ds[8], ds[9], ds[10]);
+						this.addForm.tempCodes = tmp.join("\n")+"\n...\n内容过多已隐藏。";
+						this.addForm.codes = ds.join(",");
+					}
 				}
 			},
 			handleSizeChange: function (val) {
@@ -180,7 +154,7 @@ var myvue = new Vue({
 				this.addFormVisible = true;
 				this.addForm = {
 						config: "",
-						codes: ''
+						fileCodes: ''
 				};
 			},
 			//显示编辑界面
@@ -288,6 +262,29 @@ var myvue = new Vue({
 			},
 			selsChange: function (sels) {
 				this.sels = sels;
+			},
+			batchRemove: function(){
+				var pids = "", self = this;
+				for (var i = 0; i < this.sels.length; i++) {
+					pids += "," + this.sels[i].pid;
+				}
+				pids = pids ? pids.substring(1) : "";
+				this.batchDelLoading = true;
+				ajaxReq(batchDelUrl, {pids: pids}, function(res){
+					self.batchDelLoading = false;
+					if(res.code > 0){
+						self.$message({
+							message: '提交成功',
+							type: 'success'
+						});
+						self.getList();
+					}else{
+						self.$message({
+							message: res.msg,
+							type: 'warning'
+						})
+					}
+				});
 			}
 		},
 		mounted: function() {

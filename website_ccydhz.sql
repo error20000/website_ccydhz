@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50515
 File Encoding         : 65001
 
-Date: 2018-08-09 10:57:24
+Date: 2018-08-30 18:02:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,6 +32,25 @@ CREATE TABLE `s_active` (
 
 -- ----------------------------
 -- Records of s_active
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `s_active_code`
+-- ----------------------------
+DROP TABLE IF EXISTS `s_active_code`;
+CREATE TABLE `s_active_code` (
+  `pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+  `config` int(11) DEFAULT '0' COMMENT '分类',
+  `code` varchar(100) DEFAULT '' COMMENT '码',
+  `other` varchar(100) DEFAULT '' COMMENT '领取人',
+  `info` varchar(200) DEFAULT '' COMMENT '附加信息',
+  `date` varchar(20) DEFAULT '' COMMENT '日期',
+  `status` tinyint(4) DEFAULT '0' COMMENT '状态   0 -- 未领取， 1 -- 已领取',
+  PRIMARY KEY (`pid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of s_active_code
 -- ----------------------------
 
 -- ----------------------------
