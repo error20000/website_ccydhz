@@ -42,9 +42,11 @@ public class Strategy  extends Base<Strategy> {
 	@Excel(name="作者", sort=12, length="255", isNull=1 )
 	private String author;
 	@Excel(name="描述 文章、作者类", sort=13, length="", isNull=1 )
-	private String description2;
+	private String desc;
 	@Excel(name="加精  0--否，1--是", sort=14, value="0", length="2", isNull=1 )
 	private int highlight;
+	@Excel(name="状态  0：禁用，1：启用", sort=15, value="0", length="4", isNull=1 )
+	private int status;
 	
 	//get set
 	public int getPid() {
@@ -125,17 +127,23 @@ public class Strategy  extends Base<Strategy> {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	public String getDescription2() {
-		return description2;
+	public String getDesc() {
+		return desc;
 	}
-	public void setDescription2(String description2) {
-		this.description2 = description2;
+	public void setDesc(String desc) {
+		this.desc = desc;
 	}
 	public int getHighlight() {
 		return highlight;
 	}
 	public void setHighlight(int highlight) {
 		this.highlight = highlight;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 }

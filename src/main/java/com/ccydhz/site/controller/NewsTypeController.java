@@ -39,8 +39,9 @@ public class NewsTypeController extends BaseController<NewsType> {
 				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
 				@ParamsInfo(name="icon", type="String", isNull=0,  info="图片"),
 				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
-				@ParamsInfo(name="home", type="int", isNull=0,  info="首页展示"),
+				@ParamsInfo(name="home", type="int", isNull=0,  info="首页展示  0：否，1：是"),
 				@ParamsInfo(name="filter", type="int", isNull=0,  info="是否过滤  0 --否，1--是    适用发布其他渠道的新闻"),
+				@ParamsInfo(name="status", type="int", isNull=0,  info="状态  0：禁用，1：启用"),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -65,8 +66,9 @@ public class NewsTypeController extends BaseController<NewsType> {
 				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
 				@ParamsInfo(name="icon", type="String", isNull=0,  info="图片"),
 				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
-				@ParamsInfo(name="home", type="int", isNull=0,  info="首页展示"),
+				@ParamsInfo(name="home", type="int", isNull=0,  info="首页展示  0：否，1：是"),
 				@ParamsInfo(name="filter", type="int", isNull=0,  info="是否过滤  0 --否，1--是    适用发布其他渠道的新闻"),
+				@ParamsInfo(name="status", type="int", isNull=0,  info="状态  0：禁用，1：启用"),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -109,8 +111,9 @@ public class NewsTypeController extends BaseController<NewsType> {
 				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
 				@ParamsInfo(name="icon", type="String", isNull=0,  info="图片"),
 				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
-				@ParamsInfo(name="home", type="int", isNull=0,  info="首页展示"),
+				@ParamsInfo(name="home", type="int", isNull=0,  info="首页展示  0：否，1：是"),
 				@ParamsInfo(name="filter", type="int", isNull=0,  info="是否过滤  0 --否，1--是    适用发布其他渠道的新闻"),
+				@ParamsInfo(name="status", type="int", isNull=0,  info="状态  0：禁用，1：启用"),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -134,8 +137,9 @@ public class NewsTypeController extends BaseController<NewsType> {
 				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
 				@ParamsInfo(name="icon", type="String", isNull=0,  info="图片"),
 				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
-				@ParamsInfo(name="home", type="int", isNull=0,  info="首页展示"),
+				@ParamsInfo(name="home", type="int", isNull=0,  info="首页展示  0：否，1：是"),
 				@ParamsInfo(name="filter", type="int", isNull=0,  info="是否过滤  0 --否，1--是    适用发布其他渠道的新闻"),
+				@ParamsInfo(name="status", type="int", isNull=0,  info="状态  0：禁用，1：启用"),
 				@ParamsInfo(info="注意：以上条件不可同时为空。"),
 		}, 
 		response={
@@ -159,8 +163,9 @@ public class NewsTypeController extends BaseController<NewsType> {
 				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
 				@ParamsInfo(name="icon", type="String", isNull=0,  info="图片"),
 				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
-				@ParamsInfo(name="home", type="int", isNull=0,  info="首页展示"),
+				@ParamsInfo(name="home", type="int", isNull=0,  info="首页展示  0：否，1：是"),
 				@ParamsInfo(name="filter", type="int", isNull=0,  info="是否过滤  0 --否，1--是    适用发布其他渠道的新闻"),
+				@ParamsInfo(name="status", type="int", isNull=0,  info="状态  0：禁用，1：启用"),
 				@ParamsInfo(info="注意：以上条件不可同时为空。"),
 		}, 
 		response={
@@ -170,6 +175,22 @@ public class NewsTypeController extends BaseController<NewsType> {
 		})
 	public String findList(HttpServletRequest req) {
 		return super.findList(req);
+	}
+	
+	@Override
+	@RequestMapping("/findAll")
+    @ResponseBody
+	@API(name="查询所有", 
+		info="需登录认证", 
+		request={
+		}, 
+		response={
+				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
+				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
+				@ParamsInfo(name=ResultKey.DATA, type="Array", info="数据集"),
+		})
+	public String findAll(HttpServletRequest req) {
+		return super.findAll(req);
 	}
 	
 	//TODO 自定义方法

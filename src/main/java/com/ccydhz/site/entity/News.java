@@ -19,26 +19,28 @@ public class News  extends Base<News> {
 	private int pid;
 	@Excel(name="分类", sort=1, value="0", length="11", isNull=1 )
 	private int type;
-	@Excel(name="推荐：0--否，1--是", sort=2, value="0", length="2", isNull=1 )
+	@Excel(name="推荐  0--否，1--是", sort=2, value="0", length="4", isNull=1 )
 	private int recommend;
 	@Excel(name="插图", sort=3, length="255", isNull=1 )
 	private String illustration;
 	@Excel(name="标题", sort=4, length="255", isNull=1 )
 	private String title;
 	@Excel(name="副标题", sort=5, length="255", isNull=1 )
-	private String title2;
-	@Excel(name="日期", sort=6, length="20", isNull=1 )
+	private String subtitle;
+	@Excel(name="日期  yyyy-MM-dd HH:mm:ss", sort=6, length="20", isNull=1 )
 	private String date;
-	@Excel(name="使用链接：0--否，1--是", sort=7, value="0", length="2", isNull=1 )
+	@Excel(name="使用链接   0--否，1--是", sort=7, value="0", length="4", isNull=1 )
 	private int marks;
 	@Excel(name="链接地址", sort=8, length="255", isNull=1 )
 	private String site;
 	@Excel(name="内容", sort=9, length="", isNull=1 )
 	private String content;
-	@Excel(name="关键字（seo）", sort=10, length="", isNull=1 )
+	@Excel(name="关键字 （seo）", sort=10, length="", isNull=1 )
 	private String keywords;
-	@Excel(name="描述（seo）", sort=11, length="", isNull=1 )
+	@Excel(name="描述 （seo）", sort=11, length="", isNull=1 )
 	private String description;
+	@Excel(name="状态  0：禁用，1：启用", sort=12, value="0", length="4", isNull=1 )
+	private int status;
 	
 	//get set
 	public int getPid() {
@@ -71,11 +73,11 @@ public class News  extends Base<News> {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getTitle2() {
-		return title2;
+	public String getSubtitle() {
+		return subtitle;
 	}
-	public void setTitle2(String title2) {
-		this.title2 = title2;
+	public void setSubtitle(String subtitle) {
+		this.subtitle = subtitle;
 	}
 	public String getDate() {
 		return date;
@@ -112,6 +114,12 @@ public class News  extends Base<News> {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 }

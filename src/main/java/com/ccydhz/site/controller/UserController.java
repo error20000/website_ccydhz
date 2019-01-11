@@ -34,6 +34,8 @@ public class UserController extends BaseController<User> {
 
 	@Autowired
 	private UserService service;
+	@Autowired
+	private Config baseConfig;
 	
 	@Override
 	public void initService() {
@@ -367,7 +369,7 @@ public class UserController extends BaseController<User> {
 		
 		//保存
 		HttpSession session = req.getSession();
-		session.setAttribute(Config.login_session_key, user);
+		session.setAttribute(baseConfig.login_session_key, user);
 		
 		user.setPassword("");
 		return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, user).toJSONString();
@@ -387,7 +389,7 @@ public class UserController extends BaseController<User> {
 	public String logout(HttpServletRequest req) {
 		//保存
 		HttpSession session = req.getSession();
-		session.removeAttribute(Config.login_session_key);
+		session.removeAttribute(baseConfig.login_session_key);
 		
 		return ResultTools.custom(Tips.ERROR1).toJSONString();
 	}
@@ -406,7 +408,7 @@ public class UserController extends BaseController<User> {
 	public String isLogin(HttpServletRequest req) {
 		//保存
 		HttpSession session = req.getSession();
-		Object test = session.getAttribute(Config.login_session_key);
+		Object test = session.getAttribute(baseConfig.login_session_key);
 		if(test == null){
 			return ResultTools.custom(Tips.ERROR0).toJSONString();
 		}else {

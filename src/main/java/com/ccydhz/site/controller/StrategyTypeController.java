@@ -39,7 +39,6 @@ public class StrategyTypeController extends BaseController<StrategyType> {
 				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
 				@ParamsInfo(name="icon", type="String", isNull=0,  info="图片"),
 				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
-				@ParamsInfo(name="home", type="int", isNull=0,  info="首页展示"),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -64,7 +63,6 @@ public class StrategyTypeController extends BaseController<StrategyType> {
 				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
 				@ParamsInfo(name="icon", type="String", isNull=0,  info="图片"),
 				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
-				@ParamsInfo(name="home", type="int", isNull=0,  info="首页展示"),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -107,7 +105,6 @@ public class StrategyTypeController extends BaseController<StrategyType> {
 				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
 				@ParamsInfo(name="icon", type="String", isNull=0,  info="图片"),
 				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
-				@ParamsInfo(name="home", type="int", isNull=0,  info="首页展示"),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -131,7 +128,6 @@ public class StrategyTypeController extends BaseController<StrategyType> {
 				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
 				@ParamsInfo(name="icon", type="String", isNull=0,  info="图片"),
 				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
-				@ParamsInfo(name="home", type="int", isNull=0,  info="首页展示"),
 				@ParamsInfo(info="注意：以上条件不可同时为空。"),
 		}, 
 		response={
@@ -155,7 +151,6 @@ public class StrategyTypeController extends BaseController<StrategyType> {
 				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
 				@ParamsInfo(name="icon", type="String", isNull=0,  info="图片"),
 				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
-				@ParamsInfo(name="home", type="int", isNull=0,  info="首页展示"),
 				@ParamsInfo(info="注意：以上条件不可同时为空。"),
 		}, 
 		response={

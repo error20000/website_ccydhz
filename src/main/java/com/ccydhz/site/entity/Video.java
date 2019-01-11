@@ -23,29 +23,37 @@ public class Video  extends Base<Video> {
 	private String name;
 	@Excel(name="封面图片", sort=3, length="255", isNull=1 )
 	private String pic;
-	@Excel(name="h5OGG", sort=4, length="255", isNull=1 )
+	@Excel(name="类型  0：视频，1：音频", sort=4, value="0", length="4", isNull=1 )
+	private int mark;
+	@Excel(name="OGG", sort=5, length="255", isNull=1 )
 	private String ogg;
-	@Excel(name="h5MP4", sort=5, length="255", isNull=1 )
+	@Excel(name="MP4", sort=6, length="255", isNull=1 )
 	private String mp4;
-	@Excel(name="h5WEBM", sort=6, length="255", isNull=1 )
+	@Excel(name="WEBM", sort=7, length="255", isNull=1 )
 	private String webm;
-	@Excel(name="flash", sort=7, length="255", isNull=1 )
+	@Excel(name="flash", sort=8, length="255", isNull=1 )
 	private String flash;
-	@Excel(name="网址", sort=8, length="255", isNull=1 )
-	private String site;
-	@Excel(name="发布日期", sort=9, length="20", isNull=1 )
+	@Excel(name="视频网址", sort=9, length="255", isNull=1 )
+	private String video;
+	@Excel(name="MP3", sort=10, length="255", isNull=1 )
+	private String mp3;
+	@Excel(name="WAV", sort=11, length="255", isNull=1 )
+	private String wav;
+	@Excel(name="音频网址", sort=12, length="255", isNull=1 )
+	private String audio;
+	@Excel(name="发布日期", sort=13, length="20", isNull=1 )
 	private String date;
-	@Excel(name="描述", sort=10, length="", isNull=1 )
+	@Excel(name="描述", sort=14, length="", isNull=1 )
 	private String description;
-	@Excel(name="作者", sort=11, length="255", isNull=1 )
+	@Excel(name="作者", sort=15, length="255", isNull=1 )
 	private String author;
-	@Excel(name="推荐  0--否，1--是", sort=12, value="0", length="2", isNull=1 )
+	@Excel(name="推荐  0--否，1--是", sort=16, value="0", length="2", isNull=1 )
 	private int recommend;
-	@Excel(name="加精  0--否，1--是", sort=13, value="0", length="2", isNull=1 )
+	@Excel(name="加精  0--否，1--是", sort=17, value="0", length="2", isNull=1 )
 	private int highlight;
-	@Excel(name="下载地址", sort=14, length="255", isNull=1 )
+	@Excel(name="下载地址", sort=18, length="255", isNull=1 )
 	private String down;
-	@Excel(name="排序", sort=15, value="999", length="11", isNull=1 )
+	@Excel(name="排序", sort=19, value="999", length="11", isNull=1 )
 	private int sort;
 	
 	//get set
@@ -73,6 +81,12 @@ public class Video  extends Base<Video> {
 	public void setPic(String pic) {
 		this.pic = pic;
 	}
+	public int getMark() {
+		return mark;
+	}
+	public void setMark(int mark) {
+		this.mark = mark;
+	}
 	public String getOgg() {
 		return ogg;
 	}
@@ -97,11 +111,29 @@ public class Video  extends Base<Video> {
 	public void setFlash(String flash) {
 		this.flash = flash;
 	}
-	public String getSite() {
-		return site;
+	public String getVideo() {
+		return video;
 	}
-	public void setSite(String site) {
-		this.site = site;
+	public void setVideo(String video) {
+		this.video = video;
+	}
+	public String getMp3() {
+		return mp3;
+	}
+	public void setMp3(String mp3) {
+		this.mp3 = mp3;
+	}
+	public String getWav() {
+		return wav;
+	}
+	public void setWav(String wav) {
+		this.wav = wav;
+	}
+	public String getAudio() {
+		return audio;
+	}
+	public void setAudio(String audio) {
+		this.audio = audio;
 	}
 	public String getDate() {
 		return date;

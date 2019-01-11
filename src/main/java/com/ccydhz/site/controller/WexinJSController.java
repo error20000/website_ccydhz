@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,14 +34,22 @@ import com.jian.tools.core.Tools;
 public class WexinJSController {
 	
 	private static String authTokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
-	private static String appId = Config.appId;
-	private static String appSecret = Config.appSecret;
+	private static String appId = "";
+	private static String appSecret = "";
 	private static String jsTokenUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi";
 	private static Map<String, Object> tokenMap = new HashMap<String, Object>();
 	private static int expiresTime = 7200;
 	private static int jsExpiresTime = 7200;
 	private static String noncestr = "123456700";
+
+	public static Config baseConfig = null;
 	
+	@Autowired
+	public void setConfig(Config config){
+		WexinJSController.baseConfig = config;
+		WexinJSController.appId = config.appId;
+		WexinJSController.appSecret = config.appSecret;
+	}
 	
 	/**
 	 * 微信分享配置
@@ -89,7 +98,7 @@ public class WexinJSController {
 			signParams = signParams.replace("JSAPI_TICKET", jsToken).replace("NONCESTR", noncestr).replace("TIMESTAMP", timestamp).replace("URL", url);
 			digest.update(signParams.getBytes());
 			sign = getFormattedText(digest.digest());
-			if("true".equals(Config.jssdkDebug)){
+			if("true".equals(baseConfig.jssdkDebug)){
 				System.out.println(DateTools.formatDate()+" -- signParams: "+signParams);
 				System.out.println(DateTools.formatDate()+" -- sign: "+sign);
 			}
@@ -111,7 +120,7 @@ public class WexinJSController {
 			return tokenMap.get("authToken").toString();
 		}
 		String res = HttpTools.getInstance().sendHttpGet(authTokenUrl.replace("APPID", appId).replace("APPSECRET", appSecret));
-		if("true".equals(Config.jssdkDebug)){
+		if("true".equals(baseConfig.jssdkDebug)){
 			System.out.println(DateTools.formatDate()+" -- authToken: "+res);
 		}
 		JsonTools.jsonToMap(res).get("access_token");
@@ -128,7 +137,7 @@ public class WexinJSController {
 			return tokenMap.get("jsToken").toString();
 		}
 		String res = HttpTools.getInstance().sendHttpGet(jsTokenUrl.replace("ACCESS_TOKEN", authToken));
-		if("true".equals(Config.jssdkDebug)){
+		if("true".equals(baseConfig.jssdkDebug)){
 			System.out.println(DateTools.formatDate()+" -- jsToken: "+res);
 		}
 		String token = (String) JsonTools.jsonToMap(res).get("ticket");

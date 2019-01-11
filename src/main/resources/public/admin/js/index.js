@@ -86,6 +86,66 @@ new Vue({
 			        iconCls: '',
 			        children: []
 			    }]
+		    },{
+		        path: '',
+		        component: "",
+		        name: '下载管理',
+		        iconCls: 'el-icon-menu',
+		        children: [{
+			        path: 'download.html',
+			        component: "",
+			        name: '下载配置',
+			        iconCls: '',
+			        children: []
+			    }/*,{
+			        path: 'downloadType.html',
+			        component: "",
+			        name: '下载分类',
+			        iconCls: '',
+			        children: []
+			    }*/]
+		    },{
+		        path: '',
+		        component: "",
+		        name: '社交管理',
+		        iconCls: 'el-icon-menu',
+		        children: [{
+			        path: 'contact.html',
+			        component: "",
+			        name: '社交配置',
+			        iconCls: '',
+			        children: []
+			    },{
+			        path: 'contactConfig.html',
+			        component: "",
+			        name: '社交类型',
+			        iconCls: '',
+			        children: []
+			    },{
+			        path: 'contactType.html',
+			        component: "",
+			        name: '社交分类',
+			        iconCls: '',
+			        children: []
+			    }]
+		    },{
+		        path: '',
+		        component: "",
+		        name: '新闻管理',
+		        iconCls: 'el-icon-menu',
+		        children: [{
+			        path: 'news.html',
+			        component: "",
+			        name: '新闻发布',
+			        iconCls: '',
+			        children: []
+			    }/*,{
+			        path: 'newsType.html',
+			        component: "",
+			        name: '新闻分类',
+			        iconCls: '',
+			        children: []
+			    }*/]
 		    }/*,{
 		        path: 'config.html',
 		        component: "",

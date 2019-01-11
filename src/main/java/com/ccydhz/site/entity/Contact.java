@@ -19,8 +19,8 @@ public class Contact  extends Base<Contact> {
 	private int pid;
 	@Excel(name="分类", sort=1, value="0", length="11", isNull=1 )
 	private int type;
-	@Excel(name="社交分类", sort=2, value="0", length="11", isNull=1 )
-	private int label;
+	@Excel(name="社交配置", sort=2, value="0", length="11", isNull=1 )
+	private int config;
 	@Excel(name="名称", sort=3, length="100", isNull=1 )
 	private String name;
 	@Excel(name="值", sort=4, length="255", isNull=1 )
@@ -31,6 +31,12 @@ public class Contact  extends Base<Contact> {
 	private String pic;
 	@Excel(name="排序", sort=7, value="999", length="11", isNull=1 )
 	private int sort;
+	@Excel(name="网页代码", sort=8, length="", isNull=1 )
+	private String wjs;
+	@Excel(name="iphone代码", sort=9, length="", isNull=1 )
+	private String ijs;
+	@Excel(name="android代码", sort=10, length="", isNull=1 )
+	private String ajs;
 	
 	//get set
 	public int getPid() {
@@ -45,11 +51,11 @@ public class Contact  extends Base<Contact> {
 	public void setType(int type) {
 		this.type = type;
 	}
-	public int getLabel() {
-		return label;
+	public int getConfig() {
+		return config;
 	}
-	public void setLabel(int label) {
-		this.label = label;
+	public void setConfig(int config) {
+		this.config = config;
 	}
 	public String getName() {
 		return name;
@@ -80,6 +86,24 @@ public class Contact  extends Base<Contact> {
 	}
 	public void setSort(int sort) {
 		this.sort = sort;
+	}
+	public String getWjs() {
+		return wjs;
+	}
+	public void setWjs(String wjs) {
+		this.wjs = wjs;
+	}
+	public String getIjs() {
+		return ijs;
+	}
+	public void setIjs(String ijs) {
+		this.ijs = ijs;
+	}
+	public String getAjs() {
+		return ajs;
+	}
+	public void setAjs(String ajs) {
+		this.ajs = ajs;
 	}
 
 }

@@ -23,7 +23,7 @@ public class Download  extends Base<Download> {
 	private String name;
 	@Excel(name="下载地址", sort=3, length="255", isNull=1 )
 	private String site;
-	@Excel(name="下载按钮图片", sort=4, length="255", isNull=1 )
+	@Excel(name="下载图片  按钮/二维码", sort=4, length="255", isNull=1 )
 	private String pic;
 	@Excel(name="排序", sort=5, value="999", length="11", isNull=1 )
 	private int sort;

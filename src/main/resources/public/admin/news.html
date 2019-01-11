@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="css/animate.css">
+  <link rel="stylesheet" href="css/index.css">
+  <link href="https://cdn.bootcss.com/element-ui/2.4.0/theme-chalk/index.css" rel="stylesheet">
+  <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+  <style>
+  .demo-table-expand {
+    font-size: 0;
+  }
+  .demo-table-expand label {
+    width: 90px;
+    color: #99a9bf;
+  }
+  .demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
+  }
+  .view img{
+  	max-width: 100%;
+  }
+</style>
+  
+</head>
+<body class="animated fadeInRight">
+  <div id="app">
+    <section>
+		<!--工具条-->
+		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+			<el-col :span="6" >
+				<el-form :inline="true" :model="filters">
+					<el-form-item>
+						<el-button type="primary" @click="handleAdd">新增</el-button>
+					</el-form-item>
+				</el-form>
+			</el-col>
+			<el-col :span="18">
+				<el-form :inline="true" :model="filters" style="float: right;">
+					<el-form-item>
+						<el-select v-model="filters.type" placeholder="请选择分类">
+							<el-option label="全部" :value="0">
+						    </el-option>
+						    <el-option
+						      v-for="item in typeOptions"
+						      :key="item.pid"
+						      :label="item.name"
+						      :value="item.pid">
+						    </el-option>
+					 </el-select>
+					</el-form-item>
+					<el-form-item>
+						<el-button type="primary" @click="getList">查询</el-button>
+					</el-form-item>
+				</el-form>
+			</el-col>
+		</el-col>
+
+		<!--列表-->
+		<el-table :data="list" highlight-current-row border v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" class="mytable" >
+			
+			<el-table-column label="PID" prop="pid" width="60px">
+			</el-table-column>
+			<el-table-column label="分类" prop="type" :formatter="typeFormatter" width="60px">
+			</el-table-column>
+			<el-table-column label="标题" prop="title" >
+			</el-table-column>
+			<el-table-column label="日期" prop="date" >
+			</el-table-column>
+			<el-table-column label="状态" prop="status" :formatter="(r,c) => { return r.status ? '启用': '禁用';}" width="60px">
+			</el-table-column>
+			<el-table-column label="推荐" prop="recommend" :formatter="(r,c) => { return r.recommend ? '是': '否';}" width="60px">
+			</el-table-column>
+			<el-table-column label="副标题" prop="subtitle" >
+			</el-table-column>
+			<el-table-column label="标题插图" prop="illustration" >
+				<template scope="scope">
+					<div style="width: 100px; height: 60px;">
+						<img v-if="scope.row.illustration" :src="'/'+scope.row.illustration" style="max-width: 100%;max-height: 100%;"/>
+					</div>
+				</template>
+			</el-table-column>
+			<el-table-column label="使用链接" prop="marks" :formatter="(r,c) => { return r.marks ? '是': '否';}" width="80px">
+			</el-table-column>
+			<!-- <el-table-column label="链接地址" prop="site">
+			</el-table-column>
+			<el-table-column label="内容" min-width="200px">
+				<template scope="scope">
+					<el-input type="textarea" v-model="scope.row.content" ></el-input>
+				</template>
+			</el-table-column> -->
+			<el-table-column fixed="right" label="操作" width="220">
+				<template scope="scope">
+					<el-button size="small" @click="handleView(scope.$index, scope.row)">预览</el-button>
+					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+					<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+				</template>
+			</el-table-column>
+		</el-table>
+
+		<!--工具条-->
+		<el-col :span="24" class="toolbar">
+			<!-- <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button> -->
+			<el-pagination layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="[10, 20, 50, 100]" :page-size="rows" :total="total" style="float:right;">
+			</el-pagination>
+		</el-col>
+		
+		<!--新增界面-->
+		<el-dialog title="新增" :visible.sync="addFormVisible" :close-on-click-modal="false" width="80%">
+			<el-form :model="addForm" label-width="100px" :rules="addFormRules" ref="addForm">
+				<el-form-item label="分类" prop="type">
+					<el-select v-model="addForm.type" placeholder="请选择分类">
+					    <el-option
+					      v-for="item in typeOptions"
+					      :key="item.pid"
+					      :label="item.name"
+					      :value="item.pid">
+					    </el-option>
+					 </el-select>
+				</el-form-item>
+				<el-form-item label="标题" prop="title">
+					<el-input type="text" v-model="addForm.title"></el-input>
+				</el-form-item>
+				<el-form-item label="副标题" prop="subtitle">
+					<el-input type="text" v-model="addForm.subtitle"></el-input>
+				</el-form-item>
+				<el-form-item label="标题插图" prop="illustration">
+					<el-input type="text" v-model="addForm.illustration">
+						<el-upload slot="append"
+						  :action="uploadUrl"
+						  :on-success="handleAddUpload"
+						  :show-file-list="false">
+						  <el-button icon="el-icon-upload"></el-button>
+						</el-upload>
+					</el-input>
+				</el-form-item>
+				<el-form-item label="日期" prop="date">
+					<el-date-picker
+				      v-model="addForm.date"
+				      type="datetime"
+				      placeholder="选择日期时间"
+				      value-format="yyyy-MM-dd HH:mm:ss">
+				    </el-date-picker>
+				</el-form-item>
+				<el-form-item label="状态" prop="status">
+					<el-radio-group v-model="addForm.status">
+				      <el-radio :label="0">禁用</el-radio>
+				      <el-radio :label="1">启用</el-radio>
+				    </el-radio-group>
+				</el-form-item>
+				<el-form-item label="推荐" prop="recommend">
+					<el-switch v-model="addForm.recommend" :active-value="1" :inactive-value="0"></el-switch>
+				</el-form-item>
+				<el-form-item label="使用链接" prop="marks">
+					<el-switch v-model="addForm.marks" :active-value="1" :inactive-value="0"></el-switch>
+				</el-form-item>
+				<el-form-item label="链接地址" prop="site" v-if="addForm.marks">
+					<el-input type="text" v-model="addForm.site"></el-input>
+				</el-form-item>
+				<el-form-item label="内容" prop="content" v-if="!addForm.marks">
+					<!-- <quill-editor style="height: 350px;" v-model="addForm.content"
+			                ref="myQuillEditor"
+			                :options="editorOption"
+			                @blur="onEditorBlur($event)"
+			                @focus="onEditorFocus($event)"
+			                @ready="onEditorReady($event)">
+					 </quill-editor> -->
+					 <ueditor v-model="addForm.content" style="width:100%;height:500px;line-height: normal;"></ueditor>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click="addClose">取消</el-button>
+				<el-button type="primary" @click="addSubmit" :loading="addLoading">提交</el-button>
+			</div>
+		</el-dialog>
+
+		<!--编辑界面-->
+		<el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false" width="80%">
+			<el-form :model="editForm" label-width="100px" :rules="editFormRules" ref="editForm">
+				<el-form-item label="分类" prop="type">
+					<el-select v-model="editForm.type" placeholder="请选择分类">
+					    <el-option
+					      v-for="item in typeOptions"
+					      :key="item.pid"
+					      :label="item.name"
+					      :value="item.pid">
+					    </el-option>
+					 </el-select>
+				</el-form-item>
+				<el-form-item label="标题" prop="title">
+					<el-input type="text" v-model="editForm.title"></el-input>
+				</el-form-item>
+				<el-form-item label="副标题" prop="subtitle">
+					<el-input type="text" v-model="editForm.subtitle"></el-input>
+				</el-form-item>
+				<el-form-item label="标题插图" prop="illustration">
+					<el-input type="text" v-model="editForm.illustration">
+						<el-upload slot="append"
+						  :action="uploadUrl"
+						  :on-success="handleEditUpload"
+						  :show-file-list="false">
+						  <el-button icon="el-icon-upload"></el-button>
+						</el-upload>
+					</el-input>
+				</el-form-item>
+				<el-form-item label="日期" prop="date">
+					<el-date-picker
+				      v-model="editForm.date"
+				      type="datetime"
+				      placeholder="选择日期时间"
+				      value-format="yyyy-MM-dd HH:mm:ss">
+				    </el-date-picker>
+				</el-form-item>
+				<el-form-item label="状态" prop="status">
+					<el-radio-group v-model="editForm.status">
+				      <el-radio :label="0">禁用</el-radio>
+				      <el-radio :label="1">启用</el-radio>
+				    </el-radio-group>
+				</el-form-item>
+				<el-form-item label="推荐" prop="recommend">
+					<el-switch v-model="editForm.recommend" :active-value="1" :inactive-value="0"></el-switch>
+				</el-form-item>
+				<el-form-item label="使用链接" prop="marks">
+					<el-switch v-model="editForm.marks" :active-value="1" :inactive-value="0"></el-switch>
+				</el-form-item>
+				<el-form-item label="链接地址" prop="site" v-if="editForm.marks">
+					<el-input type="text" v-model="editForm.site"></el-input>
+				</el-form-item>
+				<el-form-item label="内容" prop="content" v-if="!editForm.marks">
+					<!-- <quill-editor style="height: 350px;" v-model="editForm.content"
+			                ref="myQuillEditor"
+			                :options="editorOption"
+			                @blur="onEditorBlur($event)"
+			                @focus="onEditorFocus($event)"
+			                @ready="onEditorReady($event)">
+					 </quill-editor> -->
+					 <ueditor v-model="editForm.content" style="width:100%;height:500px;line-height: normal;"></ueditor>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click="editClose">取消</el-button>
+				<el-button type="primary" @click="editSubmit" :loading="editLoading">提交</el-button>
+			</div>
+		</el-dialog>
+
+		<!--查看界面-->
+		<el-dialog title="查看" :visible.sync="viewFormVisible" :close-on-click-modal="false">
+			<!-- <el-form :model="viewForm" label-width="100px" ref="viewForm">
+				<el-form-item label="PID" prop="pid">
+					<div v-html="viewForm.pid"></div>
+				</el-form-item>
+				<el-form-item label="分类" prop="type">
+					<div v-html="typeFormatter(viewForm)"></div>
+				</el-form-item>
+				<el-form-item label="名称" prop="name">
+					<div v-html="viewForm.name"></div>
+				</el-form-item>
+				<el-form-item label="画师" prop="painter">
+					<div v-html="viewForm.painter"></div>
+				</el-form-item>
+				<el-form-item label="CV" prop="cv">
+					<div v-html="viewForm.cv"></div>
+				</el-form-item>
+				<el-form-item label="舰种" prop="ship">
+					<div v-html="viewForm.ship"></div>
+				</el-form-item>
+				<el-form-item label="星级" prop="star">
+					<div v-html="viewForm.star"></div>
+				</el-form-item>
+				<el-form-item label="图片" prop="pic">
+					<div style="width: 100px; height: 100px;"><img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+viewForm.pic"/></div>
+				</el-form-item>
+				<el-form-item label="描述" prop="desc">
+					<div v-html="viewForm.desc"></div>
+				</el-form-item>
+				<el-form-item label="其他" prop="info">
+					<div v-html="viewForm.info"></div>
+				</el-form-item>
+				<el-form-item label="排序" prop="sort">
+					<div v-html="viewForm.sort"></div>
+				</el-form-item>
+				<el-form-item label="概率" prop="chance">
+					<div v-html="viewForm.chance"></div>
+				</el-form-item>
+				<el-form-item label="数量 " prop="count">
+					<div v-html="viewForm.count < 0 ? '不限量': viewForm.count"></div>
+				</el-form-item>
+			</el-form> -->
+			<div v-html="viewForm.title" style="text-align: center;"></div>
+			<div v-html="viewForm.date" style="text-align: center;"></div>
+			<div v-html="viewForm.content" class="view"></div>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click="viewFormVisible = false">关闭</el-button>
+			</div>
+		</el-dialog>
+		
+		 <div style="display:none;">
+			<el-upload slot="append"
+			  :action="uploadUrl"
+			  :on-success="quillAddUpload"
+			  :show-file-list="false">
+			  <el-button id="quillEditorUpload" icon="el-icon-upload"></el-button>
+			</el-upload> 
+		 </div>
+	</section>
+  </div>
+</body>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+  <!-- 先引入 Vue -->
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
+  <!-- 引入组件库 -->
+  <script src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
+  <!-- 配置文件 -->
+  <script type="text/javascript" src="js/ueditor/ueditor.config.js"></script>
+  <!-- 编辑器源码文件 -->
+  <script type="text/javascript" src="js/ueditor/ueditor.all.js"></script>
+  <script type="text/javascript" src="js/ueditor/lang/zh-cn/zh-cn.js"></script>
+  <script type="text/javascript" src="js/news.js"></script>
+  
+</html>

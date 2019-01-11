@@ -9,152 +9,76 @@ import org.springframework.stereotype.Component;
 @Component
 public class Config {
 	
+
 	//自动填充主键
-	public static String autoFillPrimaryKey; //自动填充主键
+	@Value("${auto_fill_primary_key}")
+	public String autoFillPrimaryKey; //自动填充主键
+	
 	//日期自动填充配置
-	public static String autoFillDateForAdd; //新增日期类型自动填充
-	public static String autoFillDateForModify; //修改日期类型自动填充
+	@Value("${auto_fill_date_for_add}")
+	public String autoFillDateForAdd; //新增日期类型自动填充
+	@Value("${auto_fill_date_for_modify}")
+	public String autoFillDateForModify; //修改日期类型自动填充
+	
 	//静态资源
-	public static String upload_path; //文件上传地址
-	public static String logs_path; //日志地址
+	@Value("${logs_path}")
+	public String logs_path; //日志地址
+	@Value("${upload_path}")
+	public String upload_path; //文件上传地址
+	/*	
+	@Value("${upload_imgFiles}")
+	public String upload_imgFiles; //上传图片格式
+	@Value("${upload_docFiles}")
+	public String upload_docFiles; //上传文档格式
+	@Value("${upload_movFiles}")
+	public String upload_movFiles; //上传视频格式
+	@Value("${upload_allowFiles}")
+	public String upload_allowFiles; //上传文件格式
+	 */	
 	
 	//登录session
-	public static String login_session_key="login_user";
+	@Value("${login_session_key}")
+	public String login_session_key="login_user";
 
 	//登录sso
-	public static String sso_url;
-	public static String sso_module;
+	@Value("${sso_url}")
+	public String sso_url;
+	@Value("${sso_module}")
+	public String sso_module;
 	
 	//短信验证码
-	public static String sms_url;
-	public static String sms_accessKey;
-	public static String sms_secretKey;
-	public static String sms_serviceId;
-	public static String sms_orgId;
-	public static String sms_reqId;
-	public static String sms_srcId;
-	public static String sms_regReport;
-	public static String sms_expireTime;
-	
-	public static String sms_vcode_content;
+	@Value("${sms_url}")
+	public String sms_url;
+	@Value("${sms_accessKey}")
+	public String sms_accessKey;
+	@Value("${sms_secretKey}")
+	public String sms_secretKey;
+	@Value("${sms_serviceId}")
+	public String sms_serviceId;
+	@Value("${sms_orgId}")
+	public String sms_orgId;
+	@Value("${sms_reqId}")
+	public String sms_reqId;
+	@Value("${sms_srcId}")
+	public String sms_srcId;
+	@Value("${sms_regReport}")
+	public String sms_regReport;
+	@Value("${sms_expireTime}")
+	public String sms_expireTime;
+	@Value("${sms_vcode_content}")
+	public String sms_vcode_content;
 	
 	//微信
-	public static String appId;
-	public static String appSecret;
-	public static String jssdkDebug;
-	
-	//upload
-	public static String maxFileSize;
-	public static String maxRequestSize;
+	@Value("${appId}")
+	public String appId;
+	@Value("${appSecret}")
+	public String appSecret;
+	@Value("${jssdkDebug}")
+	public String jssdkDebug;
 	
 
 	public static Map<String, Integer> bespeakCountCache = new HashMap<>();
 	
-	
-	@Value("${spring.http.multipart.maxFileSize}")
-	public void setMaxFileSize(String maxFileSize) {
-		Config.maxFileSize = maxFileSize;
-	}
-	@Value("${spring.http.multipart.maxRequestSize}")
-	public void setMaxRequestSize(String maxRequestSize) {
-		Config.maxRequestSize = maxRequestSize;
-	}
-	
-	@Value("${appId}")
-	public void setAppId(String appId) {
-		Config.appId = appId;
-	}
-	@Value("${appSecret}")
-	public void setAppSecret(String appSecret) {
-		Config.appSecret = appSecret;
-	}
-	@Value("${jssdkDebug}")
-	public void setJssdkDebug(String jssdkDebug) {
-		Config.jssdkDebug = jssdkDebug;
-	}
-	
-	@Value("${sms_url}")
-	public void setSms_url(String sms_url) {
-		Config.sms_url = sms_url;
-	}
-	@Value("${sms_accessKey}")
-	public void setSms_accessKey(String sms_accessKey) {
-		Config.sms_accessKey = sms_accessKey;
-	}
-	@Value("${sms_secretKey}")
-	public void setSms_secretKey(String sms_secretKey) {
-		Config.sms_secretKey = sms_secretKey;
-	}
-	@Value("${sms_serviceId}")
-	public void setSms_serviceId(String sms_serviceId) {
-		Config.sms_serviceId = sms_serviceId;
-	}
-	@Value("${sms_orgId}")
-	public void setSms_orgId(String sms_orgId) {
-		Config.sms_orgId = sms_orgId;
-	}
-	@Value("${sms_reqId}")
-	public void setSms_reqId(String sms_reqId) {
-		Config.sms_reqId = sms_reqId;
-	}
-	@Value("${sms_srcId}")
-	public void setSms_srcId(String sms_srcId) {
-		Config.sms_srcId = sms_srcId;
-	}
-	@Value("${sms_regReport}")
-	public void setSms_regReport(String sms_regReport) {
-		Config.sms_regReport = sms_regReport;
-	}
-	@Value("${sms_expireTime}")
-	public void setSms_expireTime(String sms_expireTime) {
-		Config.sms_expireTime = sms_expireTime;
-	}
-	@Value("${sms_vcode_content}")
-	public void setSms_vcode_content(String sms_vcode_content) {
-		System.out.println("sms_vcode_content: "+sms_vcode_content);
-		Config.sms_vcode_content = sms_vcode_content;
-	}
-	
-
-	@Value("${sso_url}")
-	public void setSso_url(String sso_url) {
-		Config.sso_url = sso_url;
-	}
-	@Value("${sso_module}")
-	public void setSso_module(String sso_module) {
-		Config.sso_module = sso_module;
-	}
-	
-	@Value("${login_session_key}")
-	public void setLogin_session_key(String login_session_key) {
-		Config.login_session_key = login_session_key;
-	}
-	
-	@Value("${upload_path}")
-	public void setUpload_path(String upload_path) {
-		Config.upload_path = upload_path;
-	}
-	
-	@Value("${logs_path}")
-	public void setLogs_path(String logs_path) {
-		Config.logs_path = logs_path;
-	}
-	
-	@Value("${auto_fill_primary_key}")
-	public void setAutoFillPrimaryKey(String autoFillPrimaryKey) {
-		System.out.println("auto_fill_primary_key: "+autoFillPrimaryKey);
-		Config.autoFillPrimaryKey = autoFillPrimaryKey;
-	}
-	@Value("${auto_fill_date_for_add}")
-	public void setAutoFillDateForAdd(String autoFillDateForAdd) {
-		System.out.println("auto_fill_date_for_add: "+autoFillDateForAdd);
-		Config.autoFillDateForAdd = autoFillDateForAdd;
-	}
-	@Value("${auto_fill_date_for_modify}")
-	public void setAutoFillDateForModify(String autoFillDateForModify) {
-		System.out.println("auto_fill_date_for_modify: "+autoFillDateForModify);
-		Config.autoFillDateForModify = autoFillDateForModify;
-	}
 	
 	
 }

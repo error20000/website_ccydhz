@@ -23,8 +23,6 @@ public class StrategyType  extends Base<StrategyType> {
 	private String icon;
 	@Excel(name="排序", sort=3, value="999", length="11", isNull=1 )
 	private int sort;
-	@Excel(name="首页展示", sort=4, value="1", length="2", isNull=1 )
-	private int home;
 	
 	//get set
 	public int getPid() {
@@ -50,12 +48,6 @@ public class StrategyType  extends Base<StrategyType> {
 	}
 	public void setSort(int sort) {
 		this.sort = sort;
-	}
-	public int getHome() {
-		return home;
-	}
-	public void setHome(int home) {
-		this.home = home;
 	}
 
 }

@@ -15,42 +15,60 @@ public class Heroes  extends Base<Heroes> {
 	
 	//field
 	@PrimaryKey(type=PrimaryKeyType.AUTO_INCREMENT)
-	@Excel(name="自增主键", sort=0, length="11", isNull=0 )
+	@Excel(name="自增主键", sort=0, length="11 unsigned", isNull=0 )
 	private int pid;
-	@Excel(name="", sort=1, length="20", isNull=1 )
+	@Excel(name="日期", sort=1, length="20", isNull=1 )
 	private String date;
-	@Excel(name="名称", sort=2, length="100", isNull=1 )
-	private String name;
-	@Excel(name="分类", sort=3, length="10", isNull=1 )
+	@Excel(name="舰种", sort=2, value="0", length="10", isNull=1 )
 	private int type;
-	@Excel(name="星等", sort=4, length="4", isNull=1 )
+	@Excel(name="名称", sort=3, length="100", isNull=1 )
+	private String name;
+	@Excel(name="画师", sort=4, length="255", isNull=1 )
+	private String painter;
+	@Excel(name="CV", sort=5, length="255", isNull=1 )
+	private String cv;
+	@Excel(name="星级", sort=6, value="0", length="4", isNull=1 )
 	private int star;
-	@Excel(name="等级", sort=5, length="4", isNull=1 )
-	private int level;
-	@Excel(name="图片", sort=6, length="", isNull=1 )
-	private String img1;
-	@Excel(name="图片", sort=7, length="", isNull=1 )
-	private String img2;
-	@Excel(name="图片", sort=8, length="", isNull=1 )
-	private String img3;
-	@Excel(name="描述", sort=9, length="", isNull=1 )
-	private String word;
-	@Excel(name="背景故事", sort=10, length="", isNull=1 )
-	private String story;
-	@Excel(name="技能介绍", sort=11, length="", isNull=1 )
-	private String skill;
-	@Excel(name="属性", sort=12, length="10", isNull=1 )
-	private int attr1;
-	@Excel(name="属性", sort=13, length="10", isNull=1 )
-	private int attr2;
-	@Excel(name="属性", sort=14, length="10", isNull=1 )
-	private int attr3;
-	@Excel(name="属性", sort=15, length="10", isNull=1 )
-	private int attr4;
-	@Excel(name="标签：多个标签“ , ”分隔。", sort=16, length="", isNull=1 )
-	private String tags;
-	@Excel(name="排序", sort=17, value="999", length="11", isNull=1 )
+	@Excel(name="简介", sort=7, length="255", isNull=1 )
+	private String desc;
+	@Excel(name="状态  0：禁用，1：启用", sort=8, value="0", length="4", isNull=1 )
+	private int status;
+	@Excel(name="排序", sort=9, value="999", length="11", isNull=1 )
 	private int sort;
+	@Excel(name="技能一名称", sort=10, length="255", isNull=1 )
+	private String sname1;
+	@Excel(name="技能一图标", sort=11, length="255", isNull=1 )
+	private String sicon1;
+	@Excel(name="技能一描述", sort=12, length="255", isNull=1 )
+	private String sdesc1;
+	@Excel(name="技能二名称", sort=13, length="255", isNull=1 )
+	private String sname2;
+	@Excel(name="技能二图标", sort=14, length="255", isNull=1 )
+	private String sicon2;
+	@Excel(name="技能二描述", sort=15, length="255", isNull=1 )
+	private String sdesc2;
+	@Excel(name="技能三名称", sort=16, length="255", isNull=1 )
+	private String sname3;
+	@Excel(name="技能三图标", sort=17, length="255", isNull=1 )
+	private String sicon3;
+	@Excel(name="技能三描述", sort=18, length="255", isNull=1 )
+	private String sdesc3;
+	@Excel(name="技能四名称", sort=19, length="255", isNull=1 )
+	private String sname4;
+	@Excel(name="技能四图标", sort=20, length="255", isNull=1 )
+	private String sicon4;
+	@Excel(name="技能四描述", sort=21, length="255", isNull=1 )
+	private String sdesc4;
+	@Excel(name="头像", sort=22, length="255", isNull=1 )
+	private String icon;
+	@Excel(name="PC图片一", sort=23, length="255", isNull=1 )
+	private String img1;
+	@Excel(name="PC图片二", sort=24, length="255", isNull=1 )
+	private String img2;
+	@Excel(name="移动图片一", sort=25, length="255", isNull=1 )
+	private String img3;
+	@Excel(name="移动图片二", sort=26, length="255", isNull=1 )
+	private String img4;
 	
 	//get set
 	public int getPid() {
@@ -65,17 +83,29 @@ public class Heroes  extends Base<Heroes> {
 	public void setDate(String date) {
 		this.date = date;
 	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getType() {
-		return type;
+	public String getPainter() {
+		return painter;
 	}
-	public void setType(int type) {
-		this.type = type;
+	public void setPainter(String painter) {
+		this.painter = painter;
+	}
+	public String getCv() {
+		return cv;
+	}
+	public void setCv(String cv) {
+		this.cv = cv;
 	}
 	public int getStar() {
 		return star;
@@ -83,11 +113,101 @@ public class Heroes  extends Base<Heroes> {
 	public void setStar(int star) {
 		this.star = star;
 	}
-	public int getLevel() {
-		return level;
+	public String getDesc() {
+		return desc;
 	}
-	public void setLevel(int level) {
-		this.level = level;
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	public int getSort() {
+		return sort;
+	}
+	public void setSort(int sort) {
+		this.sort = sort;
+	}
+	public String getSname1() {
+		return sname1;
+	}
+	public void setSname1(String sname1) {
+		this.sname1 = sname1;
+	}
+	public String getSicon1() {
+		return sicon1;
+	}
+	public void setSicon1(String sicon1) {
+		this.sicon1 = sicon1;
+	}
+	public String getSdesc1() {
+		return sdesc1;
+	}
+	public void setSdesc1(String sdesc1) {
+		this.sdesc1 = sdesc1;
+	}
+	public String getSname2() {
+		return sname2;
+	}
+	public void setSname2(String sname2) {
+		this.sname2 = sname2;
+	}
+	public String getSicon2() {
+		return sicon2;
+	}
+	public void setSicon2(String sicon2) {
+		this.sicon2 = sicon2;
+	}
+	public String getSdesc2() {
+		return sdesc2;
+	}
+	public void setSdesc2(String sdesc2) {
+		this.sdesc2 = sdesc2;
+	}
+	public String getSname3() {
+		return sname3;
+	}
+	public void setSname3(String sname3) {
+		this.sname3 = sname3;
+	}
+	public String getSicon3() {
+		return sicon3;
+	}
+	public void setSicon3(String sicon3) {
+		this.sicon3 = sicon3;
+	}
+	public String getSdesc3() {
+		return sdesc3;
+	}
+	public void setSdesc3(String sdesc3) {
+		this.sdesc3 = sdesc3;
+	}
+	public String getSname4() {
+		return sname4;
+	}
+	public void setSname4(String sname4) {
+		this.sname4 = sname4;
+	}
+	public String getSicon4() {
+		return sicon4;
+	}
+	public void setSicon4(String sicon4) {
+		this.sicon4 = sicon4;
+	}
+	public String getSdesc4() {
+		return sdesc4;
+	}
+	public void setSdesc4(String sdesc4) {
+		this.sdesc4 = sdesc4;
+	}
+	public String getIcon() {
+		return icon;
+	}
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 	public String getImg1() {
 		return img1;
@@ -107,59 +227,11 @@ public class Heroes  extends Base<Heroes> {
 	public void setImg3(String img3) {
 		this.img3 = img3;
 	}
-	public String getWord() {
-		return word;
+	public String getImg4() {
+		return img4;
 	}
-	public void setWord(String word) {
-		this.word = word;
-	}
-	public String getStory() {
-		return story;
-	}
-	public void setStory(String story) {
-		this.story = story;
-	}
-	public String getSkill() {
-		return skill;
-	}
-	public void setSkill(String skill) {
-		this.skill = skill;
-	}
-	public int getAttr1() {
-		return attr1;
-	}
-	public void setAttr1(int attr1) {
-		this.attr1 = attr1;
-	}
-	public int getAttr2() {
-		return attr2;
-	}
-	public void setAttr2(int attr2) {
-		this.attr2 = attr2;
-	}
-	public int getAttr3() {
-		return attr3;
-	}
-	public void setAttr3(int attr3) {
-		this.attr3 = attr3;
-	}
-	public int getAttr4() {
-		return attr4;
-	}
-	public void setAttr4(int attr4) {
-		this.attr4 = attr4;
-	}
-	public String getTags() {
-		return tags;
-	}
-	public void setTags(String tags) {
-		this.tags = tags;
-	}
-	public int getSort() {
-		return sort;
-	}
-	public void setSort(int sort) {
-		this.sort = sort;
+	public void setImg4(String img4) {
+		this.img4 = img4;
 	}
 
 }

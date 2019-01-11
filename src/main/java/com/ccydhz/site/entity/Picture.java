@@ -21,21 +21,25 @@ public class Picture  extends Base<Picture> {
 	private int type;
 	@Excel(name="名称", sort=2, length="100", isNull=1 )
 	private String name;
-	@Excel(name="图片地址", sort=3, length="255", isNull=1 )
+	@Excel(name="原图地址", sort=3, length="255", isNull=1 )
 	private String pic;
-	@Excel(name="日期", sort=4, length="20", isNull=1 )
+	@Excel(name="首页缩略图", sort=4, length="255", isNull=1 )
+	private String pich;
+	@Excel(name="列表页缩略图", sort=5, length="255", isNull=1 )
+	private String picl;
+	@Excel(name="日期", sort=6, length="20", isNull=1 )
 	private String date;
-	@Excel(name="描述", sort=5, length="", isNull=1 )
+	@Excel(name="描述", sort=7, length="255", isNull=1 )
 	private String description;
-	@Excel(name="下载地址", sort=6, length="255", isNull=1 )
+	@Excel(name="下载地址", sort=8, length="255", isNull=1 )
 	private String down;
-	@Excel(name="作者", sort=7, length="100", isNull=1 )
+	@Excel(name="作者", sort=9, length="100", isNull=1 )
 	private String author;
-	@Excel(name="推荐  0--否，1--是", sort=8, value="0", length="2", isNull=1 )
+	@Excel(name="推荐  0--否，1--是", sort=10, value="0", length="2", isNull=1 )
 	private int recommend;
-	@Excel(name="加精  0--否，1--是", sort=9, value="0", length="2", isNull=1 )
+	@Excel(name="加精  0--否，1--是", sort=11, value="0", length="2", isNull=1 )
 	private int highlight;
-	@Excel(name="排序", sort=10, value="999", length="11", isNull=1 )
+	@Excel(name="排序", sort=12, value="999", length="11", isNull=1 )
 	private int sort;
 	
 	//get set
@@ -62,6 +66,18 @@ public class Picture  extends Base<Picture> {
 	}
 	public void setPic(String pic) {
 		this.pic = pic;
+	}
+	public String getPich() {
+		return pich;
+	}
+	public void setPich(String pich) {
+		this.pich = pich;
+	}
+	public String getPicl() {
+		return picl;
+	}
+	public void setPicl(String picl) {
+		this.picl = picl;
 	}
 	public String getDate() {
 		return date;

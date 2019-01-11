@@ -23,10 +23,12 @@ public class NewsType  extends Base<NewsType> {
 	private String icon;
 	@Excel(name="排序", sort=3, value="999", length="11", isNull=1 )
 	private int sort;
-	@Excel(name="首页展示", sort=4, value="1", length="2", isNull=1 )
+	@Excel(name="首页展示  0：否，1：是", sort=4, value="1", length="4", isNull=1 )
 	private int home;
 	@Excel(name="是否过滤  0 --否，1--是    适用发布其他渠道的新闻", sort=5, value="0", length="4", isNull=1 )
 	private int filter;
+	@Excel(name="状态  0：禁用，1：启用", sort=6, value="0", length="4", isNull=1 )
+	private int status;
 	
 	//get set
 	public int getPid() {
@@ -64,6 +66,12 @@ public class NewsType  extends Base<NewsType> {
 	}
 	public void setFilter(int filter) {
 		this.filter = filter;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 }

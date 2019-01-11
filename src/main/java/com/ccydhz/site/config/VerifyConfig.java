@@ -8,16 +8,29 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.jian.tools.core.HttpTools;
 import com.jian.tools.core.JsonTools;
 import com.jian.tools.core.ResultTools;
 import com.jian.tools.core.Tips;
 import com.jian.tools.core.Tools;
 
+@Component
 public class VerifyConfig {
 	
-	public static String loginUserKey = Config.login_session_key;
-	public static String ssoUrl = Config.sso_url;
+	public static String loginUserKey = "";
+	public static String ssoUrl = "";
+	
+	public static Config baseConfig = null;
+	
+	@Autowired
+	public void setConfig(Config config){
+		VerifyConfig.baseConfig = config;
+		VerifyConfig.loginUserKey = config.login_session_key;
+		VerifyConfig.ssoUrl = config.login_session_key;
+	}
 	
 	/**
 	 * 登录验证

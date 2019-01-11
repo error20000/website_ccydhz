@@ -46,6 +46,8 @@ public class BespeakController extends BaseController<Bespeak> {
 	private BespeakService service;
 	@Autowired
 	private BespeakConfigService cService;
+	@Autowired
+	private Config baseConfig;
 	
 	private int bespeakConfigPid = 1;
 	
@@ -191,7 +193,7 @@ public class BespeakController extends BaseController<Bespeak> {
 		String vcode = Tools.createVCodeNumber(6);
 		String key = "vcode_"+phone;
 		CacheTools.setCacheObj(key, vcode);
-		String content = Config.sms_vcode_content.replace("{vcode}", vcode);
+		String content = baseConfig.sms_vcode_content.replace("{vcode}", vcode);
 		//发送短信
 		sendSMS(phone, content);
 		CacheTools.setCacheObj(timekey, vcode);

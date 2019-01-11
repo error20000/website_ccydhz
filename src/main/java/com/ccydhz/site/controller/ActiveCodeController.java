@@ -37,6 +37,8 @@ public class ActiveCodeController extends BaseController<ActiveCode> {
 
 	@Autowired
 	private ActiveCodeService service;
+	@Autowired
+	private Config baseConfig;
 	
 	@Override
 	public void initService() {
@@ -153,7 +155,7 @@ public class ActiveCodeController extends BaseController<ActiveCode> {
 		//保存
 		List<ActiveCode> list = new ArrayList<ActiveCode>();
 //		System.out.println(fileCodes);
-		String basePath = Tools.isNullOrEmpty(Config.upload_path) ? App.rootPath + "upload/" : Config.upload_path;
+		String basePath = Tools.isNullOrEmpty(baseConfig.upload_path) ? App.rootPath + "upload/" : baseConfig.upload_path;
 		File file = new File(basePath + fileCodes);
 		if(!file.exists()){
 			return ResultTools.custom(Tips.ERROR0).toJSONString();
