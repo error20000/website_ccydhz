@@ -1,5 +1,5 @@
-target/
-logs/
-upload/
-attacks/
-dist/
+/target/
+/logs/
+/upload/
+/attacks/
+/dist/
