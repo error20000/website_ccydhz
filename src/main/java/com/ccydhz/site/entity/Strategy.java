@@ -26,11 +26,11 @@ public class Strategy  extends Base<Strategy> {
 	@Excel(name="标题", sort=4, length="255", isNull=1 )
 	private String title;
 	@Excel(name="副标题", sort=5, length="255", isNull=1 )
-	private String title2;
+	private String subtitle;
 	@Excel(name="日期", sort=6, length="20", isNull=1 )
 	private String date;
 	@Excel(name="使用链接：0--否，1--是", sort=7, value="0", length="2", isNull=1 )
-	private int marks;
+	private int mark;
 	@Excel(name="链接地址", sort=8, length="255", isNull=1 )
 	private String site;
 	@Excel(name="内容", sort=9, length="", isNull=1 )
@@ -79,11 +79,11 @@ public class Strategy  extends Base<Strategy> {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getTitle2() {
-		return title2;
+	public String getSubtitle() {
+		return subtitle;
 	}
-	public void setTitle2(String title2) {
-		this.title2 = title2;
+	public void setSubtitle(String subtitle) {
+		this.subtitle = subtitle;
 	}
 	public String getDate() {
 		return date;
@@ -91,11 +91,11 @@ public class Strategy  extends Base<Strategy> {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public int getMarks() {
-		return marks;
+	public int getMark() {
+		return mark;
 	}
-	public void setMarks(int marks) {
-		this.marks = marks;
+	public void setMark(int mark) {
+		this.mark = mark;
 	}
 	public String getSite() {
 		return site;

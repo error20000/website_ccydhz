@@ -30,7 +30,7 @@ public class News  extends Base<News> {
 	@Excel(name="日期  yyyy-MM-dd HH:mm:ss", sort=6, length="20", isNull=1 )
 	private String date;
 	@Excel(name="使用链接   0--否，1--是", sort=7, value="0", length="4", isNull=1 )
-	private int marks;
+	private int mark;
 	@Excel(name="链接地址", sort=8, length="255", isNull=1 )
 	private String site;
 	@Excel(name="内容", sort=9, length="", isNull=1 )
@@ -85,11 +85,11 @@ public class News  extends Base<News> {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public int getMarks() {
-		return marks;
+	public int getMark() {
+		return mark;
 	}
-	public void setMarks(int marks) {
-		this.marks = marks;
+	public void setMark(int mark) {
+		this.mark = mark;
 	}
 	public String getSite() {
 		return site;

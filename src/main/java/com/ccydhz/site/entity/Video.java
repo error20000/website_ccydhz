@@ -41,7 +41,7 @@ public class Video  extends Base<Video> {
 	private String wav;
 	@Excel(name="音频网址", sort=12, length="255", isNull=1 )
 	private String audio;
-	@Excel(name="发布日期", sort=13, length="20", isNull=1 )
+	@Excel(name="日期", sort=13, length="20", isNull=1 )
 	private String date;
 	@Excel(name="描述", sort=14, length="", isNull=1 )
 	private String description;

@@ -284,7 +284,7 @@
 							</el-upload>
 						</el-input>
 					</el-form-item>
-					<el-form-item label="视频地址" prop="video">
+					<el-form-item label="网络视频地址" prop="video">
 						<el-input type="text" v-model="addForm.video"></el-input>
 					</el-form-item>
 				</template>
@@ -312,7 +312,7 @@
 						</el-input>
 					</el-form-item>
 					</fieldset>
-					<el-form-item label="音频地址" prop="audio">
+					<el-form-item label="网络音频地址" prop="audio">
 						<el-input type="text" v-model="addForm.audio"></el-input>
 					</el-form-item>
 				</template>
@@ -327,7 +327,7 @@
 		<el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
 			<el-form :model="editForm" label-width="100px" :rules="editFormRules" ref="editForm">
 				<el-form-item label="分类" prop="type">
-					<el-select v-model="editForm.type" placeholder="请选择分类">
+					<el-select v-model="editForm.type" placeholder="请选择分类" @change="handleEditTypeChange">
 					    <el-option
 					      v-for="item in typeOptions"
 					      :key="item.pid"
@@ -336,16 +336,10 @@
 					    </el-option>
 					 </el-select>
 				</el-form-item>
-				<el-form-item label="平台" prop="plat">
-					<el-radio-group v-model="editForm.plat">
-				      <el-radio :label="0">PC</el-radio>
-				      <el-radio :label="1">移动</el-radio>
-				    </el-radio-group>
-				</el-form-item>
 				<el-form-item label="名称" prop="name">
 					<el-input type="text" v-model="editForm.name"></el-input>
 				</el-form-item>
-				<el-form-item label="图片" prop="pic">
+				<el-form-item label="封面图片" prop="pic">
 					<el-input type="text" v-model="editForm.pic" placeholder="请上传图片">
 						<el-upload slot="append"
 						  :action="uploadUrl"
@@ -355,35 +349,106 @@
 						</el-upload>
 					</el-input>
 				</el-form-item>
-				<el-form-item label="启用链接" prop="marks">
-				    <el-select v-model="editForm.marks" placeholder="请选择">
-				      <el-option label="不启用" :value="0"></el-option>
-				      <el-option label="启用消息" :value="1"></el-option>
-				      <el-option label="启用地址" :value="2"></el-option>
-				    </el-select>
-				</el-form-item>
-				<el-form-item label="链接消息" prop="newsId" v-if="editForm.marks == 1">
-					<el-select v-model="editForm.newsId" placeholder="请选择消息">
-					    <el-option
-					      v-for="item in newsOptions"
-					      :key="item.pid"
-					      :label="item.title"
-					      :value="item.pid">
-					    </el-option>
-					 </el-select>
-				</el-form-item>
-				<el-form-item label="链接地址" prop="site" v-if="editForm.marks == 2">
-					<el-input type="text" v-model="editForm.site"></el-input>
-				</el-form-item>
 				<el-form-item label="状态" prop="status">
 					<el-radio-group v-model="editForm.status">
 				      <el-radio :label="0">禁用</el-radio>
 				      <el-radio :label="1">启用</el-radio>
 				    </el-radio-group>
 				</el-form-item>
+				<el-form-item label="推荐" prop="recommend">
+					<el-switch v-model="editForm.recommend" :active-value="1" :inactive-value="0"></el-switch>
+				</el-form-item>
+				<el-form-item label="加精" prop="highlight">
+					<el-switch v-model="editForm.highlight" :active-value="1" :inactive-value="0"></el-switch>
+				</el-form-item>
 				<el-form-item label="排序" prop="sort">
 					<el-input type="text" v-model="editForm.sort"></el-input>
 				</el-form-item>
+				<el-form-item label="作者" prop="author">
+					<el-input type="text" v-model="editForm.author"></el-input>
+				</el-form-item>
+				<el-form-item label="描述" prop="description">
+					<el-input type="textarea" v-model="editForm.description"></el-input>
+				</el-form-item>
+				<el-form-item label="下载地址" prop="down">
+					<el-input type="text" v-model="editForm.down"></el-input>
+				</el-form-item>
+				<template v-if="editForm.mark === 0">
+					<fieldset class="fieldset">
+               		<legend class="legend">html5</legend>
+					<el-form-item label="OGG" prop="ogg">
+						<el-input type="text" v-model="editForm.ogg">
+							<el-upload slot="append"
+							  :action="uploadFileUrl"
+							  :on-success="function(res, file){return handleFileUpload(res, file, 'editForm', 'ogg');}"
+							  :show-file-list="false">
+							  <el-button icon="el-icon-upload"></el-button>
+							</el-upload>
+						</el-input>
+					</el-form-item>
+					<el-form-item label="MP4" prop="mp4">
+						<el-input type="text" v-model="editForm.mp4">
+							<el-upload slot="append"
+							  :action="uploadFileUrl"
+							  :on-success="function(res, file){return handleFileUpload(res, file, 'editForm', 'mp4');}"
+							  :show-file-list="false">
+							  <el-button icon="el-icon-upload"></el-button>
+							</el-upload>
+						</el-input>
+					</el-form-item>
+					<el-form-item label="WEBM" prop="webm">
+						<el-input type="text" v-model="editForm.webm">
+							<el-upload slot="append"
+							  :action="uploadFileUrl"
+							  :on-success="function(res, file){return handleFileUpload(res, file, 'editForm', 'webm');}"
+							  :show-file-list="false">
+							  <el-button icon="el-icon-upload"></el-button>
+							</el-upload>
+						</el-input>
+					</el-form-item>
+					</fieldset>
+					<el-form-item label="FLASH" prop="flash">
+						<el-input type="text" v-model="editForm.flash">
+							<el-upload slot="append"
+							  :action="uploadFileUrl"
+							  :on-success="function(res, file){return handleFileUpload(res, file, 'editForm', 'flash');}"
+							  :show-file-list="false">
+							  <el-button icon="el-icon-upload"></el-button>
+							</el-upload>
+						</el-input>
+					</el-form-item>
+					<el-form-item label="网络视频地址" prop="video">
+						<el-input type="text" v-model="editForm.video"></el-input>
+					</el-form-item>
+				</template>
+				<template v-if="editForm.mark === 1">
+					<fieldset class="fieldset">
+               		<legend class="legend">html5</legend>
+					<el-form-item label="MP3" prop="mp3">
+						<el-input type="text" v-model="editForm.mp3">
+							<el-upload slot="append"
+							  :action="uploadFileUrl"
+							  :on-success="function(res, file){return handleFileUpload(res, file, 'editForm', 'mp3');}"
+							  :show-file-list="false">
+							  <el-button icon="el-icon-upload"></el-button>
+							</el-upload>
+						</el-input>
+					</el-form-item>
+					<el-form-item label="WAV" prop="wav">
+						<el-input type="text" v-model="editForm.wav">
+							<el-upload slot="append"
+							  :action="uploadFileUrl"
+							  :on-success="function(res, file){return handleFileUpload(res, file, 'editForm', 'wav');}"
+							  :show-file-list="false">
+							  <el-button icon="el-icon-upload"></el-button>
+							</el-upload>
+						</el-input>
+					</el-form-item>
+					</fieldset>
+					<el-form-item label="网络音频地址" prop="audio">
+						<el-input type="text" v-model="editForm.audio"></el-input>
+					</el-form-item>
+				</template>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="editClose">取消</el-button>
@@ -400,32 +465,72 @@
 				<el-form-item label="分类" prop="type">
 					<div v-html="typeFormatter(viewForm)"></div>
 				</el-form-item>
-				<el-form-item label="名称" prop="plat">
-					<div v-html="viewForm.plat ? '移动' : 'PC'"></div>
-				</el-form-item>
 				<el-form-item label="名称" prop="name">
 					<div v-html="viewForm.name"></div>
 				</el-form-item>
-				<el-form-item label="图片" prop="pic">
+				<el-form-item label="封面图片" prop="pic">
 					<div style="width: 100px; height: 100px;">
 						<img  :src="'/'+viewForm.pic" style="max-width: 100%;max-height: 100%;"/>
 					</div>
 				</el-form-item>
-				<el-form-item label="启用链接" prop="marks">
-					<div v-html="viewForm.marks == 1 ? '启用消息': viewForm.marks ? '启用地址' : '不启用'"></div>
-				</el-form-item>
-				<el-form-item label="链接消息" prop="newsId" v-if="viewForm.marks == 1">
-					<div v-html="newsFormatter(viewForm)"></div>
-				</el-form-item>
-				<el-form-item label="链接地址" prop="site" v-if="viewForm.marks == 2">
-					<div v-html="viewForm.site"></div>
-				</el-form-item>
 				<el-form-item label="状态" prop="status">
 					<div v-html="viewForm.status ? '启用': '禁用'"></div>
+				</el-form-item>
+				<el-form-item label="推荐" prop="recommend">
+					<div v-html="viewForm.recommend ? '是': '否'"></div>
+				</el-form-item>
+				<el-form-item label="加精" prop="highlight">
+					<div v-html="viewForm.highlight ? '是': '否'"></div>
 				</el-form-item>
 				<el-form-item label="排序" prop="sort">
 					<div v-html="viewForm.sort"></div>
 				</el-form-item>
+				<el-form-item label="日期" prop="date">
+					<div v-html="viewForm.date"></div>
+				</el-form-item>
+				<el-form-item label="作者" prop="author">
+					<div v-html="viewForm.author"></div>
+				</el-form-item>
+				<el-form-item label="描述" prop="description">
+					<div v-html="viewForm.description"></div>
+				</el-form-item>
+				<el-form-item label="下载地址" prop="down">
+					<div v-html="viewForm.down"></div>
+				</el-form-item>
+				<template v-if="viewForm.mark === 0">
+					<fieldset class="fieldset">
+               		<legend class="legend">html5</legend>
+					<el-form-item label="OGG" prop="ogg">
+						<div v-html="viewForm.ogg"></div>
+					</el-form-item>
+					<el-form-item label="MP4" prop="mp4">
+						<div v-html="viewForm.mp4"></div>
+					</el-form-item>
+					<el-form-item label="WEBM" prop="webm">
+						<div v-html="viewForm.webm"></div>
+					</el-form-item>
+					</fieldset>
+					<el-form-item label="FLASH" prop="flash">
+						<div v-html="viewForm.flash"></div>
+					</el-form-item>
+					<el-form-item label="网络视频地址" prop="video">
+						<div v-html="viewForm.video"></div>
+					</el-form-item>
+				</template>
+				<template v-if="viewForm.mark === 1">
+					<fieldset class="fieldset">
+               		<legend class="legend">html5</legend>
+					<el-form-item label="MP3" prop="mp3">
+						<div v-html="viewForm.mp3"></div>
+					</el-form-item>
+					<el-form-item label="WAV" prop="wav">
+						<div v-html="viewForm.wav"></div>
+					</el-form-item>
+					</fieldset>
+					<el-form-item label="网络音频地址" prop="audio">
+						<div v-html="viewForm.audio"></div>
+					</el-form-item>
+				</template>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="viewFormVisible = false">关闭</el-button>

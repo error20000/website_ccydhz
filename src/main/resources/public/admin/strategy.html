@@ -89,11 +89,20 @@
 		          <el-form-item label="推荐">
 		            <span>{{ props.row.recommend ? '是': '' }}</span>
 		          </el-form-item>
+		          <el-form-item label="加精">
+		            <span>{{ props.row.highlight ? '是': '' }}</span>
+		          </el-form-item>
 		          <el-form-item label="使用链接">
 		            <span>{{ props.row.mark }}</span>
 		          </el-form-item>
 		          <el-form-item label="链接地址">
 		            <span>{{ props.row.site }}</span>
+		          </el-form-item>
+		          <el-form-item label="作者">
+		            <span>{{ props.row.author }}</span>
+		          </el-form-item>
+		          <el-form-item label="描述">
+		            <span>{{ props.row.desc }}</span>
 		          </el-form-item>
 		          <el-form-item label="关键字(seo)" v-if="isSEO">
 		            <span>{{ props.row.keywords }}</span>
@@ -115,6 +124,8 @@
 			<el-table-column label="状态" prop="status" :formatter="(r,c) => { return r.status ? '启用': '禁用';}" width="60px">
 			</el-table-column>
 			<el-table-column label="推荐" prop="recommend" :formatter="(r,c) => { return r.recommend ? '是': '';}" width="60px">
+			</el-table-column>
+			<el-table-column label="加精" prop="highlight" :formatter="(r,c) => { return r.highlight ? '是': '';}" width="60px">
 			</el-table-column>
 			<el-table-column label="副标题" prop="subtitle" >
 			</el-table-column>
@@ -196,6 +207,9 @@
 				<el-form-item label="推荐" prop="recommend">
 					<el-switch v-model="addForm.recommend" :active-value="1" :inactive-value="0"></el-switch>
 				</el-form-item>
+				<el-form-item label="加精" prop="highlight">
+					<el-switch v-model="addForm.highlight" :active-value="1" :inactive-value="0"></el-switch>
+				</el-form-item>
 				<el-form-item label="使用链接" prop="mark">
 					<el-switch v-model="addForm.mark" :active-value="1" :inactive-value="0"></el-switch>
 				</el-form-item>
@@ -204,16 +218,15 @@
 				</el-form-item>
 				<keep-alive>
 				<el-form-item label="内容" prop="content" v-if="addForm.mark === 0">
-					<!-- <quill-editor style="height: 350px;" v-model="addForm.content"
-			                ref="myQuillEditor"
-			                :options="editorOption"
-			                @blur="onEditorBlur($event)"
-			                @focus="onEditorFocus($event)"
-			                @ready="onEditorReady($event)">
-					 </quill-editor> -->
 					 <ueditor v-model="addForm.content" style="width:100%;height:500px;line-height: normal;"></ueditor>
 				</el-form-item>
 				</keep-alive>
+				<el-form-item label="作者" prop="author">
+					<el-input type="text" v-model="addForm.author"></el-input>
+				</el-form-item>
+				<el-form-item label="描述" prop="desc">
+					<el-input type="textarea" v-model="addForm.desc"></el-input>
+				</el-form-item>
 				<el-form-item label="关键字(seo)" prop="keywords" v-if="isSEO">
 					<el-input type="textarea" v-model="addForm.keywords"></el-input>
 				</el-form-item>
@@ -273,6 +286,9 @@
 				<el-form-item label="推荐" prop="recommend">
 					<el-switch v-model="editForm.recommend" :active-value="1" :inactive-value="0"></el-switch>
 				</el-form-item>
+				<el-form-item label="加精" prop="highlight">
+					<el-switch v-model="editForm.highlight" :active-value="1" :inactive-value="0"></el-switch>
+				</el-form-item>
 				<el-form-item label="使用链接" prop="mark">
 					<el-switch v-model="editForm.mark" :active-value="1" :inactive-value="0"></el-switch>
 				</el-form-item>
@@ -291,6 +307,12 @@
 					 <ueditor v-model="editForm.content" style="width:100%;height:500px;line-height: normal;"></ueditor>
 				</el-form-item>
 				</keep-alive>
+				<el-form-item label="作者" prop="author">
+					<el-input type="text" v-model="editForm.author"></el-input>
+				</el-form-item>
+				<el-form-item label="描述" prop="desc">
+					<el-input type="textarea" v-model="editForm.desc"></el-input>
+				</el-form-item>
 				<el-form-item label="关键字(seo)" prop="keywords" v-if="isSEO">
 					<el-input type="textarea" v-model="editForm.keywords"></el-input>
 				</el-form-item>
@@ -332,6 +354,6 @@
   <!-- 编辑器源码文件 -->
   <script type="text/javascript" src="js/ueditor/ueditor.all.js"></script>
   <script type="text/javascript" src="js/ueditor/lang/zh-cn/zh-cn.js"></script>
-  <script type="text/javascript" src="js/news.js"></script>
+  <script type="text/javascript" src="js/strategy.js"></script>
   
 </html>

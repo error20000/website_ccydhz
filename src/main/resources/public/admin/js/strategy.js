@@ -1,11 +1,11 @@
 var baseUrl = parent.window.baseUrl || '../';
 
-var queryUrl = baseUrl + "api/news/findPage";
-var addUrl = baseUrl + "api/news/add";
-var modUrl = baseUrl + "api/news/update";
-var delUrl = baseUrl + "api/news/delete";
+var queryUrl = baseUrl + "api/strategy/findPage";
+var addUrl = baseUrl + "api/strategy/add";
+var modUrl = baseUrl + "api/strategy/update";
+var delUrl = baseUrl + "api/strategy/delete";
 var uploadUrl = baseUrl + "api/file/uploadImg";
-var typeUrl = baseUrl + "api/newstype/findAll";
+var typeUrl = baseUrl + "api/strategytype/findAll";
 
 
 var ajaxReq = parent.window.ajaxReq || "";
@@ -216,6 +216,7 @@ var myvue = new Vue({
 				this.addForm = {
 						type: 1,
 						recommend: 0,
+						highlight: 0,
 						illustration: '',
 						title: '',
 						subtitle: '',
@@ -224,6 +225,8 @@ var myvue = new Vue({
 						site: '',
 						content: '',
 						status: 0,
+						author: '',
+						desc: '',
 						keywords: '',
 						description: ''
 				};
