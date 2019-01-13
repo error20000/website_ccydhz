@@ -47,6 +47,7 @@ public class PictureController extends BaseController<Picture> {
 				@ParamsInfo(name="recommend", type="int", isNull=0,  info="推荐  0--否，1--是"),
 				@ParamsInfo(name="highlight", type="int", isNull=0,  info="加精  0--否，1--是"),
 				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
+				@ParamsInfo(name="status", type="int", isNull=0,  info="状态   0：禁用，1：启用"),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -79,6 +80,7 @@ public class PictureController extends BaseController<Picture> {
 				@ParamsInfo(name="recommend", type="int", isNull=0,  info="推荐  0--否，1--是"),
 				@ParamsInfo(name="highlight", type="int", isNull=0,  info="加精  0--否，1--是"),
 				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
+				@ParamsInfo(name="status", type="int", isNull=0,  info="状态   0：禁用，1：启用"),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -130,6 +132,7 @@ public class PictureController extends BaseController<Picture> {
 				@ParamsInfo(name="recommend", type="int", isNull=0,  info="推荐  0--否，1--是"),
 				@ParamsInfo(name="highlight", type="int", isNull=0,  info="加精  0--否，1--是"),
 				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
+				@ParamsInfo(name="status", type="int", isNull=0,  info="状态   0：禁用，1：启用"),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -162,6 +165,7 @@ public class PictureController extends BaseController<Picture> {
 				@ParamsInfo(name="recommend", type="int", isNull=0,  info="推荐  0--否，1--是"),
 				@ParamsInfo(name="highlight", type="int", isNull=0,  info="加精  0--否，1--是"),
 				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
+				@ParamsInfo(name="status", type="int", isNull=0,  info="状态   0：禁用，1：启用"),
 				@ParamsInfo(info="注意：以上条件不可同时为空。"),
 		}, 
 		response={
@@ -194,6 +198,7 @@ public class PictureController extends BaseController<Picture> {
 				@ParamsInfo(name="recommend", type="int", isNull=0,  info="推荐  0--否，1--是"),
 				@ParamsInfo(name="highlight", type="int", isNull=0,  info="加精  0--否，1--是"),
 				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
+				@ParamsInfo(name="status", type="int", isNull=0,  info="状态   0：禁用，1：启用"),
 				@ParamsInfo(info="注意：以上条件不可同时为空。"),
 		}, 
 		response={

@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="css/index.css">
   <link href="https://cdn.bootcss.com/element-ui/2.4.0/theme-chalk/index.css" rel="stylesheet">
   <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
-  
 </head>
 <body class="animated fadeInRight">
   <div id="app">
@@ -35,23 +34,11 @@
 
 		<!--列表-->
 		<el-table :data="list" highlight-current-row border v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" class="mytable" >
-			
-			<el-table-column label="PID" prop="pid">
+			<el-table-column type="selection" width="55">
 			</el-table-column>
-			<el-table-column label="分类" prop="type" :formatter="typeFormatter">
+			<el-table-column label="PID" prop="pid" width="100">
 			</el-table-column>
-			<el-table-column label="名称" prop="name" >
-			</el-table-column>
-			<el-table-column label="下载地址" prop="site" >
-			</el-table-column>
-			<el-table-column label="图片" prop="pic" >
-				<template scope="scope">
-					<div style="width: 100px; height: 60px;">
-						<img v-if="scope.row.pic" :src="'/'+scope.row.pic" style="max-width: 100%;max-height: 100%;"/>
-					</div>
-				</template>
-			</el-table-column>
-			<el-table-column label="排序" prop="sort" >
+			<el-table-column label="名称" prop="name" min-width="200">
 			</el-table-column>
 			<el-table-column fixed="right" label="操作" width="220">
 				<template scope="scope">
@@ -72,34 +59,11 @@
 		<!--新增界面-->
 		<el-dialog title="新增" :visible.sync="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="100px" :rules="addFormRules" ref="addForm">
-				<el-form-item label="分类" prop="type">
-					<el-select v-model="addForm.type" placeholder="请选择分类">
-					    <el-option
-					      v-for="item in typeOptions"
-					      :key="item.pid"
-					      :label="item.name"
-					      :value="item.pid">
-					    </el-option>
-					 </el-select>
+				<el-form-item label="PID" prop="pid">
+					<el-input type="number" v-model="addForm.pid" placeholder="唯一"></el-input>
 				</el-form-item>
 				<el-form-item label="名称" prop="name">
 					<el-input type="text" v-model="addForm.name"></el-input>
-				</el-form-item>
-				<el-form-item label="下载地址" prop="site">
-					<el-input type="text" v-model="addForm.site"></el-input>
-				</el-form-item>
-				<el-form-item label="图片" prop="pic">
-					<el-input type="text" v-model="addForm.pic" placeholder="图片  按钮/二维码">
-						<el-upload slot="append"
-						  :action="uploadUrl"
-						  :on-success="handleAddUpload"
-						  :show-file-list="false">
-						  <el-button icon="el-icon-upload"></el-button>
-						</el-upload>
-					</el-input>
-				</el-form-item>
-				<el-form-item label="排序" prop="sort">
-					<el-input type="text" v-model="addForm.sort"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -111,34 +75,11 @@
 		<!--编辑界面-->
 		<el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
 			<el-form :model="editForm" label-width="100px" :rules="editFormRules" ref="editForm">
-				<el-form-item label="分类" prop="type">
-					<el-select v-model="editForm.type" placeholder="请选择分类">
-					    <el-option
-					      v-for="item in typeOptions"
-					      :key="item.pid"
-					      :label="item.name"
-					      :value="item.pid">
-					    </el-option>
-					 </el-select>
+				<el-form-item label="PID" prop="pid">
+					<el-input type="number" v-model="editForm.pid" :disabled="true"></el-input>
 				</el-form-item>
 				<el-form-item label="名称" prop="name">
 					<el-input type="text" v-model="editForm.name"></el-input>
-				</el-form-item>
-				<el-form-item label="下载地址" prop="site">
-					<el-input type="text" v-model="editForm.site"></el-input>
-				</el-form-item>
-				<el-form-item label="图片" prop="pic">
-					<el-input type="text" v-model="editForm.pic" placeholder="图片  按钮/二维码">
-						<el-upload slot="append"
-						  :action="uploadUrl"
-						  :on-success="handleEditUpload"
-						  :show-file-list="false">
-						  <el-button icon="el-icon-upload"></el-button>
-						</el-upload>
-					</el-input>
-				</el-form-item>
-				<el-form-item label="排序" prop="sort">
-					<el-input type="text" v-model="editForm.sort"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -153,22 +94,8 @@
 				<el-form-item label="PID" prop="pid">
 					<div v-html="viewForm.pid"></div>
 				</el-form-item>
-				<el-form-item label="分类" prop="type">
-					<div v-html="typeFormatter(viewForm)"></div>
-				</el-form-item>
 				<el-form-item label="名称" prop="name">
 					<div v-html="viewForm.name"></div>
-				</el-form-item>
-				<el-form-item label="下载地址" prop="site">
-					<div v-html="viewForm.site"></div>
-				</el-form-item>
-				<el-form-item label="图片" prop="pic">
-					<div style="width: 100px; height: 100px;">
-						<img  :src="'/'+viewForm.pic" style="max-width: 100%;max-height: 100%;"/>
-					</div>
-				</el-form-item>
-				<el-form-item label="排序" prop="sort">
-					<div v-html="viewForm.sort"></div>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -184,6 +111,6 @@
   <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
   <!-- 引入组件库 -->
   <script src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
-  <script type="text/javascript" src="js/download.js"></script>
-  
+  <script type="text/javascript" src="js/recommendType.js"></script>
+    
 </html>

@@ -19,6 +19,8 @@ public class VideoType  extends Base<VideoType> {
 	private int pid;
 	@Excel(name="名称", sort=1, length="100", isNull=1 )
 	private String name;
+	@Excel(name="类型  0：视频，1：音频", sort=2, value="0", length="4", isNull=1 )
+	private int mark;
 	
 	//get set
 	public int getPid() {
@@ -32,6 +34,12 @@ public class VideoType  extends Base<VideoType> {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public int getMark() {
+		return mark;
+	}
+	public void setMark(int mark) {
+		this.mark = mark;
 	}
 
 }

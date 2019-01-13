@@ -1,12 +1,11 @@
 var baseUrl = parent.window.baseUrl || '../';
 
-var queryUrl = baseUrl + "api/contact/findPage";
-var addUrl = baseUrl + "api/contact/add";
-var modUrl = baseUrl + "api/contact/update";
-var delUrl = baseUrl + "api/contact/delete";
+var queryUrl = baseUrl + "api/picture/findPage";
+var addUrl = baseUrl + "api/picture/add";
+var modUrl = baseUrl + "api/picture/update";
+var delUrl = baseUrl + "api/picture/delete";
 var uploadUrl = baseUrl + "api/file/uploadImg";
-var typeUrl = baseUrl + "api/contacttype/findAll";
-var configUrl = baseUrl + "api/contactconfig/findAll";
+var typeUrl = baseUrl + "api/picturetype/findAll";
 
 
 var ajaxReq = parent.window.ajaxReq || "";
@@ -16,7 +15,7 @@ var myvue = new Vue({
 	    data: function(){
 	    	return {
 				filters: {
-					name: ''
+					plat: ''
 				},
 				list: [],
 				total: 0,
@@ -25,7 +24,6 @@ var myvue = new Vue({
 				listLoading: false,
 				sels: [],//列表选中列
 				typeOptions:[],
-				configOptions:[],
 				uploadUrl: uploadUrl,
 				//新增界面数据
 				addFormVisible: false,//新增界面是否显示
@@ -37,11 +35,8 @@ var myvue = new Vue({
 					type: [
 						{  required: true, message: '请选择分类', trigger: 'blur' }
 					],
-					config: [
-						{  required: true, message: '请选择类型', trigger: 'blur' }
-					],
-					name: [
-						{  required: true, message: '请输入名称', trigger: 'blur' }
+					pic: [
+						{  required: true, message: '请选择图片', trigger: 'blur' }
 					]
 				},
 				//编辑界面数据
@@ -54,11 +49,8 @@ var myvue = new Vue({
 					type: [
 						{  required: true, message: '请选择分类', trigger: 'blur' }
 					],
-					config: [
-						{  required: true, message: '请选择类型', trigger: 'blur' }
-					],
-					name: [
-						{  required: true, message: '请输入名称', trigger: 'blur' }
+					pic: [
+						{  required: true, message: '请选择图片', trigger: 'blur' }
 					]
 					
 				},
@@ -85,20 +77,29 @@ var myvue = new Vue({
 				}
 				return name;
 			},
-			configFormatter: function(row){
-				var name = row.config;
-				for (var i = 0; i < this.configOptions.length; i++) {
-					var item = this.configOptions[i];
-					if(row.config == item.pid){
-						name = item.name;
-						break
-					}
-				}
-				return name;
-			},
 			handleAddUpload: function(res){
 				if(res.code > 0){
 					this.addForm.pic = res.data.path;
+				}else{
+					this.$message({
+						message: res.msg,
+						type: 'warning'
+					});
+				}
+			},
+			handleAddUpload2: function(res){
+				if(res.code > 0){
+					this.addForm.pich = res.data.path;
+				}else{
+					this.$message({
+						message: res.msg,
+						type: 'warning'
+					});
+				}
+			},
+			handleAddUpload3: function(res){
+				if(res.code > 0){
+					this.addForm.picl = res.data.path;
 				}else{
 					this.$message({
 						message: res.msg,
@@ -116,29 +117,32 @@ var myvue = new Vue({
 					});
 				}
 			},
+			handleEditUpload2: function(res){
+				if(res.code > 0){
+					this.editForm.pich = res.data.path;
+				}else{
+					this.$message({
+						message: res.msg,
+						type: 'warning'
+					});
+				}
+			},
+			handleEditUpload3: function(res){
+				if(res.code > 0){
+					this.editForm.picl = res.data.path;
+				}else{
+					this.$message({
+						message: res.msg,
+						type: 'warning'
+					});
+				}
+			},
 			handleTypeOptions: function(cb){
 				var self = this;
 				var params = {};
 				ajaxReq(typeUrl, params, function(res){
 					if(res.code > 0){
 						self.typeOptions = res.data;
-						if(typeof cb == 'function'){
-							cb();
-						}
-					}else{
-						self.$message({
-							message: res.msg,
-							type: 'warning'
-						})
-					}
-				});
-			},
-			handleConfigOptions: function(cb){
-				var self = this;
-				var params = {};
-				ajaxReq(configUrl, params, function(res){
-					if(res.code > 0){
-						self.configOptions = res.data;
 						if(typeof cb == 'function'){
 							cb();
 						}
@@ -193,16 +197,18 @@ var myvue = new Vue({
 			handleAdd: function () {
 				this.addFormVisible = true;
 				this.addForm = {
-						type: '',
-						config: '',
+						type: 1,
 						name: '',
-						value: '',
-						site: '',
 						pic: '',
+						pich: '',
+						picl: '',
+						status: 0,
+						recommend: 0,
+						highlight: 0,
 						sort: 999,
-						wjs: '',
-						ajs: '',
-						ijs: ''
+						author: '',
+						description: '',
+						down: ''
 				};
 			},
 			//显示编辑界面
@@ -314,7 +320,6 @@ var myvue = new Vue({
 		},
 		mounted: function() {
 			this.handleTypeOptions();
-			this.handleConfigOptions();
 			this.getList();
 		}
 	  });

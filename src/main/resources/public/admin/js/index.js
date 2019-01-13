@@ -115,7 +115,7 @@ new Vue({
 			        name: '社交配置',
 			        iconCls: '',
 			        children: []
-			    },{
+			    }/*,{
 			        path: 'contactConfig.html',
 			        component: "",
 			        name: '社交类型',
@@ -125,6 +125,66 @@ new Vue({
 			        path: 'contactType.html',
 			        component: "",
 			        name: '社交分类',
+			        iconCls: '',
+			        children: []
+			    }*/]
+		    },{
+		        path: '',
+		        component: "",
+		        name: '推荐管理',
+		        iconCls: 'el-icon-menu',
+		        children: [{
+			        path: 'recommend.html',
+			        component: "",
+			        name: '推荐配置',
+			        iconCls: '',
+			        children: []
+			    }/*,{
+			        path: 'recommendType.html',
+			        component: "",
+			        name: '推荐分类',
+			        iconCls: '',
+			        children: []
+			    }*/]
+		    },{
+		        path: '',
+		        component: "",
+		        name: '游戏音画',
+		        iconCls: 'el-icon-menu',
+		        children: [{
+			        path: 'picture.html',
+			        component: "",
+			        name: '图集配置',
+			        iconCls: '',
+			        children: []
+			    },{
+			        path: 'pictureType.html',
+			        component: "",
+			        name: '图集分类',
+			        iconCls: '',
+			        children: []
+			    },{
+			        path: 'video.html',
+			        component: "",
+			        name: '影音配置',
+			        iconCls: '',
+			        children: []
+			    },{
+			        path: 'videoType.html',
+			        component: "",
+			        name: '影音分类',
+			        iconCls: '',
+			        children: []
+			    },{
+			        path: 'strategy.html',
+			        component: "",
+			        name: '文库配置',
+			        iconCls: '',
+			        children: []
+			    },{
+			        path: 'strategyType.html',
+			        component: "",
+			        name: '文库分类',
 			        iconCls: '',
 			        children: []
 			    }]

@@ -23,12 +23,16 @@
 			</el-col>
 			<el-col :span="18">
 				<el-form :inline="true" :model="filters" style="float: right;">
-					<!--<el-form-item>
-						<el-input v-model="filters.name" placeholder="名称"></el-input>
+					<el-form-item>
+						<el-select v-model="filters.plat" placeholder="请选择平台">
+							<el-option label="全部" value=""></el-option>
+							<el-option label="PC" :value="0"></el-option>
+							<el-option label="移动" :value="1"></el-option>
+					 	</el-select>
 					</el-form-item>
 					<el-form-item>
 						<el-button type="primary" @click="getList">查询</el-button>
-					</el-form-item>-->
+					</el-form-item>
 				</el-form>
 			</el-col>
 		</el-col>
@@ -40,9 +44,9 @@
 			</el-table-column>
 			<el-table-column label="分类" prop="type" :formatter="typeFormatter">
 			</el-table-column>
-			<el-table-column label="名称" prop="name" >
+			<el-table-column label="平台" prop="plat" :formatter="(r,c) => { return r.plat ? '移动': 'PC';}" width="60px">
 			</el-table-column>
-			<el-table-column label="下载地址" prop="site" >
+			<el-table-column label="名称" prop="name" >
 			</el-table-column>
 			<el-table-column label="图片" prop="pic" >
 				<template scope="scope">
@@ -51,7 +55,15 @@
 					</div>
 				</template>
 			</el-table-column>
+			<el-table-column label="状态" prop="status" :formatter="(r,c) => { return r.status ? '启用': '禁用';}" width="60px">
+			</el-table-column>
 			<el-table-column label="排序" prop="sort" >
+			</el-table-column>
+			<el-table-column label="启用链接" prop="marks" :formatter="(r,c) => { return r.marks == 1 ? '启用消息': r.marks ? '启用地址' : '';}" >
+			</el-table-column>
+			<el-table-column label="链接消息" prop="newsId" :formatter="newsFormatter" min-width="200px">
+			</el-table-column>
+			<el-table-column label="链接地址" prop="site" min-width="200px">
 			</el-table-column>
 			<el-table-column fixed="right" label="操作" width="220">
 				<template scope="scope">
@@ -82,14 +94,17 @@
 					    </el-option>
 					 </el-select>
 				</el-form-item>
+				<el-form-item label="平台" prop="plat">
+					<el-radio-group v-model="addForm.plat">
+				      <el-radio :label="0">PC</el-radio>
+				      <el-radio :label="1">移动</el-radio>
+				    </el-radio-group>
+				</el-form-item>
 				<el-form-item label="名称" prop="name">
 					<el-input type="text" v-model="addForm.name"></el-input>
 				</el-form-item>
-				<el-form-item label="下载地址" prop="site">
-					<el-input type="text" v-model="addForm.site"></el-input>
-				</el-form-item>
 				<el-form-item label="图片" prop="pic">
-					<el-input type="text" v-model="addForm.pic" placeholder="图片  按钮/二维码">
+					<el-input type="text" v-model="addForm.pic" placeholder="请上传图片">
 						<el-upload slot="append"
 						  :action="uploadUrl"
 						  :on-success="handleAddUpload"
@@ -97,6 +112,32 @@
 						  <el-button icon="el-icon-upload"></el-button>
 						</el-upload>
 					</el-input>
+				</el-form-item>
+				<el-form-item label="启用链接" prop="marks">
+				    <el-select v-model="addForm.marks" placeholder="请选择">
+				      <el-option label="不启用" :value="0"></el-option>
+				      <el-option label="启用消息" :value="1"></el-option>
+				      <el-option label="启用地址" :value="2"></el-option>
+				    </el-select>
+				</el-form-item>
+				<el-form-item label="链接消息" prop="newsId" v-if="addForm.marks == 1">
+					<el-select v-model="addForm.newsId" placeholder="请选择消息">
+					    <el-option
+					      v-for="item in newsOptions"
+					      :key="item.pid"
+					      :label="item.title"
+					      :value="item.pid">
+					    </el-option>
+					 </el-select>
+				</el-form-item>
+				<el-form-item label="链接地址" prop="site" v-if="addForm.marks == 2">
+					<el-input type="text" v-model="addForm.site"></el-input>
+				</el-form-item>
+				<el-form-item label="状态" prop="status">
+					<el-radio-group v-model="addForm.status">
+				      <el-radio :label="0">禁用</el-radio>
+				      <el-radio :label="1">启用</el-radio>
+				    </el-radio-group>
 				</el-form-item>
 				<el-form-item label="排序" prop="sort">
 					<el-input type="text" v-model="addForm.sort"></el-input>
@@ -121,14 +162,17 @@
 					    </el-option>
 					 </el-select>
 				</el-form-item>
+				<el-form-item label="平台" prop="plat">
+					<el-radio-group v-model="editForm.plat">
+				      <el-radio :label="0">PC</el-radio>
+				      <el-radio :label="1">移动</el-radio>
+				    </el-radio-group>
+				</el-form-item>
 				<el-form-item label="名称" prop="name">
 					<el-input type="text" v-model="editForm.name"></el-input>
 				</el-form-item>
-				<el-form-item label="下载地址" prop="site">
-					<el-input type="text" v-model="editForm.site"></el-input>
-				</el-form-item>
 				<el-form-item label="图片" prop="pic">
-					<el-input type="text" v-model="editForm.pic" placeholder="图片  按钮/二维码">
+					<el-input type="text" v-model="editForm.pic" placeholder="请上传图片">
 						<el-upload slot="append"
 						  :action="uploadUrl"
 						  :on-success="handleEditUpload"
@@ -136,6 +180,32 @@
 						  <el-button icon="el-icon-upload"></el-button>
 						</el-upload>
 					</el-input>
+				</el-form-item>
+				<el-form-item label="启用链接" prop="marks">
+				    <el-select v-model="editForm.marks" placeholder="请选择">
+				      <el-option label="不启用" :value="0"></el-option>
+				      <el-option label="启用消息" :value="1"></el-option>
+				      <el-option label="启用地址" :value="2"></el-option>
+				    </el-select>
+				</el-form-item>
+				<el-form-item label="链接消息" prop="newsId" v-if="editForm.marks == 1">
+					<el-select v-model="editForm.newsId" placeholder="请选择消息">
+					    <el-option
+					      v-for="item in newsOptions"
+					      :key="item.pid"
+					      :label="item.title"
+					      :value="item.pid">
+					    </el-option>
+					 </el-select>
+				</el-form-item>
+				<el-form-item label="链接地址" prop="site" v-if="editForm.marks == 2">
+					<el-input type="text" v-model="editForm.site"></el-input>
+				</el-form-item>
+				<el-form-item label="状态" prop="status">
+					<el-radio-group v-model="editForm.status">
+				      <el-radio :label="0">禁用</el-radio>
+				      <el-radio :label="1">启用</el-radio>
+				    </el-radio-group>
 				</el-form-item>
 				<el-form-item label="排序" prop="sort">
 					<el-input type="text" v-model="editForm.sort"></el-input>
@@ -156,16 +226,28 @@
 				<el-form-item label="分类" prop="type">
 					<div v-html="typeFormatter(viewForm)"></div>
 				</el-form-item>
+				<el-form-item label="名称" prop="plat">
+					<div v-html="viewForm.plat ? '移动' : 'PC'"></div>
+				</el-form-item>
 				<el-form-item label="名称" prop="name">
 					<div v-html="viewForm.name"></div>
-				</el-form-item>
-				<el-form-item label="下载地址" prop="site">
-					<div v-html="viewForm.site"></div>
 				</el-form-item>
 				<el-form-item label="图片" prop="pic">
 					<div style="width: 100px; height: 100px;">
 						<img  :src="'/'+viewForm.pic" style="max-width: 100%;max-height: 100%;"/>
 					</div>
+				</el-form-item>
+				<el-form-item label="启用链接" prop="marks">
+					<div v-html="viewForm.marks == 1 ? '启用消息': viewForm.marks ? '启用地址' : '不启用'"></div>
+				</el-form-item>
+				<el-form-item label="链接消息" prop="newsId" v-if="viewForm.marks == 1">
+					<div v-html="newsFormatter(viewForm)"></div>
+				</el-form-item>
+				<el-form-item label="链接地址" prop="site" v-if="viewForm.marks == 2">
+					<div v-html="viewForm.site"></div>
+				</el-form-item>
+				<el-form-item label="状态" prop="status">
+					<div v-html="viewForm.status ? '启用': '禁用'"></div>
 				</el-form-item>
 				<el-form-item label="排序" prop="sort">
 					<div v-html="viewForm.sort"></div>
@@ -184,6 +266,6 @@
   <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
   <!-- 引入组件库 -->
   <script src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
-  <script type="text/javascript" src="js/download.js"></script>
+  <script type="text/javascript" src="js/recommend.js"></script>
   
 </html>

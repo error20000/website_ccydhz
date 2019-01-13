@@ -152,6 +152,22 @@ public class RecommendTypeController extends BaseController<RecommendType> {
 		return super.findList(req);
 	}
 	
+	@Override
+	@RequestMapping("/findAll")
+    @ResponseBody
+	@API(name="查询所有", 
+		info="需登录认证", 
+		request={
+		}, 
+		response={
+				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
+				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
+				@ParamsInfo(name=ResultKey.DATA, type="Array", info="数据集"),
+		})
+	public String findAll(HttpServletRequest req) {
+		return super.findAll(req);
+	}
+	
 	//TODO 自定义方法
 	
 }

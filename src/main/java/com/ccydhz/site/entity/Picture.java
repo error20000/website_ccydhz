@@ -41,6 +41,8 @@ public class Picture  extends Base<Picture> {
 	private int highlight;
 	@Excel(name="排序", sort=12, value="999", length="11", isNull=1 )
 	private int sort;
+	@Excel(name="状态   0：禁用，1：启用", sort=13, value="0", length="4", isNull=1 )
+	private int status;
 	
 	//get set
 	public int getPid() {
@@ -120,6 +122,12 @@ public class Picture  extends Base<Picture> {
 	}
 	public void setSort(int sort) {
 		this.sort = sort;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 }

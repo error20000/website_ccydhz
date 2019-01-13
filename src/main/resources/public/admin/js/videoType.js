@@ -1,15 +1,12 @@
 var baseUrl = parent.window.baseUrl || '../';
 
-var queryUrl = baseUrl + "api/contact/findPage";
-var addUrl = baseUrl + "api/contact/add";
-var modUrl = baseUrl + "api/contact/update";
-var delUrl = baseUrl + "api/contact/delete";
-var uploadUrl = baseUrl + "api/file/uploadImg";
-var typeUrl = baseUrl + "api/contacttype/findAll";
-var configUrl = baseUrl + "api/contactconfig/findAll";
-
+var queryUrl = baseUrl + "api/videotype/findPage";
+var addUrl = baseUrl + "api/videotype/add";
+var modUrl = baseUrl + "api/videotype/update";
+var delUrl = baseUrl + "api/videotype/delete";
 
 var ajaxReq = parent.window.ajaxReq || "";
+
 
 var myvue = new Vue({
 	    el: '#app',
@@ -24,9 +21,6 @@ var myvue = new Vue({
 				rows: 10,
 				listLoading: false,
 				sels: [],//列表选中列
-				typeOptions:[],
-				configOptions:[],
-				uploadUrl: uploadUrl,
 				//新增界面数据
 				addFormVisible: false,//新增界面是否显示
 				addLoading: false, //loading
@@ -34,14 +28,8 @@ var myvue = new Vue({
 				addForm: {},
 				//效验
 				addFormRules: {
-					type: [
-						{  required: true, message: '请选择分类', trigger: 'blur' }
-					],
-					config: [
-						{  required: true, message: '请选择类型', trigger: 'blur' }
-					],
-					name: [
-						{  required: true, message: '请输入名称', trigger: 'blur' }
+					pid: [
+						{  required: true, message: '请输入pid', trigger: 'blur' }
 					]
 				},
 				//编辑界面数据
@@ -51,14 +39,8 @@ var myvue = new Vue({
 				editForm: {},
 				//效验
 				editFormRules: {
-					type: [
-						{  required: true, message: '请选择分类', trigger: 'blur' }
-					],
-					config: [
-						{  required: true, message: '请选择类型', trigger: 'blur' }
-					],
-					name: [
-						{  required: true, message: '请输入名称', trigger: 'blur' }
+					pid: [
+						{  required: true, message: '请输入pid', trigger: 'blur' }
 					]
 					
 				},
@@ -67,88 +49,13 @@ var myvue = new Vue({
 				//数据
 				viewForm: {},
 				
+				
 				end: ''
 			}
 		},
 		methods: {
 			formatDate: function(date){
 				return parent.window.formatDate(date, 'yyyy-MM-dd HH:mm:ss');
-			},
-			typeFormatter: function(row){
-				var name = row.type;
-				for (var i = 0; i < this.typeOptions.length; i++) {
-					var item = this.typeOptions[i];
-					if(row.type == item.pid){
-						name = item.name;
-						break
-					}
-				}
-				return name;
-			},
-			configFormatter: function(row){
-				var name = row.config;
-				for (var i = 0; i < this.configOptions.length; i++) {
-					var item = this.configOptions[i];
-					if(row.config == item.pid){
-						name = item.name;
-						break
-					}
-				}
-				return name;
-			},
-			handleAddUpload: function(res){
-				if(res.code > 0){
-					this.addForm.pic = res.data.path;
-				}else{
-					this.$message({
-						message: res.msg,
-						type: 'warning'
-					});
-				}
-			},
-			handleEditUpload: function(res){
-				if(res.code > 0){
-					this.editForm.pic = res.data.path;
-				}else{
-					this.$message({
-						message: res.msg,
-						type: 'warning'
-					});
-				}
-			},
-			handleTypeOptions: function(cb){
-				var self = this;
-				var params = {};
-				ajaxReq(typeUrl, params, function(res){
-					if(res.code > 0){
-						self.typeOptions = res.data;
-						if(typeof cb == 'function'){
-							cb();
-						}
-					}else{
-						self.$message({
-							message: res.msg,
-							type: 'warning'
-						})
-					}
-				});
-			},
-			handleConfigOptions: function(cb){
-				var self = this;
-				var params = {};
-				ajaxReq(configUrl, params, function(res){
-					if(res.code > 0){
-						self.configOptions = res.data;
-						if(typeof cb == 'function'){
-							cb();
-						}
-					}else{
-						self.$message({
-							message: res.msg,
-							type: 'warning'
-						})
-					}
-				});
 			},
 			handleSizeChange: function (val) {
 				this.rows = val;
@@ -165,11 +72,6 @@ var myvue = new Vue({
 					page: this.page,
 					rows: this.rows
 				};
-				for ( var key in this.filters) {
-					if(this.filters[key]){
-						params[key] = this.filters[key];
-					}
-				}
 				this.listLoading = true;
 				ajaxReq(queryUrl, params, function(res){
 					self.listLoading = false;
@@ -193,16 +95,9 @@ var myvue = new Vue({
 			handleAdd: function () {
 				this.addFormVisible = true;
 				this.addForm = {
-						type: '',
-						config: '',
+						pid: '',
 						name: '',
-						value: '',
-						site: '',
-						pic: '',
-						sort: 999,
-						wjs: '',
-						ajs: '',
-						ijs: ''
+						mark: 0
 				};
 			},
 			//显示编辑界面
@@ -313,11 +208,9 @@ var myvue = new Vue({
 			}
 		},
 		mounted: function() {
-			this.handleTypeOptions();
-			this.handleConfigOptions();
 			this.getList();
 		}
 	  });
 	
-
+	
 
