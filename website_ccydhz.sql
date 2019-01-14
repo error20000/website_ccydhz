@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50515
 File Encoding         : 65001
 
-Date: 2018-08-30 18:02:35
+Date: 2019-01-14 18:38:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -62,7 +62,7 @@ CREATE TABLE `s_active_config` (
   `type` int(11) DEFAULT '0' COMMENT '分类',
   `name` varchar(255) DEFAULT '' COMMENT '名称',
   `painter` varchar(255) DEFAULT '' COMMENT '画师',
-  `cv` varchar(255) DEFAULT NULL COMMENT 'CV',
+  `cv` varchar(255) DEFAULT '' COMMENT 'CV',
   `ship` varchar(255) DEFAULT '' COMMENT '舰种',
   `star` tinyint(4) DEFAULT '0' COMMENT '星级',
   `pic` varchar(255) DEFAULT '' COMMENT '图片',
@@ -79,6 +79,7 @@ CREATE TABLE `s_active_config` (
 -- ----------------------------
 -- Records of s_active_config
 -- ----------------------------
+INSERT INTO `s_active_config` VALUES ('1', '2', '11', '', '', '', '0', '', '', '', '999', '1', '', '0');
 
 -- ----------------------------
 -- Table structure for `s_active_type`
@@ -101,6 +102,26 @@ CREATE TABLE `s_active_type` (
 INSERT INTO `s_active_type` VALUES ('2', '扭蛋', '', '', '1', '5', '5');
 
 -- ----------------------------
+-- Table structure for `s_background`
+-- ----------------------------
+DROP TABLE IF EXISTS `s_background`;
+CREATE TABLE `s_background` (
+  `pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+  `name` varchar(100) DEFAULT '' COMMENT '名称',
+  `logo` varchar(255) DEFAULT '' COMMENT 'LOGO',
+  `pic1` varchar(255) DEFAULT '' COMMENT '首页背景',
+  `pic2` varchar(255) DEFAULT '' COMMENT '二级页背景',
+  `pic3` varchar(255) DEFAULT '' COMMENT '三级页背景',
+  `pic4` varchar(255) DEFAULT '' COMMENT '四级页背景',
+  `status` tinyint(4) DEFAULT '0' COMMENT '状态  0：禁用，1：启用',
+  PRIMARY KEY (`pid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of s_background
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `s_bespeak`
 -- ----------------------------
 DROP TABLE IF EXISTS `s_bespeak`;
@@ -112,11 +133,14 @@ CREATE TABLE `s_bespeak` (
   `info` varchar(255) DEFAULT '' COMMENT '附加信息',
   `info2` varchar(255) DEFAULT '' COMMENT '附加信息2',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='预约';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='预约';
 
 -- ----------------------------
 -- Records of s_bespeak
 -- ----------------------------
+INSERT INTO `s_bespeak` VALUES ('1', '2018-09-16 10:00:00', '', '', '', '');
+INSERT INTO `s_bespeak` VALUES ('2', '2018-09-15 10:00:00', '', '', '', '');
+INSERT INTO `s_bespeak` VALUES ('3', '2018-09-17 10:00:00', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for `s_bespeak_config`
@@ -135,7 +159,7 @@ CREATE TABLE `s_bespeak_config` (
 -- ----------------------------
 -- Records of s_bespeak_config
 -- ----------------------------
-INSERT INTO `s_bespeak_config` VALUES ('1', '预约', '', '2018-08-25 10:00:00', '1', '0');
+INSERT INTO `s_bespeak_config` VALUES ('1', '预约', null, '2018-09-25 10:00:00', '1', '1000');
 
 -- ----------------------------
 -- Table structure for `s_business`
@@ -149,7 +173,7 @@ CREATE TABLE `s_business` (
   `site` varchar(255) DEFAULT '' COMMENT '地址',
   `sort` int(11) DEFAULT '999' COMMENT '排序',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_business
@@ -163,13 +187,11 @@ CREATE TABLE `s_business_type` (
   `pid` int(11) NOT NULL DEFAULT '0' COMMENT '主键',
   `name` varchar(100) DEFAULT '' COMMENT '名称',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_business_type
 -- ----------------------------
-INSERT INTO `s_business_type` VALUES ('1', '合作媒体');
-INSERT INTO `s_business_type` VALUES ('2', '友情链接');
 
 -- ----------------------------
 -- Table structure for `s_contact`
@@ -178,42 +200,47 @@ DROP TABLE IF EXISTS `s_contact`;
 CREATE TABLE `s_contact` (
   `pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `type` int(11) DEFAULT '0' COMMENT '分类',
-  `label` int(11) DEFAULT '0' COMMENT '社交分类',
+  `config` int(11) DEFAULT '0' COMMENT '社交配置',
   `name` varchar(100) DEFAULT '' COMMENT '名称',
   `value` varchar(255) DEFAULT '' COMMENT '值',
   `site` varchar(255) DEFAULT '' COMMENT '地址',
   `pic` varchar(255) DEFAULT '' COMMENT '图片',
   `sort` int(11) DEFAULT '999' COMMENT '排序',
+  `wjs` text COMMENT '网页代码',
+  `ijs` text COMMENT 'iphone代码',
+  `ajs` text COMMENT 'android代码',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_contact
 -- ----------------------------
+INSERT INTO `s_contact` VALUES ('1', '1', '2', 'test33', 'test333', '3333', '20190111/20190111155359175097.jpg', '999', '<script>\n		var _hmt = _hmt || [];\n		(function() {\n		  var hm = document.createElement(\"script\");\n		  hm.src = \"//hm.baidu.com/hm.js?43c6af90fcc372e0d4dd1bd19e42d52c\";\n		  var s = document.getElementsByTagName(\"script\")[0]; \n		  s.parentNode.insertBefore(hm, s);\n		})();\n		</script>', '<script>\n		var _hmt = _hmt || [];\n		(function() {\n		  var hm = document.createElement(\"script\");\n		  hm.src = \"//hm.baidu.com/hm.js?43c6af90fcc372e0d4dd1bd19e42d52c\";\n		  var s = document.getElementsByTagName(\"script\")[0]; \n		  s.parentNode.insertBefore(hm, s);\n		})();\n		</script>', '<script>\n		var _hmt = _hmt || [];\n		(function() {\n		  var hm = document.createElement(\"script\");\n		  hm.src = \"//hm.baidu.com/hm.js?43c6af90fcc372e0d4dd1bd19e42d52c\";\n		  var s = document.getElementsByTagName(\"script\")[0]; \n		  s.parentNode.insertBefore(hm, s);\n		})();\n		</script>');
+INSERT INTO `s_contact` VALUES ('2', '1', '2', 'dddd', '123456789', '', '', '999', '', '', '');
 
 -- ----------------------------
--- Table structure for `s_contact_label`
+-- Table structure for `s_contact_config`
 -- ----------------------------
-DROP TABLE IF EXISTS `s_contact_label`;
-CREATE TABLE `s_contact_label` (
+DROP TABLE IF EXISTS `s_contact_config`;
+CREATE TABLE `s_contact_config` (
   `pid` int(11) NOT NULL DEFAULT '0' COMMENT '主键',
   `name` varchar(100) DEFAULT '' COMMENT '名称',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
--- Records of s_contact_label
+-- Records of s_contact_config
 -- ----------------------------
-INSERT INTO `s_contact_label` VALUES ('1', '微信');
-INSERT INTO `s_contact_label` VALUES ('2', '新浪微博');
-INSERT INTO `s_contact_label` VALUES ('3', '腾讯微博');
-INSERT INTO `s_contact_label` VALUES ('4', '百度贴吧');
-INSERT INTO `s_contact_label` VALUES ('5', 'FaceBook');
-INSERT INTO `s_contact_label` VALUES ('6', 'Twitter');
-INSERT INTO `s_contact_label` VALUES ('7', '邮箱');
-INSERT INTO `s_contact_label` VALUES ('8', '电话');
-INSERT INTO `s_contact_label` VALUES ('9', 'QQ');
-INSERT INTO `s_contact_label` VALUES ('10', 'TapTap');
+INSERT INTO `s_contact_config` VALUES ('1', '微信');
+INSERT INTO `s_contact_config` VALUES ('2', 'QQ');
+INSERT INTO `s_contact_config` VALUES ('3', '新浪微博');
+INSERT INTO `s_contact_config` VALUES ('4', '百度贴吧');
+INSERT INTO `s_contact_config` VALUES ('5', 'FaceBook');
+INSERT INTO `s_contact_config` VALUES ('6', 'Twitter');
+INSERT INTO `s_contact_config` VALUES ('7', '邮箱');
+INSERT INTO `s_contact_config` VALUES ('8', '电话');
+INSERT INTO `s_contact_config` VALUES ('9', 'TapTap');
+INSERT INTO `s_contact_config` VALUES ('10', '论坛');
 
 -- ----------------------------
 -- Table structure for `s_contact_type`
@@ -223,13 +250,12 @@ CREATE TABLE `s_contact_type` (
   `pid` int(11) NOT NULL DEFAULT '0' COMMENT '主键',
   `name` varchar(100) DEFAULT '' COMMENT '名称',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_contact_type
 -- ----------------------------
 INSERT INTO `s_contact_type` VALUES ('1', '游戏');
-INSERT INTO `s_contact_type` VALUES ('2', '客服');
 
 -- ----------------------------
 -- Table structure for `s_download`
@@ -240,14 +266,17 @@ CREATE TABLE `s_download` (
   `type` int(11) DEFAULT '0' COMMENT '分类',
   `name` varchar(100) DEFAULT '' COMMENT '下载名称',
   `site` varchar(255) DEFAULT '' COMMENT '下载地址',
-  `pic` varchar(255) DEFAULT '' COMMENT '下载按钮图片',
+  `pic` varchar(255) DEFAULT '' COMMENT '下载图片  按钮/二维码',
   `sort` int(11) DEFAULT '999' COMMENT '排序',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_download
 -- ----------------------------
+INSERT INTO `s_download` VALUES ('1', '3', 'test', 'http://www.baidu.com', '', '999');
+INSERT INTO `s_download` VALUES ('2', '2', 'testssss', 'http://www.qq.com', '20190111/201901111429576463544.jpg', '999');
+INSERT INTO `s_download` VALUES ('3', '1', 'test', '', '20190111/201901111432130801764.jpg', '999');
 
 -- ----------------------------
 -- Table structure for `s_download_type`
@@ -257,7 +286,7 @@ CREATE TABLE `s_download_type` (
   `pid` int(11) NOT NULL DEFAULT '0' COMMENT '主键',
   `name` varchar(100) DEFAULT '' COMMENT '名称',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_download_type
@@ -273,30 +302,41 @@ INSERT INTO `s_download_type` VALUES ('5', 'IOS越狱');
 -- ----------------------------
 DROP TABLE IF EXISTS `s_heroes`;
 CREATE TABLE `s_heroes` (
-  `pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
-  `date` varchar(20) DEFAULT NULL,
-  `name` varchar(100) DEFAULT NULL COMMENT '名称',
-  `type` int(10) DEFAULT NULL COMMENT '分类',
-  `star` tinyint(4) DEFAULT NULL COMMENT '星等',
-  `level` tinyint(4) DEFAULT NULL COMMENT '等级',
-  `img1` text COMMENT '图片',
-  `img2` text COMMENT '图片',
-  `img3` text COMMENT '图片',
-  `word` text COMMENT '描述',
-  `story` text COMMENT '背景故事',
-  `skill` text COMMENT '技能介绍',
-  `attr1` int(10) DEFAULT NULL COMMENT '属性',
-  `attr2` int(10) DEFAULT NULL COMMENT '属性',
-  `attr3` int(10) DEFAULT NULL COMMENT '属性',
-  `attr4` int(10) DEFAULT NULL COMMENT '属性',
-  `tags` text COMMENT '标签：多个标签“ , ”分隔。',
+  `pid` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+  `date` varchar(20) DEFAULT '' COMMENT '日期',
+  `type` int(10) DEFAULT '0' COMMENT '舰种',
+  `name` varchar(100) DEFAULT '' COMMENT '名称',
+  `painter` varchar(255) DEFAULT '' COMMENT '画师',
+  `cv` varchar(255) DEFAULT '' COMMENT 'CV',
+  `audio` varchar(255) DEFAULT '' COMMENT '音频',
+  `star` tinyint(4) DEFAULT '0' COMMENT '星级',
+  `desc` varchar(255) DEFAULT '' COMMENT '简介',
+  `status` tinyint(4) DEFAULT '0' COMMENT '状态  0：禁用，1：启用',
   `sort` int(11) DEFAULT '999' COMMENT '排序',
+  `sname1` varchar(255) DEFAULT '' COMMENT '技能一名称',
+  `sicon1` varchar(255) DEFAULT '' COMMENT '技能一图标',
+  `sdesc1` varchar(255) DEFAULT '' COMMENT '技能一描述',
+  `sname2` varchar(255) DEFAULT '' COMMENT '技能二名称',
+  `sicon2` varchar(255) DEFAULT '' COMMENT '技能二图标',
+  `sdesc2` varchar(255) DEFAULT '' COMMENT '技能二描述',
+  `sname3` varchar(255) DEFAULT '' COMMENT '技能三名称',
+  `sicon3` varchar(255) DEFAULT '' COMMENT '技能三图标',
+  `sdesc3` varchar(255) DEFAULT '' COMMENT '技能三描述',
+  `sname4` varchar(255) DEFAULT '' COMMENT '技能四名称',
+  `sicon4` varchar(255) DEFAULT '' COMMENT '技能四图标',
+  `sdesc4` varchar(255) DEFAULT '' COMMENT '技能四描述',
+  `icon` varchar(255) DEFAULT '' COMMENT '头像',
+  `img1` varchar(255) DEFAULT '' COMMENT 'PC图片一',
+  `img2` varchar(255) DEFAULT '' COMMENT 'PC图片二',
+  `img3` varchar(255) DEFAULT '' COMMENT '移动图片一',
+  `img4` varchar(255) DEFAULT '' COMMENT '移动图片二',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_heroes
 -- ----------------------------
+INSERT INTO `s_heroes` VALUES ('1', '2019-01-14 16:01:47', '2', '11', '21', '31', '20190114/201901141600444656109.jpg', '4', '41', '1', '999', '111', '20190114/201901141601023697524.jpg', '131', '211', '221', '231', '311', '321', '331', '411', '421', '431', '20190114/201901141601443276685.jpg', '21', '31', '41', '51');
 
 -- ----------------------------
 -- Table structure for `s_heroes_type`
@@ -306,11 +346,16 @@ CREATE TABLE `s_heroes_type` (
   `pid` int(11) NOT NULL DEFAULT '0' COMMENT '主键',
   `name` varchar(100) DEFAULT '' COMMENT '名称',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_heroes_type
 -- ----------------------------
+INSERT INTO `s_heroes_type` VALUES ('1', '战列舰');
+INSERT INTO `s_heroes_type` VALUES ('2', '驱逐舰');
+INSERT INTO `s_heroes_type` VALUES ('3', '巡洋舰');
+INSERT INTO `s_heroes_type` VALUES ('4', '航空母舰');
+INSERT INTO `s_heroes_type` VALUES ('5', '潜艇');
 
 -- ----------------------------
 -- Table structure for `s_menu`
@@ -323,7 +368,7 @@ CREATE TABLE `s_menu` (
   `site` varchar(255) DEFAULT '' COMMENT '地址',
   `icon` varchar(255) DEFAULT '' COMMENT '图标',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_menu
@@ -417,22 +462,30 @@ DROP TABLE IF EXISTS `s_news`;
 CREATE TABLE `s_news` (
   `pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `type` int(11) DEFAULT '0' COMMENT '分类',
-  `recommend` tinyint(2) DEFAULT '0' COMMENT '推荐：0--否，1--是',
+  `recommend` tinyint(4) DEFAULT '0' COMMENT '推荐  0--否，1--是',
   `illustration` varchar(255) DEFAULT '' COMMENT '插图',
   `title` varchar(255) DEFAULT '' COMMENT '标题',
-  `title2` varchar(255) DEFAULT '' COMMENT '副标题',
-  `date` varchar(20) DEFAULT '' COMMENT '日期',
-  `marks` tinyint(2) DEFAULT '0' COMMENT '使用链接：0--否，1--是',
+  `subtitle` varchar(255) DEFAULT '' COMMENT '副标题',
+  `date` varchar(20) DEFAULT '' COMMENT '日期  yyyy-MM-dd HH:mm:ss',
+  `mark` tinyint(4) DEFAULT '0' COMMENT '使用链接   0--否，1--是',
   `site` varchar(255) DEFAULT '' COMMENT '链接地址',
   `content` text COMMENT '内容',
-  `keywords` text COMMENT '关键字（seo）',
-  `description` text COMMENT '描述（seo）',
+  `keywords` text COMMENT '关键字 （seo）',
+  `description` text COMMENT '描述 （seo）',
+  `status` tinyint(4) DEFAULT '0' COMMENT '状态  0：禁用，1：启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_news
 -- ----------------------------
+INSERT INTO `s_news` VALUES ('1', '1', '0', 'test', '6月14日例行维护公告', 'test', '2019-01-09 14:41:56', '0', null, '<p>test</p>', null, null, '1');
+INSERT INTO `s_news` VALUES ('2', '1', '0', '20190109/201901091514489065054.jpg', '5月21日使用外挂的处罚公告及冻结账号名单', null, '2019-01-09 15:15:50', '0', null, '<p>sdfsdfsf</p><p>dsfsdf</p><p>sdf</p><p>sdf</p><p>sdf</p><p>s</p><p>df</p><p>sd</p><p>f</p><p>xcxcxcxcxcxcxcxc</p>', null, null, '1');
+INSERT INTO `s_news` VALUES ('3', '1', '0', null, '全民约礼！《少女前线》安卓腾讯应用宝预约盛大开启', '全民约礼！《少女前线》安卓腾讯应用宝预约盛大开启', '2019-01-09 15:43:24', '0', null, '<p class=\"ql-align-center\"><br/></p><p class=\"ql-align-center\">sdfsf</p><p class=\"ql-align-center\"><br/></p><p class=\"ql-align-center\">dsfs</p><p class=\"ql-align-center\">fs<img src=\"/20190109/201901091544453664544.jpg\"/></p><p class=\"ql-align-center\">df</p><p class=\"ql-align-center\">sd</p><p class=\"ql-align-center\">f</p><p class=\"ql-align-center\">s</p><p class=\"ql-align-center\">fs</p><p class=\"ql-align-center\"><br/></p><p class=\"ql-align-center\"><img src=\"/20190109/20190109154319593016.jpg\"/></p><p class=\"ql-align-center\"><br/></p><p class=\"ql-align-center\">sfsfsfsdfsfa</p>', null, null, '0');
+INSERT INTO `s_news` VALUES ('4', '1', '0', null, 'test', 'test', '2019-01-09 15:48:06', '0', null, '<p>tetstst</p><p><br/></p><p>setst<img src=\"/20190109/201901091548028915540.jpg\"/></p><p>dfsdfsdfsdfsdf</p><p>sdfsdfsdf</p><p>sdfsdfsd</p><p><br/></p><p>df</p><p>sf</p><p>sdf</p><p>sdf</p><p>sd</p><p>fs</p><p>df</p><p>s</p><p>a</p><p><br/></p><p><img src=\"/20190109/201901091548376633246.jpg\" width=\"741\" height=\"805\"/></p><p><br/></p><p>sd</p><p>fd</p><p><br/></p><p>f</p><p><br/></p><p>fffffffffffffffffffffffffffffffsdsdf sdfasdfsdfs</p><p>dfsd</p><p>f</p><p>sdf</p><p>sd</p><p>f</p><p>sd</p><p><br/></p>', null, null, '0');
+INSERT INTO `s_news` VALUES ('6', '1', '0', '', '', '', '2019-01-10 17:01:42', '0', '', '<p style=\"text-align: center;\">123</p>', '', '', '0');
+INSERT INTO `s_news` VALUES ('7', '1', '0', 'eeee', 'eee', 'eee', '2019-01-14 00:35:37', '1', 'eeeeee', '', '', '', '1');
+INSERT INTO `s_news` VALUES ('8', '1', '0', 'ww', 'ww', 'ww', '2019-01-14 00:38:46', '1', 'wwww', null, null, null, '1');
 
 -- ----------------------------
 -- Table structure for `s_news_type`
@@ -443,18 +496,52 @@ CREATE TABLE `s_news_type` (
   `name` varchar(100) DEFAULT '' COMMENT '名称',
   `icon` varchar(255) DEFAULT '' COMMENT '图片',
   `sort` int(11) DEFAULT '999' COMMENT '排序',
-  `home` tinyint(2) DEFAULT '1' COMMENT '首页展示',
+  `home` tinyint(4) DEFAULT '1' COMMENT '首页展示  0：否，1：是',
   `filter` tinyint(4) DEFAULT '0' COMMENT '是否过滤  0 --否，1--是    适用发布其他渠道的新闻',
+  `status` tinyint(4) DEFAULT '0' COMMENT '状态  0：禁用，1：启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_news_type
 -- ----------------------------
-INSERT INTO `s_news_type` VALUES ('1', '新闻', null, '1', '1', '0');
-INSERT INTO `s_news_type` VALUES ('2', '活动', null, '3', '1', '0');
-INSERT INTO `s_news_type` VALUES ('3', '公告', null, '2', '1', '0');
-INSERT INTO `s_news_type` VALUES ('4', '攻略', null, '4', '1', '0');
+INSERT INTO `s_news_type` VALUES ('1', '新闻', null, '1', '1', '0', '1');
+INSERT INTO `s_news_type` VALUES ('2', '活动', null, '3', '1', '0', '1');
+INSERT INTO `s_news_type` VALUES ('3', '公告', null, '2', '1', '0', '1');
+INSERT INTO `s_news_type` VALUES ('4', '攻略', null, '4', '1', '0', '1');
+
+-- ----------------------------
+-- Table structure for `s_other`
+-- ----------------------------
+DROP TABLE IF EXISTS `s_other`;
+CREATE TABLE `s_other` (
+  `pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+  `type` int(11) DEFAULT '0' COMMENT '分类',
+  `name` varchar(100) DEFAULT '' COMMENT '下载名称',
+  `site` varchar(255) DEFAULT '' COMMENT '下载地址',
+  `pic` varchar(255) DEFAULT '' COMMENT '下载图片  按钮/二维码',
+  `status` tinyint(4) DEFAULT '0' COMMENT '状态  0：禁用，1：启用',
+  PRIMARY KEY (`pid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of s_other
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `s_other_type`
+-- ----------------------------
+DROP TABLE IF EXISTS `s_other_type`;
+CREATE TABLE `s_other_type` (
+  `pid` int(11) NOT NULL DEFAULT '0' COMMENT '主键',
+  `name` varchar(100) DEFAULT '' COMMENT '名称',
+  PRIMARY KEY (`pid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of s_other_type
+-- ----------------------------
+INSERT INTO `s_other_type` VALUES ('1', '游戏服务');
 
 -- ----------------------------
 -- Table structure for `s_picture`
@@ -464,20 +551,25 @@ CREATE TABLE `s_picture` (
   `pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `type` int(11) DEFAULT '0' COMMENT '分类',
   `name` varchar(100) DEFAULT '' COMMENT '名称',
-  `pic` varchar(255) DEFAULT '' COMMENT '图片地址',
+  `pic` varchar(255) DEFAULT '' COMMENT '原图地址',
+  `pich` varchar(255) DEFAULT '' COMMENT '首页缩略图',
+  `picl` varchar(255) DEFAULT '' COMMENT '列表页缩略图',
   `date` varchar(20) DEFAULT '' COMMENT '日期',
-  `description` text COMMENT '描述',
+  `description` varchar(255) DEFAULT '' COMMENT '描述',
   `down` varchar(255) DEFAULT '' COMMENT '下载地址',
   `author` varchar(100) DEFAULT '' COMMENT '作者',
   `recommend` tinyint(2) DEFAULT '0' COMMENT '推荐  0--否，1--是',
   `highlight` tinyint(2) DEFAULT '0' COMMENT '加精  0--否，1--是',
   `sort` int(11) DEFAULT '999' COMMENT '排序',
+  `status` tinyint(4) DEFAULT '0' COMMENT '状态   0：禁用，1：启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_picture
 -- ----------------------------
+INSERT INTO `s_picture` VALUES ('1', '1', 'test', 'ttt', 'tt', 'tt', '2019-01-12 23:02:54', 't', 't', 'tttt', '1', '1', '999', '1');
+INSERT INTO `s_picture` VALUES ('2', '1', 'rr', 'rr', 'rr', 'rrr', '2019-01-12 23:03:25', 'rr', 'rr', 'rr', '0', '0', '999', '0');
 
 -- ----------------------------
 -- Table structure for `s_picture_type`
@@ -487,15 +579,16 @@ CREATE TABLE `s_picture_type` (
   `pid` int(11) NOT NULL COMMENT '主键',
   `name` varchar(100) DEFAULT '' COMMENT '名称',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_picture_type
 -- ----------------------------
-INSERT INTO `s_picture_type` VALUES ('1', '游戏原画');
-INSERT INTO `s_picture_type` VALUES ('2', '游戏壁纸');
-INSERT INTO `s_picture_type` VALUES ('3', '同人作品');
-INSERT INTO `s_picture_type` VALUES ('4', 'COS作品');
+INSERT INTO `s_picture_type` VALUES ('1', 'COSPLAY');
+INSERT INTO `s_picture_type` VALUES ('2', '同人漫画');
+INSERT INTO `s_picture_type` VALUES ('3', '壁纸（PC）');
+INSERT INTO `s_picture_type` VALUES ('4', '壁纸（手机）');
+INSERT INTO `s_picture_type` VALUES ('5', '头像');
 
 -- ----------------------------
 -- Table structure for `s_recommend`
@@ -509,15 +602,22 @@ CREATE TABLE `s_recommend` (
   `pic` varchar(255) DEFAULT '' COMMENT '图片地址',
   `marks` tinyint(2) DEFAULT '0' COMMENT '启用链接：0 -- 不用； 1 -- 启用消息；2 -- 启用地址',
   `newsId` int(11) DEFAULT '0' COMMENT '消息 id',
-  `site` varchar(255) DEFAULT NULL COMMENT '链接地址',
+  `site` varchar(255) DEFAULT '' COMMENT '链接地址',
   `status` tinyint(2) DEFAULT '0' COMMENT '状态：0 --禁用；1 -- 启用',
   `sort` int(11) DEFAULT '999' COMMENT '排序',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_recommend
 -- ----------------------------
+INSERT INTO `s_recommend` VALUES ('1', '1', '0', 'test', 'test', '0', '0', '', '1', '999');
+INSERT INTO `s_recommend` VALUES ('2', '1', '0', 'tes33', 'ttttt', '1', '3', '', '1', '999');
+INSERT INTO `s_recommend` VALUES ('3', '1', '0', 'testtt', 'eeee', '2', '0', 'http://www.baidu.com', '1', '999');
+INSERT INTO `s_recommend` VALUES ('4', '1', '1', '11111111111', '1111111', '0', '0', '', '1', '999');
+INSERT INTO `s_recommend` VALUES ('5', '1', '1', '2222222', '22222', '1', '2', '', '1', '999');
+INSERT INTO `s_recommend` VALUES ('6', '1', '1', '3333333', '33', '2', '0', 'qq.com', '1', '999');
+INSERT INTO `s_recommend` VALUES ('8', '1', '0', 'testest', 'testestset', '0', '0', '', '0', '999');
 
 -- ----------------------------
 -- Table structure for `s_recommend_type`
@@ -527,11 +627,12 @@ CREATE TABLE `s_recommend_type` (
   `pid` int(11) NOT NULL DEFAULT '0' COMMENT '主键',
   `name` varchar(100) DEFAULT '' COMMENT '名称',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_recommend_type
 -- ----------------------------
+INSERT INTO `s_recommend_type` VALUES ('1', '首页新闻栏滚动图');
 
 -- ----------------------------
 -- Table structure for `s_share`
@@ -560,22 +661,26 @@ CREATE TABLE `s_strategy` (
   `recommend` tinyint(2) DEFAULT '0' COMMENT '推荐  0--否，1--是',
   `illustration` varchar(255) DEFAULT '' COMMENT '插图',
   `title` varchar(255) DEFAULT '' COMMENT '标题',
-  `title2` varchar(255) DEFAULT '' COMMENT '副标题',
+  `subtitle` varchar(255) DEFAULT '' COMMENT '副标题',
   `date` varchar(20) DEFAULT '' COMMENT '日期',
-  `marks` tinyint(2) DEFAULT '0' COMMENT '使用链接：0--否，1--是',
+  `mark` tinyint(2) DEFAULT '0' COMMENT '使用链接：0--否，1--是',
   `site` varchar(255) DEFAULT '' COMMENT '链接地址',
   `content` text COMMENT '内容',
   `keywords` text COMMENT '关键字（seo）',
   `description` text COMMENT '描述（seo）',
   `author` varchar(255) DEFAULT '' COMMENT '作者',
-  `description2` text COMMENT '描述 文章、作者类',
+  `desc` text COMMENT '描述 文章、作者类',
   `highlight` tinyint(2) DEFAULT '0' COMMENT '加精  0--否，1--是',
+  `status` tinyint(4) DEFAULT '0' COMMENT '状态  0：禁用，1：启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_strategy
 -- ----------------------------
+INSERT INTO `s_strategy` VALUES ('1', '1', '0', 'test', 'test', 'test', '2019-01-14 01:28:43', '1', 'test', null, null, null, 'test', 'test', '1', '1');
+INSERT INTO `s_strategy` VALUES ('2', '1', '1', 'ttt', 'test', 'sstt', '2019-01-14 01:29:01', '0', '', '<p>tttt</p>', '', '', 'ttt', 'ttt', '1', '1');
+INSERT INTO `s_strategy` VALUES ('3', '1', '1', 'ssss', 'test', 'eesss', '2019-01-01 00:00:00', '0', '', '<p>ssssssssssssss</p>', 'sssss,ssss,sss', 'ssssssss,sssss,ssssss', 'ssss', 'sssssssss', '1', '0');
 
 -- ----------------------------
 -- Table structure for `s_strategy_type`
@@ -586,13 +691,13 @@ CREATE TABLE `s_strategy_type` (
   `name` varchar(100) DEFAULT '' COMMENT '名称',
   `icon` varchar(255) DEFAULT '' COMMENT '图片',
   `sort` int(11) DEFAULT '999' COMMENT '排序',
-  `home` tinyint(2) DEFAULT '1' COMMENT '首页展示',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_strategy_type
 -- ----------------------------
+INSERT INTO `s_strategy_type` VALUES ('1', '同人文学', null, '999');
 
 -- ----------------------------
 -- Table structure for `s_user`
@@ -666,11 +771,15 @@ CREATE TABLE `s_video` (
   `type` int(11) DEFAULT '0' COMMENT '分类',
   `name` varchar(100) DEFAULT '' COMMENT '名称',
   `pic` varchar(255) DEFAULT '' COMMENT '封面图片',
-  `ogg` varchar(255) DEFAULT '' COMMENT 'h5OGG',
-  `mp4` varchar(255) DEFAULT '' COMMENT 'h5MP4',
-  `webm` varchar(255) DEFAULT '' COMMENT 'h5WEBM',
+  `mark` tinyint(4) DEFAULT '0' COMMENT '类型  0：视频，1：音频',
+  `ogg` varchar(255) DEFAULT '' COMMENT 'OGG',
+  `mp4` varchar(255) DEFAULT '' COMMENT 'MP4',
+  `webm` varchar(255) DEFAULT '' COMMENT 'WEBM',
   `flash` varchar(255) DEFAULT '' COMMENT 'flash',
-  `site` varchar(255) DEFAULT '' COMMENT '网址',
+  `video` varchar(255) DEFAULT '' COMMENT '视频网址',
+  `mp3` varchar(255) DEFAULT '' COMMENT 'MP3',
+  `wav` varchar(255) DEFAULT '' COMMENT 'WAV',
+  `audio` varchar(255) DEFAULT '' COMMENT '音频网址',
   `date` varchar(20) DEFAULT '' COMMENT '发布日期',
   `description` text COMMENT '描述',
   `author` varchar(255) DEFAULT '' COMMENT '作者',
@@ -678,12 +787,17 @@ CREATE TABLE `s_video` (
   `highlight` tinyint(2) DEFAULT '0' COMMENT '加精  0--否，1--是',
   `down` varchar(255) DEFAULT '' COMMENT '下载地址',
   `sort` int(11) DEFAULT '999' COMMENT '排序',
+  `status` tinyint(4) DEFAULT '0' COMMENT '状态   0：禁用，1：启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_video
 -- ----------------------------
+INSERT INTO `s_video` VALUES ('1', '1', 'test', 'ttt', '0', 'tt', 'tt', 'tt', 'tt', 'ttt', null, null, null, null, 'tt', 'tt', '1', '1', 'tt', '999', '1');
+INSERT INTO `s_video` VALUES ('2', '2', 'ee2', 'ee2', '0', 'ee2', 'ee2', 'ee2', 'ee2', 'ee2', null, null, null, null, 'ee2', 'ee2', '0', '0', 'ee2', '999', '0');
+INSERT INTO `s_video` VALUES ('3', '3', 'dd', 'dd', '1', '', '', '', '', '', 'dd', 'dd', 'dd', '', 'dd', 'dd', '1', '1', 'dd', '999', '1');
+INSERT INTO `s_video` VALUES ('4', '1', '', '', '0', '', '', '', '', '', '', '', '', '2019-01-14 00:04:39', '', '', '0', '0', '', '999', '0');
 
 -- ----------------------------
 -- Table structure for `s_video_type`
@@ -692,10 +806,13 @@ DROP TABLE IF EXISTS `s_video_type`;
 CREATE TABLE `s_video_type` (
   `pid` int(11) NOT NULL DEFAULT '0' COMMENT '主键',
   `name` varchar(100) DEFAULT '' COMMENT '名称',
+  `mark` tinyint(4) DEFAULT '0' COMMENT '类型  0：视频，1：音频',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_video_type
 -- ----------------------------
-INSERT INTO `s_video_type` VALUES ('1', '官网首页视频');
+INSERT INTO `s_video_type` VALUES ('1', '官网首页视频', '0');
+INSERT INTO `s_video_type` VALUES ('2', '同人影视', '0');
+INSERT INTO `s_video_type` VALUES ('3', '音乐', '1');

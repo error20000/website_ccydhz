@@ -27,47 +27,49 @@ public class Heroes  extends Base<Heroes> {
 	private String painter;
 	@Excel(name="CV", sort=5, length="255", isNull=1 )
 	private String cv;
-	@Excel(name="星级", sort=6, value="0", length="4", isNull=1 )
+	@Excel(name="音频", sort=6, length="255", isNull=1 )
+	private String audio;
+	@Excel(name="星级", sort=7, value="0", length="4", isNull=1 )
 	private int star;
-	@Excel(name="简介", sort=7, length="255", isNull=1 )
+	@Excel(name="简介", sort=8, length="255", isNull=1 )
 	private String desc;
-	@Excel(name="状态  0：禁用，1：启用", sort=8, value="0", length="4", isNull=1 )
+	@Excel(name="状态  0：禁用，1：启用", sort=9, value="0", length="4", isNull=1 )
 	private int status;
-	@Excel(name="排序", sort=9, value="999", length="11", isNull=1 )
+	@Excel(name="排序", sort=10, value="999", length="11", isNull=1 )
 	private int sort;
-	@Excel(name="技能一名称", sort=10, length="255", isNull=1 )
+	@Excel(name="技能一名称", sort=11, length="255", isNull=1 )
 	private String sname1;
-	@Excel(name="技能一图标", sort=11, length="255", isNull=1 )
+	@Excel(name="技能一图标", sort=12, length="255", isNull=1 )
 	private String sicon1;
-	@Excel(name="技能一描述", sort=12, length="255", isNull=1 )
+	@Excel(name="技能一描述", sort=13, length="255", isNull=1 )
 	private String sdesc1;
-	@Excel(name="技能二名称", sort=13, length="255", isNull=1 )
+	@Excel(name="技能二名称", sort=14, length="255", isNull=1 )
 	private String sname2;
-	@Excel(name="技能二图标", sort=14, length="255", isNull=1 )
+	@Excel(name="技能二图标", sort=15, length="255", isNull=1 )
 	private String sicon2;
-	@Excel(name="技能二描述", sort=15, length="255", isNull=1 )
+	@Excel(name="技能二描述", sort=16, length="255", isNull=1 )
 	private String sdesc2;
-	@Excel(name="技能三名称", sort=16, length="255", isNull=1 )
+	@Excel(name="技能三名称", sort=17, length="255", isNull=1 )
 	private String sname3;
-	@Excel(name="技能三图标", sort=17, length="255", isNull=1 )
+	@Excel(name="技能三图标", sort=18, length="255", isNull=1 )
 	private String sicon3;
-	@Excel(name="技能三描述", sort=18, length="255", isNull=1 )
+	@Excel(name="技能三描述", sort=19, length="255", isNull=1 )
 	private String sdesc3;
-	@Excel(name="技能四名称", sort=19, length="255", isNull=1 )
+	@Excel(name="技能四名称", sort=20, length="255", isNull=1 )
 	private String sname4;
-	@Excel(name="技能四图标", sort=20, length="255", isNull=1 )
+	@Excel(name="技能四图标", sort=21, length="255", isNull=1 )
 	private String sicon4;
-	@Excel(name="技能四描述", sort=21, length="255", isNull=1 )
+	@Excel(name="技能四描述", sort=22, length="255", isNull=1 )
 	private String sdesc4;
-	@Excel(name="头像", sort=22, length="255", isNull=1 )
+	@Excel(name="头像", sort=23, length="255", isNull=1 )
 	private String icon;
-	@Excel(name="PC图片一", sort=23, length="255", isNull=1 )
+	@Excel(name="PC图片一", sort=24, length="255", isNull=1 )
 	private String img1;
-	@Excel(name="PC图片二", sort=24, length="255", isNull=1 )
+	@Excel(name="PC图片二", sort=25, length="255", isNull=1 )
 	private String img2;
-	@Excel(name="移动图片一", sort=25, length="255", isNull=1 )
+	@Excel(name="移动图片一", sort=26, length="255", isNull=1 )
 	private String img3;
-	@Excel(name="移动图片二", sort=26, length="255", isNull=1 )
+	@Excel(name="移动图片二", sort=27, length="255", isNull=1 )
 	private String img4;
 	
 	//get set
@@ -106,6 +108,12 @@ public class Heroes  extends Base<Heroes> {
 	}
 	public void setCv(String cv) {
 		this.cv = cv;
+	}
+	public String getAudio() {
+		return audio;
+	}
+	public void setAudio(String audio) {
+		this.audio = audio;
 	}
 	public int getStar() {
 		return star;

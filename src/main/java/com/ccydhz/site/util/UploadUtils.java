@@ -24,8 +24,8 @@ public class UploadUtils {
 
 	private static String imgFiles = "bmp,gif,jpeg,jpg,png,svg";
 	private static String docFiles = "csv,doc,docx,pdf,ppt,pptx,txt,xls,xlsx,md";
-	private static String movFiles = "3gp,asf,avi,fla,flv,mov,mkv,mp4,ogg,webm,wmv,ra,ram,rm,rmvb,swf";
-	private static String allowFiles = imgFiles+","+docFiles+","+movFiles+","+"rar,zip,psd,mp3,wav";
+	private static String movFiles = "3gp,asf,avi,flv,f4v,mov,mkv,mp4,ogg,webm,wmv,ra,ram,rm,rmvb,swf,mp3,aac,wav,flac,wma";
+	private static String allowFiles = imgFiles+","+docFiles+","+movFiles+","+"rar,zip,tar,gz,7z,psd,xml";
 	
 	public static Config baseConfig = null;
 	

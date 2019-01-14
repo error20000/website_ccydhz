@@ -107,24 +107,18 @@ new Vue({
 		    },{
 		        path: '',
 		        component: "",
-		        name: '社交管理',
+		        name: '新闻管理',
 		        iconCls: 'el-icon-menu',
 		        children: [{
-			        path: 'contact.html',
+			        path: 'news.html',
 			        component: "",
-			        name: '社交配置',
+			        name: '新闻发布',
 			        iconCls: '',
 			        children: []
 			    }/*,{
-			        path: 'contactConfig.html',
+			        path: 'newsType.html',
 			        component: "",
-			        name: '社交类型',
-			        iconCls: '',
-			        children: []
-			    },{
-			        path: 'contactType.html',
-			        component: "",
-			        name: '社交分类',
+			        name: '新闻分类',
 			        iconCls: '',
 			        children: []
 			    }*/]
@@ -149,6 +143,30 @@ new Vue({
 		    },{
 		        path: '',
 		        component: "",
+		        name: '社交管理',
+		        iconCls: 'el-icon-menu',
+		        children: [{
+			        path: 'contact.html',
+			        component: "",
+			        name: '社交配置',
+			        iconCls: '',
+			        children: []
+			    }/*,{
+			        path: 'contactConfig.html',
+			        component: "",
+			        name: '社交类型',
+			        iconCls: '',
+			        children: []
+			    },{
+			        path: 'contactType.html',
+			        component: "",
+			        name: '社交分类',
+			        iconCls: '',
+			        children: []
+			    }*/]
+		    },{
+		        path: '',
+		        component: "",
 		        name: '游戏音画',
 		        iconCls: 'el-icon-menu',
 		        children: [{
@@ -157,52 +175,52 @@ new Vue({
 			        name: '图集配置',
 			        iconCls: '',
 			        children: []
-			    },{
+			    }/*,{
 			        path: 'pictureType.html',
 			        component: "",
 			        name: '图集分类',
 			        iconCls: '',
 			        children: []
-			    },{
+			    }*/,{
 			        path: 'video.html',
 			        component: "",
 			        name: '影音配置',
 			        iconCls: '',
 			        children: []
-			    },{
+			    }/*,{
 			        path: 'videoType.html',
 			        component: "",
 			        name: '影音分类',
 			        iconCls: '',
 			        children: []
-			    },{
+			    }*/,{
 			        path: 'strategy.html',
 			        component: "",
 			        name: '文库配置',
 			        iconCls: '',
 			        children: []
-			    },{
+			    }/*,{
 			        path: 'strategyType.html',
 			        component: "",
 			        name: '文库分类',
 			        iconCls: '',
 			        children: []
-			    }]
+			    }*/]
 		    },{
 		        path: '',
 		        component: "",
-		        name: '新闻管理',
+		        name: '游戏角色',
 		        iconCls: 'el-icon-menu',
 		        children: [{
-			        path: 'news.html',
+			        path: 'heroes.html',
 			        component: "",
-			        name: '新闻发布',
+			        name: '角色配置',
 			        iconCls: '',
 			        children: []
 			    }/*,{
-			        path: 'newsType.html',
+			        path: 'heroesType.html',
 			        component: "",
-			        name: '新闻分类',
+			        name: '角色分类',
 			        iconCls: '',
 			        children: []
 			    }*/]

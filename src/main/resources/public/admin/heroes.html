@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="css/animate.css">
+  <link rel="stylesheet" href="css/index.css">
+  <link href="https://cdn.bootcss.com/element-ui/2.4.0/theme-chalk/index.css" rel="stylesheet">
+  <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+  <style>
+  .demo-table-expand {
+    font-size: 0;
+  }
+  .demo-table-expand label {
+    width: 90px;
+    color: #99a9bf;
+  }
+  .demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
+  }
+  .view img{
+  	max-width: 100%;
+  }
+  .fieldset{
+    border: none;
+    font-size: 12px;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+    margin-bottom: 18px; 
+  }
+  .fieldset .legend{
+    color: #74767b; 
+    margin-left: 10px;
+  }
+</style>
+</head>
+<body class="animated fadeInRight">
+  <div id="app">
+    <section>
+		<!--工具条-->
+		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+			<el-col :span="6" >
+				<el-form :inline="true" :model="filters">
+					<el-form-item>
+						<el-button type="primary" @click="handleAdd">新增</el-button>
+					</el-form-item>
+				</el-form>
+			</el-col>
+			<el-col :span="18">
+				<el-form :inline="true" :model="filters" style="float: right;">
+					<el-form-item>
+						<el-select v-model="filters.type" placeholder="请选择分类">
+							<el-option label="全部" :value="0"></el-option>
+						    <el-option
+						      v-for="item in typeOptions"
+						      :key="item.pid"
+						      :label="item.name"
+						      :value="item.pid">
+						    </el-option>
+					 	</el-select>
+					</el-form-item>
+					<el-form-item>
+						<el-button type="primary" @click="getList">查询</el-button>
+					</el-form-item>
+				</el-form>
+			</el-col>
+		</el-col>
+
+		<!--列表-->
+		<el-table :data="list" highlight-current-row border v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" class="mytable" >
+			<el-table-column type="expand">
+		      <template slot-scope="props">
+		        <el-form label-position="left" inline class="demo-table-expand">
+		          <el-form-item label="PID">
+		            <span>{{ props.row.pid }}</span>
+		          </el-form-item>
+		          <el-form-item label="分类">
+		            <span>{{ typeFormatter(props.row) }}</span>
+		          </el-form-item>
+		          <el-form-item label="名称">
+		            <span>{{ props.row.name }}</span>
+		          </el-form-item>
+		          <el-form-item label="画师">
+		            <span>{{ props.row.painter }}</span>
+		          </el-form-item>
+		          <el-form-item label="CV">
+		            <span>{{ props.row.cv }}</span>
+		          </el-form-item>
+		          <el-form-item label="音频">
+		            <span>{{ props.row.audio }}</span>
+		          </el-form-item>
+		          <el-form-item label="星级">
+		            <el-rate style="margin-top: 10px;" show-score disabled v-model="props.row.star"
+				    	:colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="starMaxNum">
+				  	</el-rate>
+		          </el-form-item>
+		          <el-form-item label="状态">
+		            <span>{{ props.row.status ? '启用': '禁用' }}</span>
+		          </el-form-item>
+		          <el-form-item label="排序">
+		            <span>{{ props.row.sort }}</span>
+		          </el-form-item>
+		          <el-form-item label="日期">
+		            <span>{{ props.row.date }}</span>
+		          </el-form-item>
+		          <el-form-item label="简介">
+		            <span>{{ props.row.desc }}</span>
+		          </el-form-item>
+		          <el-form-item>
+		          </el-form-item>
+		          <!-- 技能 -->
+		          <el-form-item label="技能一名称">
+		            <span>{{ props.row.sname1 }}</span>
+		          </el-form-item>
+		          <el-form-item>
+		          </el-form-item>
+		          <el-form-item label="技能一图标">
+		            <span style="max-width: 100px; max-height: 100px;display: inline-block;">
+		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.sicon1"/>
+		            </span>
+		          </el-form-item>
+		          <el-form-item label="技能一描述">
+		            <span>{{ props.row.sdesc1 }}</span>
+		          </el-form-item>
+		          
+		          <el-form-item label="技能二名称">
+		            <span>{{ props.row.sname2 }}</span>
+		          </el-form-item>
+		          <el-form-item>
+		          </el-form-item>
+		          <el-form-item label="技能二图标">
+		            <span style="max-width: 100px; max-height: 100px;display: inline-block;">
+		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.sicon2"/>
+		            </span>
+		          </el-form-item>
+		          <el-form-item label="技能二描述">
+		            <span>{{ props.row.sdesc2 }}</span>
+		          </el-form-item>
+		          
+		          <el-form-item label="技能三名称">
+		            <span>{{ props.row.sname3 }}</span>
+		          </el-form-item>
+		          <el-form-item>
+		          </el-form-item>
+		          <el-form-item label="技能三图标">
+		            <span style="max-width: 100px; max-height: 100px;display: inline-block;">
+		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.sicon3"/>
+		            </span>
+		          </el-form-item>
+		          <el-form-item label="技能三描述">
+		            <span>{{ props.row.sdesc3 }}</span>
+		          </el-form-item>
+		          
+		          <el-form-item label="技能四名称">
+		            <span>{{ props.row.sname4 }}</span>
+		          </el-form-item>
+		          <el-form-item>
+		          </el-form-item>
+		          <el-form-item label="技能四图标">
+		            <span style="max-width: 100px; max-height: 100px;display: inline-block;">
+		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.sicon4"/>
+		            </span>
+		          </el-form-item>
+		          <el-form-item label="技能四描述">
+		            <span>{{ props.row.sdesc4 }}</span>
+		          </el-form-item>
+		          
+		          <!-- 图片-->
+		          <el-form-item label="头像">
+		            <span style="max-width: 100px; max-height: 100px;display: inline-block;">
+		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.icon"/>
+		            </span>
+		          </el-form-item>
+		          <el-form-item>
+		          </el-form-item>
+		          <el-form-item label="PC大图一">
+		            <span style="max-width: 100px; max-height: 100px;display: inline-block;">
+		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.img1"/>
+		            </span>
+		          </el-form-item>
+		          <el-form-item label="PC大图二">
+		            <span style="max-width: 100px; max-height: 100px;display: inline-block;">
+		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.img2"/>
+		            </span>
+		          </el-form-item>
+		          <el-form-item label="移动大图一">
+		            <span style="max-width: 100px; max-height: 100px;display: inline-block;">
+		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.img3"/>
+		            </span>
+		          </el-form-item>
+		          <el-form-item label="移动大图二">
+		            <span style="max-width: 100px; max-height: 100px;display: inline-block;">
+		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.img4"/>
+		            </span>
+		          </el-form-item>
+		        </el-form>
+		      </template>
+		    </el-table-column>
+			<el-table-column label="PID" prop="pid">
+			</el-table-column>
+			<el-table-column label="舰种" prop="type" :formatter="typeFormatter">
+			</el-table-column>
+			<el-table-column label="名称" prop="name" >
+			</el-table-column>
+			<el-table-column label="画师" prop="painter" >
+			</el-table-column>
+			<el-table-column label="CV" prop="cv" >
+			</el-table-column>
+			<el-table-column label="星级" prop="star" >
+			</el-table-column>
+			<el-table-column label="状态" prop="status" :formatter="(r,c) => { return r.status ? '启用': '禁用';}" width="60px">
+			</el-table-column>
+			<el-table-column label="排序" prop="sort" >
+			</el-table-column>
+			<el-table-column fixed="right" label="操作" width="220">
+				<template scope="scope">
+					<el-button size="small" @click="handleView(scope.$index, scope.row)">查看</el-button>
+					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+					<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+				</template>
+			</el-table-column>
+		</el-table>
+
+		<!--工具条-->
+		<el-col :span="24" class="toolbar">
+			<!-- <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button> -->
+			<el-pagination layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-sizes="[10, 20, 50, 100]" :page-size="rows" :total="total" style="float:right;">
+			</el-pagination>
+		</el-col>
+		
+		<!--新增界面-->
+		<el-dialog title="新增" :visible.sync="addFormVisible" :close-on-click-modal="false">
+			<el-form :model="addForm" label-width="100px" :rules="addFormRules" ref="addForm">
+				<el-tabs v-model="activeName" >
+				    <el-tab-pane label="基本信息" name="first">
+						<el-form-item label="舰种" prop="type">
+							<el-select v-model="addForm.type" placeholder="请选择分类">
+							    <el-option
+							      v-for="item in typeOptions"
+							      :key="item.pid"
+							      :label="item.name"
+							      :value="item.pid">
+							    </el-option>
+							 </el-select>
+						</el-form-item>
+						<el-form-item label="名称" prop="name">
+							<el-input type="text" v-model="addForm.name"></el-input>
+						</el-form-item>
+						<el-form-item label="画师" prop="painter">
+							<el-input type="text" v-model="addForm.painter"></el-input>
+						</el-form-item>
+						<el-form-item label="CV" prop="cv">
+							<el-input type="text" v-model="addForm.cv"></el-input>
+						</el-form-item>
+						<el-form-item label="音频" prop="audio">
+							<el-input type="text" v-model="addForm.audio" placeholder="请上传音频">
+								<el-upload slot="append"
+								  :action="uploadFileUrl"
+								  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'audio');}"
+								  :show-file-list="false">
+								  <el-button icon="el-icon-upload"></el-button>
+								</el-upload>
+							</el-input>
+						</el-form-item>
+						<el-form-item label="星级" prop="star">
+							<el-rate style="margin-top: 10px;" show-score v-model="addForm.star"
+						    	:colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="starMaxNum">
+						  	</el-rate>
+						</el-form-item>
+						<el-form-item label="状态" prop="status">
+							<el-radio-group v-model="addForm.status">
+						      <el-radio :label="0">禁用</el-radio>
+						      <el-radio :label="1">启用</el-radio>
+						    </el-radio-group>
+						</el-form-item>
+						<el-form-item label="排序" prop="sort">
+							<el-input type="text" v-model="addForm.sort"></el-input>
+						</el-form-item>
+						<el-form-item label="简介" prop="desc">
+							<el-input type="textarea" v-model="addForm.desc"></el-input>
+						</el-form-item>
+						
+					</el-tab-pane>
+				    <el-tab-pane label="技能信息" name="second">
+						<fieldset class="fieldset">
+		               		<legend class="legend">技能一</legend>
+							<el-form-item label="名称" prop="sname1">
+								<el-input type="text" v-model="addForm.sname1"></el-input>
+							</el-form-item>
+							<el-form-item label="图标" prop="sicon1">
+								<el-input type="text" v-model="addForm.sicon1">
+									<el-upload slot="append"
+									  :action="uploadUrl"
+									  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'sicon1');}"
+									  :show-file-list="false">
+									  <el-button icon="el-icon-upload"></el-button>
+									</el-upload>
+								</el-input>
+							</el-form-item>
+							<el-form-item label="描述" prop="sdesc1">
+								<el-input type="textarea" v-model="addForm.sdesc1"></el-input>
+							</el-form-item>
+						</fieldset>
+						<fieldset class="fieldset">
+		               		<legend class="legend">技能二</legend>
+							<el-form-item label="名称" prop="sname2">
+								<el-input type="text" v-model="addForm.sname2"></el-input>
+							</el-form-item>
+							<el-form-item label="图标" prop="sicon2">
+								<el-input type="text" v-model="addForm.sicon2">
+									<el-upload slot="append"
+									  :action="uploadUrl"
+									  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'sicon2');}"
+									  :show-file-list="false">
+									  <el-button icon="el-icon-upload"></el-button>
+									</el-upload>
+								</el-input>
+							</el-form-item>
+							<el-form-item label="描述" prop="sdesc2">
+								<el-input type="textarea" v-model="addForm.sdesc2"></el-input>
+							</el-form-item>
+						</fieldset>
+						<fieldset class="fieldset">
+		               		<legend class="legend">技能三</legend>
+							<el-form-item label="名称" prop="sname3">
+								<el-input type="text" v-model="addForm.sname3"></el-input>
+							</el-form-item>
+							<el-form-item label="图标" prop="sicon3">
+								<el-input type="text" v-model="addForm.sicon3">
+									<el-upload slot="append"
+									  :action="uploadUrl"
+									  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'sicon3');}"
+									  :show-file-list="false">
+									  <el-button icon="el-icon-upload"></el-button>
+									</el-upload>
+								</el-input>
+							</el-form-item>
+							<el-form-item label="描述" prop="sdesc3">
+								<el-input type="textarea" v-model="addForm.sdesc3"></el-input>
+							</el-form-item>
+						</fieldset>
+						<fieldset class="fieldset">
+		               		<legend class="legend">技能四（备用）</legend>
+							<el-form-item label="名称" prop="sname4">
+								<el-input type="text" v-model="addForm.sname4"></el-input>
+							</el-form-item>
+							<el-form-item label="图标" prop="sicon4">
+								<el-input type="text" v-model="addForm.sicon4">
+									<el-upload slot="append"
+									  :action="uploadUrl"
+									  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'sicon4');}"
+									  :show-file-list="false">
+									  <el-button icon="el-icon-upload"></el-button>
+									</el-upload>
+								</el-input>
+							</el-form-item>
+							<el-form-item label="描述" prop="sdesc4">
+								<el-input type="textarea" v-model="addForm.sdesc4"></el-input>
+							</el-form-item>
+						</fieldset>
+					</el-tab-pane>
+				    <el-tab-pane label="图片信息" name="third">
+						<el-form-item label="头像" prop="icon">
+							<el-input type="text" v-model="addForm.icon" placeholder="请上传头像">
+								<el-upload slot="append"
+								  :action="uploadUrl"
+								  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'icon');}"
+								  :show-file-list="false">
+								  <el-button icon="el-icon-upload"></el-button>
+								</el-upload>
+							</el-input>
+						</el-form-item>
+						<el-form-item label="PC大图一" prop="img1">
+							<el-input type="text" v-model="addForm.img1" placeholder="请上传图片">
+								<el-upload slot="append"
+								  :action="uploadUrl"
+								  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'img1');}"
+								  :show-file-list="false">
+								  <el-button icon="el-icon-upload"></el-button>
+								</el-upload>
+							</el-input>
+						</el-form-item>
+						<el-form-item label="PC大图二" prop="img2">
+							<el-input type="text" v-model="addForm.img2" placeholder="备用，PC大图">
+								<el-upload slot="append"
+								  :action="uploadUrl"
+								  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'img2');}"
+								  :show-file-list="false">
+								  <el-button icon="el-icon-upload"></el-button>
+								</el-upload>
+							</el-input>
+						</el-form-item>
+						<el-form-item label="移动大图一" prop="img3">
+							<el-input type="text" v-model="addForm.img3" placeholder="请上传图片">
+								<el-upload slot="append"
+								  :action="uploadUrl"
+								  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'img3');}"
+								  :show-file-list="false">
+								  <el-button icon="el-icon-upload"></el-button>
+								</el-upload>
+							</el-input>
+						</el-form-item>
+						<el-form-item label="移动大图二" prop="img4">
+							<el-input type="text" v-model="addForm.img4" placeholder="备用，移动大图">
+								<el-upload slot="append"
+								  :action="uploadUrl"
+								  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'img4');}"
+								  :show-file-list="false">
+								  <el-button icon="el-icon-upload"></el-button>
+								</el-upload>
+							</el-input>
+						</el-form-item>
+					</el-tab-pane>
+			    </el-tabs>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click="addClose">取消</el-button>
+				<el-button type="primary" @click="addSubmit" :loading="addLoading">提交</el-button>
+			</div>
+		</el-dialog>
+
+		<!--编辑界面-->
+		<el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
+			<el-form :model="editForm" label-width="100px" :rules="editFormRules" ref="editForm">
+				<el-tabs v-model="activeName" >
+				    <el-tab-pane label="基本信息" name="first">
+						<el-form-item label="舰种" prop="type">
+							<el-select v-model="editForm.type" placeholder="请选择分类">
+							    <el-option
+							      v-for="item in typeOptions"
+							      :key="item.pid"
+							      :label="item.name"
+							      :value="item.pid">
+							    </el-option>
+							 </el-select>
+						</el-form-item>
+						<el-form-item label="名称" prop="name">
+							<el-input type="text" v-model="editForm.name"></el-input>
+						</el-form-item>
+						<el-form-item label="画师" prop="painter">
+							<el-input type="text" v-model="editForm.painter"></el-input>
+						</el-form-item>
+						<el-form-item label="CV" prop="cv">
+							<el-input type="text" v-model="editForm.cv"></el-input>
+						</el-form-item>
+						<el-form-item label="音频" prop="audio">
+							<el-input type="text" v-model="editForm.audio" placeholder="请上传音频">
+								<el-upload slot="append"
+								  :action="uploadFileUrl"
+								  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'audio');}"
+								  :show-file-list="false">
+								  <el-button icon="el-icon-upload"></el-button>
+								</el-upload>
+							</el-input>
+						</el-form-item>
+						<el-form-item label="星级" prop="star">
+							<el-rate style="margin-top: 10px;" show-score v-model="editForm.star"
+						    	:colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="starMaxNum">
+						  	</el-rate>
+						</el-form-item>
+						<el-form-item label="状态" prop="status">
+							<el-radio-group v-model="editForm.status">
+						      <el-radio :label="0">禁用</el-radio>
+						      <el-radio :label="1">启用</el-radio>
+						    </el-radio-group>
+						</el-form-item>
+						<el-form-item label="排序" prop="sort">
+							<el-input type="text" v-model="editForm.sort"></el-input>
+						</el-form-item>
+						<el-form-item label="简介" prop="desc">
+							<el-input type="textarea" v-model="editForm.desc"></el-input>
+						</el-form-item>
+						
+					</el-tab-pane>
+				    <el-tab-pane label="技能信息" name="second">
+						<fieldset class="fieldset">
+		               		<legend class="legend">技能一</legend>
+							<el-form-item label="名称" prop="sname1">
+								<el-input type="text" v-model="editForm.sname1"></el-input>
+							</el-form-item>
+							<el-form-item label="图标" prop="sicon1">
+								<el-input type="text" v-model="editForm.sicon1">
+									<el-upload slot="append"
+									  :action="uploadUrl"
+									  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'sicon1');}"
+									  :show-file-list="false">
+									  <el-button icon="el-icon-upload"></el-button>
+									</el-upload>
+								</el-input>
+							</el-form-item>
+							<el-form-item label="描述" prop="sdesc1">
+								<el-input type="textarea" v-model="editForm.sdesc1"></el-input>
+							</el-form-item>
+						</fieldset>
+						<fieldset class="fieldset">
+		               		<legend class="legend">技能二</legend>
+							<el-form-item label="名称" prop="sname2">
+								<el-input type="text" v-model="editForm.sname2"></el-input>
+							</el-form-item>
+							<el-form-item label="图标" prop="sicon2">
+								<el-input type="text" v-model="editForm.sicon2">
+									<el-upload slot="append"
+									  :action="uploadUrl"
+									  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'sicon2');}"
+									  :show-file-list="false">
+									  <el-button icon="el-icon-upload"></el-button>
+									</el-upload>
+								</el-input>
+							</el-form-item>
+							<el-form-item label="描述" prop="sdesc2">
+								<el-input type="textarea" v-model="editForm.sdesc2"></el-input>
+							</el-form-item>
+						</fieldset>
+						<fieldset class="fieldset">
+		               		<legend class="legend">技能三</legend>
+							<el-form-item label="名称" prop="sname3">
+								<el-input type="text" v-model="editForm.sname3"></el-input>
+							</el-form-item>
+							<el-form-item label="图标" prop="sicon3">
+								<el-input type="text" v-model="editForm.sicon3">
+									<el-upload slot="append"
+									  :action="uploadUrl"
+									  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'sicon3');}"
+									  :show-file-list="false">
+									  <el-button icon="el-icon-upload"></el-button>
+									</el-upload>
+								</el-input>
+							</el-form-item>
+							<el-form-item label="描述" prop="sdesc3">
+								<el-input type="textarea" v-model="editForm.sdesc3"></el-input>
+							</el-form-item>
+						</fieldset>
+						<fieldset class="fieldset">
+		               		<legend class="legend">技能四（备用）</legend>
+							<el-form-item label="名称" prop="sname4">
+								<el-input type="text" v-model="editForm.sname4"></el-input>
+							</el-form-item>
+							<el-form-item label="图标" prop="sicon4">
+								<el-input type="text" v-model="editForm.sicon4">
+									<el-upload slot="append"
+									  :action="uploadUrl"
+									  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'sicon4');}"
+									  :show-file-list="false">
+									  <el-button icon="el-icon-upload"></el-button>
+									</el-upload>
+								</el-input>
+							</el-form-item>
+							<el-form-item label="描述" prop="sdesc4">
+								<el-input type="textarea" v-model="editForm.sdesc4"></el-input>
+							</el-form-item>
+						</fieldset>
+					</el-tab-pane>
+				    <el-tab-pane label="图片信息" name="third">
+						<el-form-item label="头像" prop="icon">
+							<el-input type="text" v-model="editForm.icon" placeholder="请上传头像">
+								<el-upload slot="append"
+								  :action="uploadUrl"
+								  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'icon');}"
+								  :show-file-list="false">
+								  <el-button icon="el-icon-upload"></el-button>
+								</el-upload>
+							</el-input>
+						</el-form-item>
+						<el-form-item label="PC大图一" prop="img1">
+							<el-input type="text" v-model="editForm.img1" placeholder="请上传图片">
+								<el-upload slot="append"
+								  :action="uploadUrl"
+								  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'img1');}"
+								  :show-file-list="false">
+								  <el-button icon="el-icon-upload"></el-button>
+								</el-upload>
+							</el-input>
+						</el-form-item>
+						<el-form-item label="PC大图二" prop="img2">
+							<el-input type="text" v-model="editForm.img2" placeholder="备用，PC大图">
+								<el-upload slot="append"
+								  :action="uploadUrl"
+								  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'img2');}"
+								  :show-file-list="false">
+								  <el-button icon="el-icon-upload"></el-button>
+								</el-upload>
+							</el-input>
+						</el-form-item>
+						<el-form-item label="移动大图一" prop="img3">
+							<el-input type="text" v-model="editForm.img3" placeholder="请上传图片">
+								<el-upload slot="append"
+								  :action="uploadUrl"
+								  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'img3');}"
+								  :show-file-list="false">
+								  <el-button icon="el-icon-upload"></el-button>
+								</el-upload>
+							</el-input>
+						</el-form-item>
+						<el-form-item label="移动大图二" prop="img4">
+							<el-input type="text" v-model="editForm.img4" placeholder="备用，移动大图">
+								<el-upload slot="append"
+								  :action="uploadUrl"
+								  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'img4');}"
+								  :show-file-list="false">
+								  <el-button icon="el-icon-upload"></el-button>
+								</el-upload>
+							</el-input>
+						</el-form-item>
+					</el-tab-pane>
+			    </el-tabs>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click="editClose">取消</el-button>
+				<el-button type="primary" @click="editSubmit" :loading="editLoading">提交</el-button>
+			</div>
+		</el-dialog>
+
+		<!--查看界面-->
+		<el-dialog title="查看" :visible.sync="viewFormVisible" :close-on-click-modal="false">
+			<el-form :model="viewForm" label-width="100px" ref="viewForm">
+				<el-form-item label="PID" prop="pid">
+					<div v-html="viewForm.pid"></div>
+				</el-form-item>
+				<el-form-item label="PID">
+		            <div>{{ viewForm.pid }}</div>
+		          </el-form-item>
+		          <el-form-item label="分类">
+		            <div>{{ typeFormatter(viewForm) }}</div>
+		          </el-form-item>
+		          <el-form-item label="名称">
+		            <div>{{ viewForm.name }}</div>
+		          </el-form-item>
+		          <el-form-item label="画师">
+		            <div>{{ viewForm.painter }}</div>
+		          </el-form-item>
+		          <el-form-item label="CV">
+		            <div>{{ viewForm.cv }}</div>
+		          </el-form-item>
+		          <el-form-item label="音频">
+		            <div>{{ viewForm.audio }}</div>
+		          </el-form-item>
+		          <el-form-item label="星级">
+		            <el-rate style="margin-top: 10px;" show-score disabled v-model="viewForm.star"
+				    	:colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="starMaxNum">
+				  	</el-rate>
+		          </el-form-item>
+		          <el-form-item label="状态">
+		            <div>{{ viewForm.status ? '启用': '禁用' }}</div>
+		          </el-form-item>
+		          <el-form-item label="排序">
+		            <div>{{ viewForm.sort }}</div>
+		          </el-form-item>
+		          <el-form-item label="日期">
+		            <div>{{ viewForm.date }}</div>
+		          </el-form-item>
+		          <el-form-item label="简介">
+		            <div>{{ viewForm.desc }}</div>
+		          </el-form-item>
+		          <!-- 技能 -->
+		          <el-form-item label="技能一名称">
+		            <div>{{ viewForm.sname1 }}</div>
+		          </el-form-item>
+		          <el-form-item label="技能一图标">
+		            <div style="max-width: 100px; max-height: 100px;">
+		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.sicon1" :src="'/'+viewForm.sicon1"/>
+		            </div>
+		          </el-form-item>
+		          <el-form-item label="技能一描述">
+		            <div>{{ viewForm.sdesc1 }}</div>
+		          </el-form-item>
+		          
+		          <el-form-item label="技能二名称">
+		            <div>{{ viewForm.sname2 }}</div>
+		          </el-form-item>
+		          <el-form-item label="技能二图标">
+		            <div style="max-width: 100px; max-height: 100px;">
+		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.sicon2" :src="'/'+viewForm.sicon2"/>
+		            </div>
+		          </el-form-item>
+		          <el-form-item label="技能二描述">
+		            <div>{{ viewForm.sdesc2 }}</div>
+		          </el-form-item>
+		          
+		          <el-form-item label="技能三名称">
+		            <div>{{ viewForm.sname3 }}</div>
+		          </el-form-item>
+		          <el-form-item label="技能三图标">
+		            <div style="max-width: 100px; max-height: 100px;">
+		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.sicon3" :src="'/'+viewForm.sicon3"/>
+		            </div>
+		          </el-form-item>
+		          <el-form-item label="技能三描述">
+		            <div>{{ viewForm.sdesc3 }}</div>
+		          </el-form-item>
+		          
+		          <el-form-item label="技能四名称">
+		            <div>{{ viewForm.sname4 }}</div>
+		          </el-form-item>
+		          <el-form-item label="技能四图标">
+		            <div style="max-width: 100px; max-height: 100px;">
+		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.sicon4" :src="'/'+viewForm.sicon4"/>
+		            </div>
+		          </el-form-item>
+		          <el-form-item label="技能四描述">
+		            <div>{{ viewForm.sdesc4 }}</div>
+		          </el-form-item>
+		          
+		          <!-- 图片-->
+		          <el-form-item label="头像">
+		            <div style="max-width: 100px; max-height: 100px;">
+		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.icon" :src="'/'+viewForm.icon"/>
+		            </div>
+		          </el-form-item>
+		          <el-form-item>
+		          </el-form-item>
+		          <el-form-item label="PC大图一">
+		            <div style="max-width: 100px; max-height: 100px;">
+		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.img1" :src="'/'+viewForm.img1"/>
+		            </div>
+		          </el-form-item>
+		          <el-form-item label="PC大图二">
+		            <div style="max-width: 100px; max-height: 100px;">
+		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.img2" :src="'/'+viewForm.img2"/>
+		            </div>
+		          </el-form-item>
+		          <el-form-item label="移动大图一">
+		            <div style="max-width: 100px; max-height: 100px;">
+		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.img3" :src="'/'+viewForm.img3"/>
+		            </div>
+		          </el-form-item>
+		          <el-form-item label="移动大图二">
+		            <div style="max-width: 100px; max-height: 100px;">
+		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.img4" :src="'/'+viewForm.img4"/>
+		            </div>
+		          </el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click="viewFormVisible = false">关闭</el-button>
+			</div>
+		</el-dialog>
+		
+	</section>
+  </div>
+</body>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+  <!-- 先引入 Vue -->
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
+  <!-- 引入组件库 -->
+  <script src="https://cdn.bootcss.com/element-ui/2.4.0/index.js"></script>
+  <script type="text/javascript" src="js/heroes.js"></script>
+  
+</html>
