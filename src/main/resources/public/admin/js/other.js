@@ -1,12 +1,11 @@
 var baseUrl = parent.window.baseUrl || '../';
 
-var queryUrl = baseUrl + "api/heroes/findPage";
-var addUrl = baseUrl + "api/heroes/add";
-var modUrl = baseUrl + "api/heroes/update";
-var delUrl = baseUrl + "api/heroes/delete";
+var queryUrl = baseUrl + "api/other/findPage";
+var addUrl = baseUrl + "api/other/add";
+var modUrl = baseUrl + "api/other/update";
+var delUrl = baseUrl + "api/other/delete";
 var uploadUrl = baseUrl + "api/file/uploadImg";
-var uploadFileUrl = baseUrl + "api/file/uploadFile";
-var typeUrl = baseUrl + "api/heroestype/findAll";
+var typeUrl = baseUrl + "api/othertype/findAll";
 
 
 var ajaxReq = parent.window.ajaxReq || "";
@@ -16,7 +15,7 @@ var myvue = new Vue({
 	    data: function(){
 	    	return {
 				filters: {
-					plat: ''
+					name: ''
 				},
 				list: [],
 				total: 0,
@@ -26,9 +25,6 @@ var myvue = new Vue({
 				sels: [],//列表选中列
 				typeOptions:[],
 				uploadUrl: uploadUrl,
-				uploadFileUrl: uploadFileUrl,
-				activeName: 'first',
-				starMaxNum: 7, //星级总显示个数
 				//新增界面数据
 				addFormVisible: false,//新增界面是否显示
 				addLoading: false, //loading
@@ -153,32 +149,10 @@ var myvue = new Vue({
 				this.addForm = {
 						type: '',
 						name: '',
-						painter: '',
-						cv: '',
-						audio: '',
-						star: 0,
-						desc: '',
-						status: 0,
-						sort: 999,
-						sname1: '',
-						sicon1: '',
-						sdesc1: '',
-						sname2: '',
-						sicon2: '',
-						sdesc2: '',
-						sname3: '',
-						sicon3: '',
-						sdesc3: '',
-						sname4: '',
-						sicon4: '',
-						sdesc4: '',
-						icon: '',
-						img1: '',
-						img2: '',
-						img3: '',
-						img4: ''
+						site: '',
+						pic: '',
+						status: 0
 				};
-				this.activeName = 'first';
 			},
 			//显示编辑界面
 			handleEdit: function (index, row) {
@@ -288,8 +262,7 @@ var myvue = new Vue({
 			}
 		},
 		mounted: function() {
-			this.handleTypeOptions();
-			this.getList();
+			this.handleTypeOptions(this.getList);
 		}
 	  });
 	

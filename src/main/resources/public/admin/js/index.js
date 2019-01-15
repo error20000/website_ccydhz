@@ -89,6 +89,30 @@ new Vue({
 		    },{
 		        path: '',
 		        component: "",
+		        name: '界面管理',
+		        iconCls: 'el-icon-menu',
+		        children: [{
+			        path: 'background.html',
+			        component: "",
+			        name: '背景配置',
+			        iconCls: '',
+			        children: []
+			    },{
+			        path: 'other.html',
+			        component: "",
+			        name: '其他配置',
+			        iconCls: '',
+			        children: []
+			    }/*,{
+			        path: 'otherType.html',
+			        component: "",
+			        name: '其他分类',
+			        iconCls: '',
+			        children: []
+			    }*/]
+		    },{
+		        path: '',
+		        component: "",
 		        name: '下载管理',
 		        iconCls: 'el-icon-menu',
 		        children: [{

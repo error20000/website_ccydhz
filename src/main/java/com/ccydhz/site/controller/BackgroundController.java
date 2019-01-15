@@ -1,6 +1,5 @@
 package com.ccydhz.site.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,22 +9,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ccydhz.site.entity.Download;
-import com.ccydhz.site.service.DownloadService;
+import com.ccydhz.site.entity.Background;
+import com.ccydhz.site.service.BackgroundService;
 import com.jian.annotation.API;
 import com.jian.annotation.ParamsInfo;
 import com.jian.tools.core.JsonTools;
+import com.jian.tools.core.MapTools;
 import com.jian.tools.core.ResultKey;
 import com.jian.tools.core.ResultTools;
 import com.jian.tools.core.Tips;
 
 @Controller
-@RequestMapping("/api/download")
-@API(info="", entity={Download.class})
-public class DownloadController extends BaseController<Download> {
+@RequestMapping("/api/background")
+@API(info="", entity={Background.class})
+public class BackgroundController extends BaseController<Background> {
 
 	@Autowired
-	private DownloadService service;
+	private BackgroundService service;
 	
 	@Override
 	public void initService() {
@@ -41,11 +41,13 @@ public class DownloadController extends BaseController<Download> {
 		info="需登录认证", 
 		request={
 				//add request
-				@ParamsInfo(name="type", type="int", isNull=0,  info="分类"),
-				@ParamsInfo(name="name", type="String", isNull=0,  info="下载名称"),
-				@ParamsInfo(name="site", type="String", isNull=0,  info="下载地址"),
-				@ParamsInfo(name="pic", type="String", isNull=0,  info="下载图片  按钮/二维码"),
-				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
+				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
+				@ParamsInfo(name="logo", type="String", isNull=0,  info="LOGO"),
+				@ParamsInfo(name="pic1", type="String", isNull=0,  info="首页背景"),
+				@ParamsInfo(name="pic2", type="String", isNull=0,  info="二级页背景"),
+				@ParamsInfo(name="pic3", type="String", isNull=0,  info="三级页背景"),
+				@ParamsInfo(name="pic4", type="String", isNull=0,  info="四级页背景"),
+				@ParamsInfo(name="status", type="int", isNull=0,  info="状态  0：禁用，1：启用"),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -67,11 +69,13 @@ public class DownloadController extends BaseController<Download> {
 				@ParamsInfo(info="修改条件："),
 				@ParamsInfo(name="pid", type="int", isNull=1,  info="自增主键"),
 				@ParamsInfo(info="可修改字段："),
-				@ParamsInfo(name="type", type="int", isNull=0,  info="分类"),
-				@ParamsInfo(name="name", type="String", isNull=0,  info="下载名称"),
-				@ParamsInfo(name="site", type="String", isNull=0,  info="下载地址"),
-				@ParamsInfo(name="pic", type="String", isNull=0,  info="下载图片  按钮/二维码"),
-				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
+				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
+				@ParamsInfo(name="logo", type="String", isNull=0,  info="LOGO"),
+				@ParamsInfo(name="pic1", type="String", isNull=0,  info="首页背景"),
+				@ParamsInfo(name="pic2", type="String", isNull=0,  info="二级页背景"),
+				@ParamsInfo(name="pic3", type="String", isNull=0,  info="三级页背景"),
+				@ParamsInfo(name="pic4", type="String", isNull=0,  info="四级页背景"),
+				@ParamsInfo(name="status", type="int", isNull=0,  info="状态  0：禁用，1：启用"),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -111,11 +115,13 @@ public class DownloadController extends BaseController<Download> {
 				//findPage request
 				@ParamsInfo(info="可选条件："),
 				@ParamsInfo(name="pid", type="int", isNull=0,  info="自增主键"),
-				@ParamsInfo(name="type", type="int", isNull=0,  info="分类"),
-				@ParamsInfo(name="name", type="String", isNull=0,  info="下载名称"),
-				@ParamsInfo(name="site", type="String", isNull=0,  info="下载地址"),
-				@ParamsInfo(name="pic", type="String", isNull=0,  info="下载图片  按钮/二维码"),
-				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
+				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
+				@ParamsInfo(name="logo", type="String", isNull=0,  info="LOGO"),
+				@ParamsInfo(name="pic1", type="String", isNull=0,  info="首页背景"),
+				@ParamsInfo(name="pic2", type="String", isNull=0,  info="二级页背景"),
+				@ParamsInfo(name="pic3", type="String", isNull=0,  info="三级页背景"),
+				@ParamsInfo(name="pic4", type="String", isNull=0,  info="四级页背景"),
+				@ParamsInfo(name="status", type="int", isNull=0,  info="状态  0：禁用，1：启用"),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -136,11 +142,13 @@ public class DownloadController extends BaseController<Download> {
 				//findOne request
 				@ParamsInfo(info="可选条件："),
 				@ParamsInfo(name="pid", type="int", isNull=0,  info="自增主键"),
-				@ParamsInfo(name="type", type="int", isNull=0,  info="分类"),
-				@ParamsInfo(name="name", type="String", isNull=0,  info="下载名称"),
-				@ParamsInfo(name="site", type="String", isNull=0,  info="下载地址"),
-				@ParamsInfo(name="pic", type="String", isNull=0,  info="下载图片  按钮/二维码"),
-				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
+				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
+				@ParamsInfo(name="logo", type="String", isNull=0,  info="LOGO"),
+				@ParamsInfo(name="pic1", type="String", isNull=0,  info="首页背景"),
+				@ParamsInfo(name="pic2", type="String", isNull=0,  info="二级页背景"),
+				@ParamsInfo(name="pic3", type="String", isNull=0,  info="三级页背景"),
+				@ParamsInfo(name="pic4", type="String", isNull=0,  info="四级页背景"),
+				@ParamsInfo(name="status", type="int", isNull=0,  info="状态  0：禁用，1：启用"),
 				@ParamsInfo(info="注意：以上条件不可同时为空。"),
 		}, 
 		response={
@@ -161,11 +169,13 @@ public class DownloadController extends BaseController<Download> {
 				//findList request
 				@ParamsInfo(info="可选条件："),
 				@ParamsInfo(name="pid", type="int", isNull=0,  info="自增主键"),
-				@ParamsInfo(name="type", type="int", isNull=0,  info="分类"),
-				@ParamsInfo(name="name", type="String", isNull=0,  info="下载名称"),
-				@ParamsInfo(name="site", type="String", isNull=0,  info="下载地址"),
-				@ParamsInfo(name="pic", type="String", isNull=0,  info="下载图片  按钮/二维码"),
-				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
+				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
+				@ParamsInfo(name="logo", type="String", isNull=0,  info="LOGO"),
+				@ParamsInfo(name="pic1", type="String", isNull=0,  info="首页背景"),
+				@ParamsInfo(name="pic2", type="String", isNull=0,  info="二级页背景"),
+				@ParamsInfo(name="pic3", type="String", isNull=0,  info="三级页背景"),
+				@ParamsInfo(name="pic4", type="String", isNull=0,  info="四级页背景"),
+				@ParamsInfo(name="status", type="int", isNull=0,  info="状态  0：禁用，1：启用"),
 				@ParamsInfo(info="注意：以上条件不可同时为空。"),
 		}, 
 		response={
@@ -181,8 +191,8 @@ public class DownloadController extends BaseController<Download> {
 
 	@RequestMapping("/find")
     @ResponseBody
-	@API(name="查询下载配置", 
-		info="前端查询使用，返回一组配置信息", 
+	@API(name="查询界面配置", 
+		info="前端查询使用，返回一条最新的可使用的配置信息", 
 		request={
 		}, 
 		response={
@@ -197,9 +207,11 @@ public class DownloadController extends BaseController<Download> {
 		if(vMap != null){
 			return JsonTools.toJsonString(vMap);
 		}
-
-		//查询
-		List<Download> res = service.findAll();
+		
+		//查询最新一条
+		String wsql = " `status` = 1 order by `pid` desc ";
+		
+		Background res = service.getDao().findObject(wsql, MapTools.custom().build());
         return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, res).toJSONString();
 	}
 }

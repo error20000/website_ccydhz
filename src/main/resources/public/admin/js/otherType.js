@@ -1,22 +1,19 @@
 var baseUrl = parent.window.baseUrl || '../';
 
-var queryUrl = baseUrl + "api/heroes/findPage";
-var addUrl = baseUrl + "api/heroes/add";
-var modUrl = baseUrl + "api/heroes/update";
-var delUrl = baseUrl + "api/heroes/delete";
-var uploadUrl = baseUrl + "api/file/uploadImg";
-var uploadFileUrl = baseUrl + "api/file/uploadFile";
-var typeUrl = baseUrl + "api/heroestype/findAll";
-
+var queryUrl = baseUrl + "api/othertype/findPage";
+var addUrl = baseUrl + "api/othertype/add";
+var modUrl = baseUrl + "api/othertype/update";
+var delUrl = baseUrl + "api/othertype/delete";
 
 var ajaxReq = parent.window.ajaxReq || "";
+
 
 var myvue = new Vue({
 	    el: '#app',
 	    data: function(){
 	    	return {
 				filters: {
-					plat: ''
+					name: ''
 				},
 				list: [],
 				total: 0,
@@ -24,11 +21,6 @@ var myvue = new Vue({
 				rows: 10,
 				listLoading: false,
 				sels: [],//列表选中列
-				typeOptions:[],
-				uploadUrl: uploadUrl,
-				uploadFileUrl: uploadFileUrl,
-				activeName: 'first',
-				starMaxNum: 7, //星级总显示个数
 				//新增界面数据
 				addFormVisible: false,//新增界面是否显示
 				addLoading: false, //loading
@@ -36,11 +28,8 @@ var myvue = new Vue({
 				addForm: {},
 				//效验
 				addFormRules: {
-					type: [
-						{  required: true, message: '请选择分类', trigger: 'blur' }
-					],
-					name: [
-						{  required: true, message: '请输入名称', trigger: 'blur' }
+					pid: [
+						{  required: true, message: '请输入pid', trigger: 'blur' }
 					]
 				},
 				//编辑界面数据
@@ -50,11 +39,8 @@ var myvue = new Vue({
 				editForm: {},
 				//效验
 				editFormRules: {
-					type: [
-						{  required: true, message: '请选择分类', trigger: 'blur' }
-					],
-					name: [
-						{  required: true, message: '请输入名称', trigger: 'blur' }
+					pid: [
+						{  required: true, message: '请输入pid', trigger: 'blur' }
 					]
 					
 				},
@@ -63,50 +49,13 @@ var myvue = new Vue({
 				//数据
 				viewForm: {},
 				
+				
 				end: ''
 			}
 		},
 		methods: {
 			formatDate: function(date){
 				return parent.window.formatDate(date, 'yyyy-MM-dd HH:mm:ss');
-			},
-			typeFormatter: function(row){
-				var name = row.type;
-				for (var i = 0; i < this.typeOptions.length; i++) {
-					var item = this.typeOptions[i];
-					if(row.type == item.pid){
-						name = item.name;
-						break
-					}
-				}
-				return name;
-			},
-			handleUpload: function(res, file, obj, key){
-				if(res.code > 0){
-					this[obj][key] = res.data.path;
-				}else{
-					this.$message({
-						message: res.msg,
-						type: 'warning'
-					});
-				}
-			},
-			handleTypeOptions: function(cb){
-				var self = this;
-				var params = {};
-				ajaxReq(typeUrl, params, function(res){
-					if(res.code > 0){
-						self.typeOptions = res.data;
-						if(typeof cb == 'function'){
-							cb();
-						}
-					}else{
-						self.$message({
-							message: res.msg,
-							type: 'warning'
-						})
-					}
-				});
 			},
 			handleSizeChange: function (val) {
 				this.rows = val;
@@ -123,11 +72,6 @@ var myvue = new Vue({
 					page: this.page,
 					rows: this.rows
 				};
-				for ( var key in this.filters) {
-					if(this.filters[key]){
-						params[key] = this.filters[key];
-					}
-				}
 				this.listLoading = true;
 				ajaxReq(queryUrl, params, function(res){
 					self.listLoading = false;
@@ -151,34 +95,9 @@ var myvue = new Vue({
 			handleAdd: function () {
 				this.addFormVisible = true;
 				this.addForm = {
-						type: '',
-						name: '',
-						painter: '',
-						cv: '',
-						audio: '',
-						star: 0,
-						desc: '',
-						status: 0,
-						sort: 999,
-						sname1: '',
-						sicon1: '',
-						sdesc1: '',
-						sname2: '',
-						sicon2: '',
-						sdesc2: '',
-						sname3: '',
-						sicon3: '',
-						sdesc3: '',
-						sname4: '',
-						sicon4: '',
-						sdesc4: '',
-						icon: '',
-						img1: '',
-						img2: '',
-						img3: '',
-						img4: ''
+						pid: '',
+						name: ''
 				};
-				this.activeName = 'first';
 			},
 			//显示编辑界面
 			handleEdit: function (index, row) {
@@ -288,10 +207,9 @@ var myvue = new Vue({
 			}
 		},
 		mounted: function() {
-			this.handleTypeOptions();
 			this.getList();
 		}
 	  });
 	
-
+	
 

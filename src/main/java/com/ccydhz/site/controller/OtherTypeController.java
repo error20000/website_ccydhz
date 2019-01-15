@@ -1,8 +1,5 @@
 package com.ccydhz.site.controller;
 
-import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,22 +7,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ccydhz.site.entity.Download;
-import com.ccydhz.site.service.DownloadService;
 import com.jian.annotation.API;
 import com.jian.annotation.ParamsInfo;
-import com.jian.tools.core.JsonTools;
 import com.jian.tools.core.ResultKey;
-import com.jian.tools.core.ResultTools;
-import com.jian.tools.core.Tips;
+
+import com.ccydhz.site.entity.OtherType;
+import com.ccydhz.site.service.OtherTypeService;
 
 @Controller
-@RequestMapping("/api/download")
-@API(info="", entity={Download.class})
-public class DownloadController extends BaseController<Download> {
+@RequestMapping("/api/othertype")
+@API(info="", entity={OtherType.class})
+public class OtherTypeController extends BaseController<OtherType> {
 
 	@Autowired
-	private DownloadService service;
+	private OtherTypeService service;
 	
 	@Override
 	public void initService() {
@@ -41,11 +36,7 @@ public class DownloadController extends BaseController<Download> {
 		info="需登录认证", 
 		request={
 				//add request
-				@ParamsInfo(name="type", type="int", isNull=0,  info="分类"),
-				@ParamsInfo(name="name", type="String", isNull=0,  info="下载名称"),
-				@ParamsInfo(name="site", type="String", isNull=0,  info="下载地址"),
-				@ParamsInfo(name="pic", type="String", isNull=0,  info="下载图片  按钮/二维码"),
-				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
+				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -65,13 +56,9 @@ public class DownloadController extends BaseController<Download> {
 		request={
 				//modify request
 				@ParamsInfo(info="修改条件："),
-				@ParamsInfo(name="pid", type="int", isNull=1,  info="自增主键"),
+				@ParamsInfo(name="pid", type="int", isNull=1,  info="主键"),
 				@ParamsInfo(info="可修改字段："),
-				@ParamsInfo(name="type", type="int", isNull=0,  info="分类"),
-				@ParamsInfo(name="name", type="String", isNull=0,  info="下载名称"),
-				@ParamsInfo(name="site", type="String", isNull=0,  info="下载地址"),
-				@ParamsInfo(name="pic", type="String", isNull=0,  info="下载图片  按钮/二维码"),
-				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
+				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -89,7 +76,7 @@ public class DownloadController extends BaseController<Download> {
 		info="需登录认证", 
 		request={
 				//delete request
-				@ParamsInfo(name="pid", type="int", isNull=1,  info="自增主键"),
+				@ParamsInfo(name="pid", type="int", isNull=1,  info="主键"),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -110,12 +97,8 @@ public class DownloadController extends BaseController<Download> {
 				@ParamsInfo(name="rows", type="int", isNull=1, info="每页条数"),
 				//findPage request
 				@ParamsInfo(info="可选条件："),
-				@ParamsInfo(name="pid", type="int", isNull=0,  info="自增主键"),
-				@ParamsInfo(name="type", type="int", isNull=0,  info="分类"),
-				@ParamsInfo(name="name", type="String", isNull=0,  info="下载名称"),
-				@ParamsInfo(name="site", type="String", isNull=0,  info="下载地址"),
-				@ParamsInfo(name="pic", type="String", isNull=0,  info="下载图片  按钮/二维码"),
-				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
+				@ParamsInfo(name="pid", type="int", isNull=0,  info="主键"),
+				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
 		}, 
 		response={
 				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
@@ -135,12 +118,8 @@ public class DownloadController extends BaseController<Download> {
 		request={
 				//findOne request
 				@ParamsInfo(info="可选条件："),
-				@ParamsInfo(name="pid", type="int", isNull=0,  info="自增主键"),
-				@ParamsInfo(name="type", type="int", isNull=0,  info="分类"),
-				@ParamsInfo(name="name", type="String", isNull=0,  info="下载名称"),
-				@ParamsInfo(name="site", type="String", isNull=0,  info="下载地址"),
-				@ParamsInfo(name="pic", type="String", isNull=0,  info="下载图片  按钮/二维码"),
-				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
+				@ParamsInfo(name="pid", type="int", isNull=0,  info="主键"),
+				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
 				@ParamsInfo(info="注意：以上条件不可同时为空。"),
 		}, 
 		response={
@@ -160,12 +139,8 @@ public class DownloadController extends BaseController<Download> {
 		request={
 				//findList request
 				@ParamsInfo(info="可选条件："),
-				@ParamsInfo(name="pid", type="int", isNull=0,  info="自增主键"),
-				@ParamsInfo(name="type", type="int", isNull=0,  info="分类"),
-				@ParamsInfo(name="name", type="String", isNull=0,  info="下载名称"),
-				@ParamsInfo(name="site", type="String", isNull=0,  info="下载地址"),
-				@ParamsInfo(name="pic", type="String", isNull=0,  info="下载图片  按钮/二维码"),
-				@ParamsInfo(name="sort", type="int", isNull=0,  info="排序"),
+				@ParamsInfo(name="pid", type="int", isNull=0,  info="主键"),
+				@ParamsInfo(name="name", type="String", isNull=0,  info="名称"),
 				@ParamsInfo(info="注意：以上条件不可同时为空。"),
 		}, 
 		response={
@@ -177,12 +152,11 @@ public class DownloadController extends BaseController<Download> {
 		return super.findList(req);
 	}
 	
-	//TODO 自定义方法
-
-	@RequestMapping("/find")
+	@Override
+	@RequestMapping("/findAll")
     @ResponseBody
-	@API(name="查询下载配置", 
-		info="前端查询使用，返回一组配置信息", 
+	@API(name="查询所有", 
+		info="需登录认证", 
 		request={
 		}, 
 		response={
@@ -190,16 +164,10 @@ public class DownloadController extends BaseController<Download> {
 				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
 				@ParamsInfo(name=ResultKey.DATA, type="Array", info="数据集"),
 		})
-	public String find(HttpServletRequest req) {
-		Map<String, Object> vMap = null;
-		//sign
-		vMap = verifySign(req);
-		if(vMap != null){
-			return JsonTools.toJsonString(vMap);
-		}
-
-		//查询
-		List<Download> res = service.findAll();
-        return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, res).toJSONString();
+	public String findAll(HttpServletRequest req) {
+		return super.findAll(req);
 	}
+	
+	//TODO 自定义方法
+	
 }
