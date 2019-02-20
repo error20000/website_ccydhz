@@ -11,15 +11,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ccydhz.site.entity.Heroes;
+import com.ccydhz.site.service.HeroesService;
 import com.jian.annotation.API;
 import com.jian.annotation.ParamsInfo;
 import com.jian.tools.core.JsonTools;
+import com.jian.tools.core.MapTools;
 import com.jian.tools.core.ResultKey;
 import com.jian.tools.core.ResultTools;
 import com.jian.tools.core.Tips;
 import com.jian.tools.core.Tools;
-import com.ccydhz.site.entity.Heroes;
-import com.ccydhz.site.service.HeroesService;
 
 @Controller
 @RequestMapping("/api/heroes")
@@ -345,5 +346,36 @@ public class HeroesController extends BaseController<Heroes> {
 		List<Map<String, Object>> list = service.getDao().basePage(sql, condition, start, row);
 		long total = service.getDao().baseSize(sqlc, condition);
         return ResultTools.custom(Tips.ERROR1).put(ResultKey.TOTAL, total).put(ResultKey.DATA, list).toJSONString();
+	}
+	
+	@RequestMapping("/findByPid")
+    @ResponseBody
+	@API(name="查询详情", 
+		info="前端查询使用", 
+		request={
+				@ParamsInfo(name="pid", type="int", isNull=0,  info="pid"),
+		}, 
+		response={
+				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
+				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
+				@ParamsInfo(name=ResultKey.DATA, type="Object", info="数据集"),
+		})
+	public String findByPid(HttpServletRequest req) {
+		Map<String, Object> vMap = null;
+		//sign
+		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		
+		//参数
+		String pid = Tools.getReqParamSafe(req, "pid");
+		vMap = Tools.verifyParam("pid", pid, 0, 0);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//查询
+		Heroes res = service.findOne(MapTools.custom().put("pid", pid).build());
+        return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, res).toJSONString();
 	}
 }

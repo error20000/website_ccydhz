@@ -1,5 +1,8 @@
 package com.ccydhz.site.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,12 +10,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jian.annotation.API;
-import com.jian.annotation.ParamsInfo;
-import com.jian.tools.core.ResultKey;
-
 import com.ccydhz.site.entity.Video;
 import com.ccydhz.site.service.VideoService;
+import com.jian.annotation.API;
+import com.jian.annotation.ParamsInfo;
+import com.jian.tools.core.JsonTools;
+import com.jian.tools.core.MapTools;
+import com.jian.tools.core.ResultKey;
+import com.jian.tools.core.ResultTools;
+import com.jian.tools.core.Tips;
+import com.jian.tools.core.Tools;
 
 @Controller
 @RequestMapping("/api/video")
@@ -248,5 +255,86 @@ public class VideoController extends BaseController<Video> {
 	}
 	
 	//TODO 自定义方法
-	
+
+	@RequestMapping("/home")
+    @ResponseBody
+	@API(name="官网首页视频", 
+		info="前端查询使用", 
+		request={
+		}, 
+		response={
+				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
+				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
+				@ParamsInfo(name=ResultKey.DATA, type="Array", info="数据集"),
+		})
+	public String home(HttpServletRequest req) {
+		Map<String, Object> vMap = null;
+		//sign
+		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//查询
+		String wsql = " `status` = 1 and `type` = :type ";
+		//倒序
+		wsql = wsql + " order by `sort`, `pid` desc ";
+		Video res = service.getDao().findObject(wsql, MapTools.custom().put("type", 1).build());
+        return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, res).toJSONString();
+	}
+
+	@RequestMapping("/findByType")
+    @ResponseBody
+	@API(name="分页查询", 
+		info="前端查询使用，最大每页100条", 
+		request={
+				@ParamsInfo(name="page", type="int", isNull=1, info="页码"),
+				@ParamsInfo(name="rows", type="int", isNull=1, info="每页条数"),
+				@ParamsInfo(name="type", type="int", isNull=1,  info="分类"),
+		}, 
+		response={
+				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
+				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
+				@ParamsInfo(name=ResultKey.DATA, type="Array", info="数据集"),
+				@ParamsInfo(name=ResultKey.TOTAL, type="int", info="总数"),
+		})
+	public String findByType(HttpServletRequest req) {
+		Map<String, Object> vMap = null;
+		//sign
+		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		
+		//参数
+		String page = Tools.getReqParamSafe(req, "page");
+		String rows = Tools.getReqParamSafe(req, "rows");
+		String type = Tools.getReqParamSafe(req, "type");
+		vMap = Tools.verifyParam("page", page, 0, 0, true);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		vMap = Tools.verifyParam("rows", rows, 0, 0, true);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		vMap = Tools.verifyParam("type", type, 0, 0);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//限制每页最大条数
+		int row = Tools.parseInt(rows) > 100 ? 10 : Tools.parseInt(rows);
+		int start = Tools.parseInt(page) <= 1 ? 0 : (Tools.parseInt(page) - 1) * row;
+		//查询
+		String sql = " select a.*, b.name typeName ";
+		String sqlc = " select count(1) ";
+		String fsql = " from `s_video` a left join `s_video_type` b on a.`type` = b.`pid` where a.`status` = 1 and a.`type` = :type ";
+		//倒序
+		sql = sql + fsql + " order by a.`recommend` desc, a.`sort`, a.`date` desc ";
+		sqlc = sqlc + fsql;
+		Map<String, Object> condition = MapTools.custom().put("type", type).build();
+		
+		List<Map<String, Object>> list = service.getDao().basePage(sql, condition, start, row);
+		long total = service.getDao().baseSize(sqlc, condition);
+        return ResultTools.custom(Tips.ERROR1).put(ResultKey.TOTAL, total).put(ResultKey.DATA, list).toJSONString();
+	}
 }
