@@ -30,7 +30,7 @@ CREATE TABLE `s_background` (
   `pic4` varchar(255) DEFAULT '' COMMENT '四级页背景',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态  0：禁用，1：启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_background
@@ -85,7 +85,7 @@ CREATE TABLE `s_contact` (
   `ijs` text COMMENT 'iphone代码',
   `ajs` text COMMENT 'android代码',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_contact
@@ -142,7 +142,7 @@ CREATE TABLE `s_download` (
   `pic` varchar(255) DEFAULT '' COMMENT '下载图片  按钮/二维码',
   `sort` int(11) DEFAULT '999' COMMENT '排序',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_download
@@ -201,7 +201,7 @@ CREATE TABLE `s_heroes` (
   `img3` varchar(255) DEFAULT '' COMMENT '移动图片一',
   `img4` varchar(255) DEFAULT '' COMMENT '移动图片二',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_heroes
@@ -237,7 +237,7 @@ CREATE TABLE `s_menu` (
   `site` varchar(255) DEFAULT '' COMMENT '地址',
   `icon` varchar(255) DEFAULT '' COMMENT '图标',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_menu
@@ -263,7 +263,7 @@ CREATE TABLE `s_news` (
   `description` text COMMENT '描述 （seo）',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态  0：禁用，1：启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_news
@@ -305,7 +305,7 @@ CREATE TABLE `s_other` (
   `pic` varchar(255) DEFAULT '' COMMENT '图片  按钮/二维码',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态  0：禁用，1：启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_other
@@ -347,7 +347,7 @@ CREATE TABLE `s_picture` (
   `sort` int(11) DEFAULT '999' COMMENT '排序',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态   0：禁用，1：启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_picture
@@ -389,7 +389,7 @@ CREATE TABLE `s_recommend` (
   `status` tinyint(2) DEFAULT '0' COMMENT '状态：0 --禁用；1 -- 启用',
   `sort` int(11) DEFAULT '999' COMMENT '排序',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_recommend
@@ -450,7 +450,7 @@ CREATE TABLE `s_strategy` (
   `highlight` tinyint(2) DEFAULT '0' COMMENT '加精  0--否，1--是',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态  0：禁用，1：启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_strategy
@@ -533,7 +533,7 @@ CREATE TABLE `s_video` (
   `sort` int(11) DEFAULT '999' COMMENT '排序',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态   0：禁用，1：启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_video

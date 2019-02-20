@@ -79,7 +79,6 @@ CREATE TABLE `s_active_config` (
 -- ----------------------------
 -- Records of s_active_config
 -- ----------------------------
-INSERT INTO `s_active_config` VALUES ('1', '2', '11', '', '', '', '0', '', '', '', '999', '1', '', '0');
 
 -- ----------------------------
 -- Table structure for `s_active_type`
@@ -115,13 +114,11 @@ CREATE TABLE `s_background` (
   `pic4` varchar(255) DEFAULT '' COMMENT '四级页背景',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态  0：禁用，1：启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_background
 -- ----------------------------
-INSERT INTO `s_background` VALUES ('1', 'test', '20190115/201901151133100514789.jpg', '20190115/201901151133127244157.jpg', '20190219/201902191643497157841.jpg', '20190219/201902191653313539871.jpg', null, '1');
-INSERT INTO `s_background` VALUES ('2', '2', '2', '2', '2', '2', '2', '0');
 
 -- ----------------------------
 -- Table structure for `s_bespeak`
@@ -135,14 +132,11 @@ CREATE TABLE `s_bespeak` (
   `info` varchar(255) DEFAULT '' COMMENT '附加信息',
   `info2` varchar(255) DEFAULT '' COMMENT '附加信息2',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='预约';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='预约';
 
 -- ----------------------------
 -- Records of s_bespeak
 -- ----------------------------
-INSERT INTO `s_bespeak` VALUES ('1', '2018-09-16 10:00:00', '', '', '', '');
-INSERT INTO `s_bespeak` VALUES ('2', '2018-09-15 10:00:00', '', '', '', '');
-INSERT INTO `s_bespeak` VALUES ('3', '2018-09-17 10:00:00', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for `s_bespeak_config`
@@ -212,13 +206,11 @@ CREATE TABLE `s_contact` (
   `ijs` text COMMENT 'iphone代码',
   `ajs` text COMMENT 'android代码',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_contact
 -- ----------------------------
-INSERT INTO `s_contact` VALUES ('1', '1', '2', 'test33', 'test333', '3333', '20190111/20190111155359175097.jpg', '999', '<script>\n		var _hmt = _hmt || [];\n		(function() {\n		  var hm = document.createElement(\"script\");\n		  hm.src = \"//hm.baidu.com/hm.js?43c6af90fcc372e0d4dd1bd19e42d52c\";\n		  var s = document.getElementsByTagName(\"script\")[0]; \n		  s.parentNode.insertBefore(hm, s);\n		})();\n		</script>', '<script>\n		var _hmt = _hmt || [];\n		(function() {\n		  var hm = document.createElement(\"script\");\n		  hm.src = \"//hm.baidu.com/hm.js?43c6af90fcc372e0d4dd1bd19e42d52c\";\n		  var s = document.getElementsByTagName(\"script\")[0]; \n		  s.parentNode.insertBefore(hm, s);\n		})();\n		</script>', '<script>\n		var _hmt = _hmt || [];\n		(function() {\n		  var hm = document.createElement(\"script\");\n		  hm.src = \"//hm.baidu.com/hm.js?43c6af90fcc372e0d4dd1bd19e42d52c\";\n		  var s = document.getElementsByTagName(\"script\")[0]; \n		  s.parentNode.insertBefore(hm, s);\n		})();\n		</script>');
-INSERT INTO `s_contact` VALUES ('2', '1', '3', 'dddd', '123456789', '', '', '999', '', '', '');
 
 -- ----------------------------
 -- Table structure for `s_contact_config`
@@ -271,14 +263,11 @@ CREATE TABLE `s_download` (
   `pic` varchar(255) DEFAULT '' COMMENT '下载图片  按钮/二维码',
   `sort` int(11) DEFAULT '999' COMMENT '排序',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_download
 -- ----------------------------
-INSERT INTO `s_download` VALUES ('2', '2', 'testssss', 'http://www.qq.com', '20190111/201901111429576463544.jpg', '999');
-INSERT INTO `s_download` VALUES ('4', '4', 'tap', 'https://www.taptap.com/app/10505', '', '999');
-INSERT INTO `s_download` VALUES ('6', '1', '二维码', '', '20190219/201902191827210729227.png', '999');
 
 -- ----------------------------
 -- Table structure for `s_download_type`
@@ -333,12 +322,11 @@ CREATE TABLE `s_heroes` (
   `img3` varchar(255) DEFAULT '' COMMENT '移动图片一',
   `img4` varchar(255) DEFAULT '' COMMENT '移动图片二',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_heroes
 -- ----------------------------
-INSERT INTO `s_heroes` VALUES ('1', '2019-01-14 16:01:47', '2', '11', '21', '31', '20190114/201901141600444656109.jpg', '4', '41', '1', '999', '111', '20190114/201901141601023697524.jpg', '131', '211', '221', '231', '311', '321', '331', '411', '421', '431', '20190114/201901141601443276685.jpg', '21', '31', '41', '51');
 
 -- ----------------------------
 -- Table structure for `s_heroes_type`
@@ -370,92 +358,11 @@ CREATE TABLE `s_menu` (
   `site` varchar(255) DEFAULT '' COMMENT '地址',
   `icon` varchar(255) DEFAULT '' COMMENT '图标',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_menu
 -- ----------------------------
-INSERT INTO `s_menu` VALUES ('1', '0', '界面配置', null, '');
-INSERT INTO `s_menu` VALUES ('2', '0', '下载配置', null, '');
-INSERT INTO `s_menu` VALUES ('3', '0', '关注我们', null, '');
-INSERT INTO `s_menu` VALUES ('4', '0', '消息发布', null, '');
-INSERT INTO `s_menu` VALUES ('5', '0', '礼包管理', null, '');
-INSERT INTO `s_menu` VALUES ('6', '0', '游戏音画', null, '');
-INSERT INTO `s_menu` VALUES ('7', '0', '游戏资料', null, '');
-INSERT INTO `s_menu` VALUES ('8', '0', '游戏数据', null, '');
-INSERT INTO `s_menu` VALUES ('9', '0', '合作媒体', null, '');
-INSERT INTO `s_menu` VALUES ('10', '0', '玩家天地', null, '');
-INSERT INTO `s_menu` VALUES ('11', '0', '邮件系统', null, '');
-INSERT INTO `s_menu` VALUES ('12', '0', '短信系统', null, '');
-INSERT INTO `s_menu` VALUES ('13', '0', '媒体管理', null, '');
-INSERT INTO `s_menu` VALUES ('14', '1', 'LOGO', 'html/logo.html', '');
-INSERT INTO `s_menu` VALUES ('15', '1', '背景', 'html/background.html', '');
-INSERT INTO `s_menu` VALUES ('16', '1', '推荐(展示)分类', 'html/recommend_type.html', '');
-INSERT INTO `s_menu` VALUES ('17', '1', '推荐(展示)', 'html/recommend.html', '');
-INSERT INTO `s_menu` VALUES ('18', '1', '其他配置分类', 'html/system_other_type.html', '');
-INSERT INTO `s_menu` VALUES ('19', '1', '其他配置', 'html/system_other.html', '');
-INSERT INTO `s_menu` VALUES ('20', '2', '下载配置', 'html/download.html', '');
-INSERT INTO `s_menu` VALUES ('21', '3', '微博微信分类', 'html/system_type.html', '');
-INSERT INTO `s_menu` VALUES ('22', '3', '微博微信', 'html/system.html', '');
-INSERT INTO `s_menu` VALUES ('23', '3', '邮箱/QQ', 'html/customer.html', '');
-INSERT INTO `s_menu` VALUES ('24', '3', '分享', null, '');
-INSERT INTO `s_menu` VALUES ('25', '4', '消息广告图', 'html/news_pic.html', '');
-INSERT INTO `s_menu` VALUES ('26', '4', '消息分类', 'html/news_type.html', '');
-INSERT INTO `s_menu` VALUES ('27', '4', '消息列表', 'html/news.html', '');
-INSERT INTO `s_menu` VALUES ('28', '5', '礼包广告图', 'html/gift_pic.html', '');
-INSERT INTO `s_menu` VALUES ('29', '5', '礼包列表', 'html/gift.html', '');
-INSERT INTO `s_menu` VALUES ('30', '5', '礼包码', 'html/gift_code.html', '');
-INSERT INTO `s_menu` VALUES ('31', '5', '领取统计', 'html/gift_count.html', '');
-INSERT INTO `s_menu` VALUES ('32', '6', '图集分类', 'html/picture_type.html', '');
-INSERT INTO `s_menu` VALUES ('33', '6', '图集(原画)', 'html/picture.html', '');
-INSERT INTO `s_menu` VALUES ('34', '6', '视频分类', 'html/video_type.html', '');
-INSERT INTO `s_menu` VALUES ('35', '6', '视频', 'html/video.html', '');
-INSERT INTO `s_menu` VALUES ('36', '7', '资料广告图', 'html/resources_pic.html', '');
-INSERT INTO `s_menu` VALUES ('37', '7', '资料分类', 'html/resources_type.html', '');
-INSERT INTO `s_menu` VALUES ('38', '7', '资料详情', 'html/resources.html', '');
-INSERT INTO `s_menu` VALUES ('39', '7', '其他资料', 'html/resources_other.html', '');
-INSERT INTO `s_menu` VALUES ('40', '7', '介绍', 'html/product.html', '');
-INSERT INTO `s_menu` VALUES ('41', '7', '装备分类', 'html/equipment_type.html', '');
-INSERT INTO `s_menu` VALUES ('42', '7', '装备详情', 'html/equipment.html', '');
-INSERT INTO `s_menu` VALUES ('43', '7', '攻略分类', 'html/strategy_type.html', '');
-INSERT INTO `s_menu` VALUES ('44', '7', '攻略详情', 'html/strategy.html', '');
-INSERT INTO `s_menu` VALUES ('45', '7', '英雄分类', 'html/heroes_type.html', '');
-INSERT INTO `s_menu` VALUES ('46', '7', '英雄详情', 'html/heroes.html', '');
-INSERT INTO `s_menu` VALUES ('47', '7', '英雄详情2', 'html/heroes2.html', '');
-INSERT INTO `s_menu` VALUES ('48', '7', '英雄详情3', 'html/heroes3.html', '');
-INSERT INTO `s_menu` VALUES ('49', '8', '服务器配置', 'html/server.html', '');
-INSERT INTO `s_menu` VALUES ('50', '8', '账号转移', 'html/zhuanyi.html', '');
-INSERT INTO `s_menu` VALUES ('51', '8', '数据接口配置', 'html/interfaces.html', '');
-INSERT INTO `s_menu` VALUES ('52', '8', '数据导入', null, '');
-INSERT INTO `s_menu` VALUES ('53', '8', '查询配置', null, '');
-INSERT INTO `s_menu` VALUES ('54', '9', '合作媒体', 'html/business.html', '');
-INSERT INTO `s_menu` VALUES ('55', '11', '邮件配置', 'html/email_config.html', '');
-INSERT INTO `s_menu` VALUES ('56', '11', '统一回执', 'html/email_normal.html', '');
-INSERT INTO `s_menu` VALUES ('57', '11', '发送邮件', 'html/email.html', '');
-INSERT INTO `s_menu` VALUES ('58', '12', '短信配置', 'html/phone_config.html', '');
-INSERT INTO `s_menu` VALUES ('59', '12', '统一回执', 'html/phone_normal.html', '');
-INSERT INTO `s_menu` VALUES ('60', '12', '短信验证码', 'html/phone_code.html', '');
-INSERT INTO `s_menu` VALUES ('61', '12', '发送短信', 'html/phone.html', '');
-INSERT INTO `s_menu` VALUES ('62', '12', '短信日志', 'html/phone_log.html', '');
-INSERT INTO `s_menu` VALUES ('63', '13', '媒体注册', 'html/media.html', '');
-INSERT INTO `s_menu` VALUES ('64', '13', '媒体镜像', 'html/media_clone.html', '');
-INSERT INTO `s_menu` VALUES ('65', '13', '媒体下载', 'html/media_download.html', '');
-INSERT INTO `s_menu` VALUES ('66', '13', '管理图片', 'html/media_pic.html', '');
-INSERT INTO `s_menu` VALUES ('67', '13', '管理新闻', 'html/media_news.html', '');
-INSERT INTO `s_menu` VALUES ('68', '0', '账号管理', '', '');
-INSERT INTO `s_menu` VALUES ('69', '68', '账号', 'html/role.html', '');
-INSERT INTO `s_menu` VALUES ('70', '0', '版本管理', '', '');
-INSERT INTO `s_menu` VALUES ('71', '70', '版本', 'html/lang.html', '');
-INSERT INTO `s_menu` VALUES ('72', '70', '菜单', 'html/menu.html', '');
-INSERT INTO `s_menu` VALUES ('73', '8', '接口日志查询', 'html/interfaces_logs.html', '');
-INSERT INTO `s_menu` VALUES ('74', '8', '兑换查询', 'html/exchange.html', '');
-INSERT INTO `s_menu` VALUES ('75', '8', '活动分类', 'html/active_type.html', '');
-INSERT INTO `s_menu` VALUES ('76', '8', '活动配置', 'html/active_config.html', '');
-INSERT INTO `s_menu` VALUES ('77', '8', '活动记录', 'html/active.html', '');
-INSERT INTO `s_menu` VALUES ('78', '8', '活动统计', 'html/active_count.html', '');
-INSERT INTO `s_menu` VALUES ('79', '10', '活动分类', 'html/player_type.html', '');
-INSERT INTO `s_menu` VALUES ('80', '10', '活动记录', 'html/player.html', '');
-INSERT INTO `s_menu` VALUES ('81', '10', '活动日志', 'html/player_log.html', '');
 
 -- ----------------------------
 -- Table structure for `s_news`
@@ -476,20 +383,11 @@ CREATE TABLE `s_news` (
   `description` text COMMENT '描述 （seo）',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态  0：禁用，1：启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_news
 -- ----------------------------
-INSERT INTO `s_news` VALUES ('1', '3', '1', 'test', '6月14日例行维护公告', 'test', '2019-01-09 14:41:56', '0', null, null, null, null, '1');
-INSERT INTO `s_news` VALUES ('2', '1', '1', '20190109/201901091514489065054.jpg', '5月21日使用外挂的处罚公告及冻结账号名单', null, '2019-01-09 15:15:50', '0', null, '<p>sdfsdfsf</p><p>dsfsdf</p><p>sdf</p><p>sdf</p><p>sdf</p><p>s</p><p>df</p><p>sd</p><p>f</p><p>xcxcxcxcxcxcxcxc</p>', null, null, '1');
-INSERT INTO `s_news` VALUES ('3', '1', '1', null, '全民约礼！《少女前线》安卓腾讯应用宝预约盛大开启', '全民约礼！《少女前线》安卓腾讯应用宝预约盛大开启', '2019-01-09 15:43:24', '0', null, '<p class=\"ql-align-center\"><br/></p><p class=\"ql-align-center\">sdfsf</p><p class=\"ql-align-center\"><br/></p><p class=\"ql-align-center\">dsfs</p><p class=\"ql-align-center\">fs<img src=\"/20190109/201901091544453664544.jpg\"/></p><p class=\"ql-align-center\">df</p><p class=\"ql-align-center\">sd</p><p class=\"ql-align-center\">f</p><p class=\"ql-align-center\">s</p><p class=\"ql-align-center\">fs</p><p class=\"ql-align-center\"><br/></p><p class=\"ql-align-center\"><img src=\"/20190109/20190109154319593016.jpg\"/></p><p class=\"ql-align-center\"><br/></p><p class=\"ql-align-center\">sfsfsfsdfsfa</p>', null, null, '1');
-INSERT INTO `s_news` VALUES ('4', '1', '0', null, 'test', 'test', '2019-01-09 15:48:06', '0', null, '<p>tetstst</p><p><br/></p><p>setst<img src=\"/20190109/201901091548028915540.jpg\"/></p><p>dfsdfsdfsdfsdf</p><p>sdfsdfsdf</p><p>sdfsdfsd</p><p><br/></p><p>df</p><p>sf</p><p>sdf</p><p>sdf</p><p>sd</p><p>fs</p><p>df</p><p>s</p><p>a</p><p><br/></p><p><img src=\"/20190109/201901091548376633246.jpg\" width=\"741\" height=\"805\"/></p><p><br/></p><p>sd</p><p>fd</p><p><br/></p><p>f</p><p><br/></p><p>fffffffffffffffffffffffffffffffsdsdf sdfasdfsdfs</p><p>dfsd</p><p>f</p><p>sdf</p><p>sd</p><p>f</p><p>sd</p><p><br/></p>', null, null, '0');
-INSERT INTO `s_news` VALUES ('6', '1', '0', null, '禁用', null, '2019-01-10 17:01:42', '0', null, '<p style=\"text-align: center;\">123</p>', null, null, '0');
-INSERT INTO `s_news` VALUES ('7', '1', '0', 'eeee', 'eee', 'eee', '2019-01-14 00:35:37', '1', 'eeeeee', '', '', '', '1');
-INSERT INTO `s_news` VALUES ('8', '1', '0', 'ww', 'ww', 'ww', '2019-01-14 00:38:46', '1', 'wwww', null, null, null, '1');
-INSERT INTO `s_news` VALUES ('9', '2', '1', '20190220/201902200959045684327.jpg', '春之歌', '1234', '2019-02-20 09:59:06', '0', '', '<p>春天的脚步近了</p>', '', '', '1');
-INSERT INTO `s_news` VALUES ('10', '4', '1', null, '大海战', '1920大海战', '2019-02-15 00:00:00', '1', 'http://www.ccygirl.com/', null, null, null, '1');
 
 -- ----------------------------
 -- Table structure for `s_news_type`
@@ -526,12 +424,11 @@ CREATE TABLE `s_other` (
   `pic` varchar(255) DEFAULT '' COMMENT '图片  按钮/二维码',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态  0：禁用，1：启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_other
 -- ----------------------------
-INSERT INTO `s_other` VALUES ('1', '1', 'youxifuwu', 'http://www.ccygirl.com/', 'test1', '1');
 
 -- ----------------------------
 -- Table structure for `s_other_type`
@@ -568,13 +465,11 @@ CREATE TABLE `s_picture` (
   `sort` int(11) DEFAULT '999' COMMENT '排序',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态   0：禁用，1：启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_picture
 -- ----------------------------
-INSERT INTO `s_picture` VALUES ('1', '1', 'test', 'ttt', 'tt', 'tt', '2019-01-12 23:02:54', 't', 't', 'tttt', '0', '1', '999', '1');
-INSERT INTO `s_picture` VALUES ('2', '1', 'rr', 'rr', 'rr', 'rrr', '2019-01-12 23:03:25', 'rr', 'rr', 'rr', '0', '0', '999', '1');
 
 -- ----------------------------
 -- Table structure for `s_picture_type`
@@ -611,18 +506,11 @@ CREATE TABLE `s_recommend` (
   `status` tinyint(2) DEFAULT '0' COMMENT '状态：0 --禁用；1 -- 启用',
   `sort` int(11) DEFAULT '999' COMMENT '排序',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_recommend
 -- ----------------------------
-INSERT INTO `s_recommend` VALUES ('1', '1', '0', 'test', 'test', '0', '0', '', '1', '999');
-INSERT INTO `s_recommend` VALUES ('2', '1', '0', 'tes33', 'ttttt', '1', '3', '', '1', '999');
-INSERT INTO `s_recommend` VALUES ('3', '1', '0', 'testtt', 'eeee', '2', '0', 'http://www.baidu.com', '1', '999');
-INSERT INTO `s_recommend` VALUES ('4', '1', '1', '11111111111', '1111111', '0', '0', '', '1', '999');
-INSERT INTO `s_recommend` VALUES ('5', '1', '1', '2222222', '22222', '1', '2', '', '1', '2');
-INSERT INTO `s_recommend` VALUES ('6', '1', '1', '3333333', '33', '2', '0', 'qq.com', '1', '999');
-INSERT INTO `s_recommend` VALUES ('8', '1', '0', 'testest', 'testestset', '0', '0', '', '0', '999');
 
 -- ----------------------------
 -- Table structure for `s_recommend_type`
@@ -678,14 +566,11 @@ CREATE TABLE `s_strategy` (
   `highlight` tinyint(2) DEFAULT '0' COMMENT '加精  0--否，1--是',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态  0：禁用，1：启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_strategy
 -- ----------------------------
-INSERT INTO `s_strategy` VALUES ('1', '1', '0', 'test', 'test', 'test', '2019-01-14 01:28:43', '1', 'test', null, null, null, 'test', 'test', '1', '1');
-INSERT INTO `s_strategy` VALUES ('2', '1', '1', 'ttt', 'test', 'sstt', '2019-01-14 01:29:01', '0', '', '<p>tttt</p>', '', '', 'ttt', 'ttt', '1', '1');
-INSERT INTO `s_strategy` VALUES ('3', '1', '1', 'ssss', 'test', 'eesss', '2019-01-01 00:00:00', '0', '', '<p>ssssssssssssss</p>', 'sssss,ssss,sss', 'ssssssss,sssss,ssssss', 'ssss', 'sssssssss', '1', '1');
 
 -- ----------------------------
 -- Table structure for `s_strategy_type`
@@ -715,7 +600,7 @@ CREATE TABLE `s_user` (
   `system` tinyint(4) DEFAULT '0' COMMENT '超管  0--否 1--是',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态  0--禁用 1--启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_user
@@ -731,41 +616,11 @@ CREATE TABLE `s_user_menu` (
   `user` int(11) DEFAULT '0' COMMENT '用户id',
   `menu` int(11) DEFAULT '0' COMMENT '用户的菜单id',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=261 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_user_menu
 -- ----------------------------
-INSERT INTO `s_user_menu` VALUES ('1', '2', '0');
-INSERT INTO `s_user_menu` VALUES ('232', '2', '17');
-INSERT INTO `s_user_menu` VALUES ('233', '2', '2');
-INSERT INTO `s_user_menu` VALUES ('234', '2', '20');
-INSERT INTO `s_user_menu` VALUES ('235', '2', '82');
-INSERT INTO `s_user_menu` VALUES ('236', '2', '22');
-INSERT INTO `s_user_menu` VALUES ('237', '2', '23');
-INSERT INTO `s_user_menu` VALUES ('238', '2', '26');
-INSERT INTO `s_user_menu` VALUES ('239', '2', '27');
-INSERT INTO `s_user_menu` VALUES ('240', '2', '30');
-INSERT INTO `s_user_menu` VALUES ('241', '2', '31');
-INSERT INTO `s_user_menu` VALUES ('242', '2', '33');
-INSERT INTO `s_user_menu` VALUES ('243', '2', '35');
-INSERT INTO `s_user_menu` VALUES ('244', '2', '73');
-INSERT INTO `s_user_menu` VALUES ('245', '2', '75');
-INSERT INTO `s_user_menu` VALUES ('246', '2', '76');
-INSERT INTO `s_user_menu` VALUES ('247', '2', '77');
-INSERT INTO `s_user_menu` VALUES ('248', '2', '78');
-INSERT INTO `s_user_menu` VALUES ('249', '2', '9');
-INSERT INTO `s_user_menu` VALUES ('250', '2', '54');
-INSERT INTO `s_user_menu` VALUES ('251', '2', '10');
-INSERT INTO `s_user_menu` VALUES ('252', '2', '79');
-INSERT INTO `s_user_menu` VALUES ('253', '2', '80');
-INSERT INTO `s_user_menu` VALUES ('254', '2', '81');
-INSERT INTO `s_user_menu` VALUES ('255', '2', '12');
-INSERT INTO `s_user_menu` VALUES ('256', '2', '58');
-INSERT INTO `s_user_menu` VALUES ('257', '2', '59');
-INSERT INTO `s_user_menu` VALUES ('258', '2', '60');
-INSERT INTO `s_user_menu` VALUES ('259', '2', '61');
-INSERT INTO `s_user_menu` VALUES ('260', '2', '62');
 
 -- ----------------------------
 -- Table structure for `s_video`
@@ -794,15 +649,11 @@ CREATE TABLE `s_video` (
   `sort` int(11) DEFAULT '999' COMMENT '排序',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态   0：禁用，1：启用',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of s_video
 -- ----------------------------
-INSERT INTO `s_video` VALUES ('1', '2', 'test', 'ttt', '0', 'tt', 'tt', 'tt', 'tt', 'ttt', null, null, null, '2019-01-10 00:04:39', 'tt', 'tt', '1', '1', 'tt', '2', '1');
-INSERT INTO `s_video` VALUES ('2', '2', 'ee2', 'ee2', '0', 'ee2', 'ee2', 'ee2', 'ee2', 'ee2', null, null, null, '2019-01-12 00:04:39', 'ee2', 'ee2', '1', '0', 'ee2', '999', '1');
-INSERT INTO `s_video` VALUES ('3', '3', 'dd', 'dd', '1', '', '', '', '', '', 'dd', 'dd', 'dd', '', 'dd', 'dd', '1', '1', 'dd', '999', '1');
-INSERT INTO `s_video` VALUES ('4', '2', '', '', '0', '', '', '', '', '', '', '', '', '2019-01-14 00:04:39', '', '', '0', '0', '', '999', '1');
 
 -- ----------------------------
 -- Table structure for `s_video_type`

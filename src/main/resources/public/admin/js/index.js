@@ -191,7 +191,7 @@ new Vue({
 		    },{
 		        path: '',
 		        component: "",
-		        name: '游戏音画',
+		        name: '游戏音画文',
 		        iconCls: 'el-icon-menu',
 		        children: [{
 			        path: 'picture.html',
