@@ -110,6 +110,9 @@
 		          <el-form-item label="下载地址">
 		            <span>{{ props.row.down }}</span>
 		          </el-form-item>
+		          <el-form-item label="图片大小(KB)">
+		            <span>{{ props.row.size }}</span>
+		          </el-form-item>
 		        </el-form>
 		      </template>
 		    </el-table-column>
@@ -174,6 +177,11 @@
 						  :show-file-list="false">
 						  <el-button icon="el-icon-upload"></el-button>
 						</el-upload>
+					</el-input>
+				</el-form-item>
+				<el-form-item label="图片大小" prop="size">
+					<el-input type="text" v-model="addForm.size">
+						<template slot="append">KB</template>
 					</el-input>
 				</el-form-item>
 				<el-form-item label="首页缩略图" prop="pich">
@@ -251,6 +259,11 @@
 						  :show-file-list="false">
 						  <el-button icon="el-icon-upload"></el-button>
 						</el-upload>
+					</el-input>
+				</el-form-item>
+				<el-form-item label="图片大小" prop="size">
+					<el-input type="text" v-model="editForm.size">
+						<template slot="append">KB</template>
 					</el-input>
 				</el-form-item>
 				<el-form-item label="首页缩略图" prop="pich">
@@ -354,6 +367,9 @@
 				</el-form-item>
 				<el-form-item label="下载地址" prop="down">
 					<div v-html="viewForm.down"></div>
+				</el-form-item>
+				<el-form-item label="图片大小(KB)" prop="size">
+					<div v-html="viewForm.size"></div>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">

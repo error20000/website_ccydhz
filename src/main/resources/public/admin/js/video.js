@@ -220,7 +220,8 @@ var myvue = new Vue({
 						video: '',
 						mp3: '',
 						wav: '',
-						audio: ''
+						audio: '',
+						size: 0
 				};
 			},
 			//显示编辑界面

@@ -57,6 +57,8 @@ public class Video  extends Base<Video> {
 	private int sort;
 	@Excel(name="状态   0：禁用，1：启用", sort=20, value="0", length="4", isNull=1 )
 	private int status;
+	@Excel(name="时长（秒）", sort=21, value="0", length="11", isNull=1 )
+	private int size;
 	
 	//get set
 	public int getPid() {
@@ -184,6 +186,12 @@ public class Video  extends Base<Video> {
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	public int getSize() {
+		return size;
+	}
+	public void setSize(int size) {
+		this.size = size;
 	}
 
 }

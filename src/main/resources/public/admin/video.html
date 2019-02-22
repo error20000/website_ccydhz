@@ -120,6 +120,9 @@
 		          <el-form-item label="下载地址">
 		            <span>{{ props.row.down }}</span>
 		          </el-form-item>
+		          <el-form-item label="时长(秒)">
+		            <span>{{ props.row.size }}</span>
+		          </el-form-item>
 		          <template v-if="props.row.mark === 0">
 			          <el-form-item label="OGG">
 			            <span>{{ props.row.ogg }}</span>
@@ -239,6 +242,11 @@
 				</el-form-item>
 				<el-form-item label="下载地址" prop="down">
 					<el-input type="text" v-model="addForm.down"></el-input>
+				</el-form-item>
+				<el-form-item label="时长" prop="size">
+					<el-input type="text" v-model="addForm.size">
+						<template slot="append">秒</template>
+					</el-input>
 				</el-form-item>
 				<template v-if="addForm.mark === 0">
 					<fieldset class="fieldset">
@@ -373,6 +381,11 @@
 				<el-form-item label="下载地址" prop="down">
 					<el-input type="text" v-model="editForm.down"></el-input>
 				</el-form-item>
+				<el-form-item label="时长" prop="size">
+					<el-input type="text" v-model="editForm.size">
+						<template slot="append">秒</template>
+					</el-input>
+				</el-form-item>
 				<template v-if="editForm.mark === 0">
 					<fieldset class="fieldset">
                		<legend class="legend">html5</legend>
@@ -496,6 +509,9 @@
 				</el-form-item>
 				<el-form-item label="下载地址" prop="down">
 					<div v-html="viewForm.down"></div>
+				</el-form-item>
+				<el-form-item label="时长(秒)" prop="size">
+					<div v-html="viewForm.size"></div>
 				</el-form-item>
 				<template v-if="viewForm.mark === 0">
 					<fieldset class="fieldset">

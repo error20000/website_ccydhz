@@ -80,6 +80,7 @@ var myvue = new Vue({
 			handleAddUpload: function(res){
 				if(res.code > 0){
 					this.addForm.pic = res.data.path;
+					this.addForm.size = Math.ceil(res.data.size/1024);
 				}else{
 					this.$message({
 						message: res.msg,
@@ -110,6 +111,7 @@ var myvue = new Vue({
 			handleEditUpload: function(res){
 				if(res.code > 0){
 					this.editForm.pic = res.data.path;
+					this.editForm.size = Math.ceil(res.data.size/1024);
 				}else{
 					this.$message({
 						message: res.msg,
@@ -208,7 +210,8 @@ var myvue = new Vue({
 						sort: 999,
 						author: '',
 						description: '',
-						down: ''
+						down: '',
+						size: 0
 				};
 			},
 			//显示编辑界面
