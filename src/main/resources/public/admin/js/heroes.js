@@ -173,10 +173,12 @@ var myvue = new Vue({
 						sicon4: '',
 						sdesc4: '',
 						icon: '',
-						img1: '',
-						img2: '',
-						img3: '',
-						img4: ''
+						pimg1: '',
+						pimg2: '',
+						pimg3: '',
+						mimg1: '',
+						mimg2: '',
+						mimg3: ''
 				};
 				this.activeName = 'first';
 			},

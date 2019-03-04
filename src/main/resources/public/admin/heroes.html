@@ -175,24 +175,34 @@
 		          </el-form-item>
 		          <el-form-item>
 		          </el-form-item>
-		          <el-form-item label="PC大图一">
+		          <el-form-item label="PC首页Q图">
 		            <span style="max-width: 100px; max-height: 100px;display: inline-block;">
-		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.img1"/>
+		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.pimg1"/>
 		            </span>
 		          </el-form-item>
-		          <el-form-item label="PC大图二">
+		          <el-form-item label="PC首页大图">
 		            <span style="max-width: 100px; max-height: 100px;display: inline-block;">
-		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.img2"/>
+		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.pimg2"/>
 		            </span>
 		          </el-form-item>
-		          <el-form-item label="移动大图一">
+		          <el-form-item label="PC列表大图">
 		            <span style="max-width: 100px; max-height: 100px;display: inline-block;">
-		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.img3"/>
+		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.pimg3"/>
 		            </span>
 		          </el-form-item>
-		          <el-form-item label="移动大图二">
+		          <el-form-item label="移动首页Q图">
 		            <span style="max-width: 100px; max-height: 100px;display: inline-block;">
-		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.img4"/>
+		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.mimg1"/>
+		            </span>
+		          </el-form-item>
+		          <el-form-item label="移动首页大图">
+		            <span style="max-width: 100px; max-height: 100px;display: inline-block;">
+		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.mimg2"/>
+		            </span>
+		          </el-form-item>
+		          <el-form-item label="移动列表大图">
+		            <span style="max-width: 100px; max-height: 100px;display: inline-block;">
+		            	<img style="max-width: 100%;max-height: 100%" alt="" :src="'/'+props.row.mimg3"/>
 		            </span>
 		          </el-form-item>
 		        </el-form>
@@ -372,41 +382,61 @@
 								</el-upload>
 							</el-input>
 						</el-form-item>
-						<el-form-item label="PC大图一" prop="img1">
-							<el-input type="text" v-model="addForm.img1" placeholder="请上传图片">
+						<el-form-item label="PC首页Q图" prop="pimg1">
+							<el-input type="text" v-model="addForm.pimg1" placeholder="请上传图片">
 								<el-upload slot="append"
 								  :action="uploadUrl"
-								  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'img1');}"
+								  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'pimg1');}"
 								  :show-file-list="false">
 								  <el-button icon="el-icon-upload"></el-button>
 								</el-upload>
 							</el-input>
 						</el-form-item>
-						<el-form-item label="PC大图二" prop="img2">
-							<el-input type="text" v-model="addForm.img2" placeholder="备用，PC大图">
+						<el-form-item label="PC首页大图" prop="pimg2">
+							<el-input type="text" v-model="addForm.pimg2" placeholder="请上传图片">
 								<el-upload slot="append"
 								  :action="uploadUrl"
-								  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'img2');}"
+								  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'pimg2');}"
 								  :show-file-list="false">
 								  <el-button icon="el-icon-upload"></el-button>
 								</el-upload>
 							</el-input>
 						</el-form-item>
-						<el-form-item label="移动大图一" prop="img3">
-							<el-input type="text" v-model="addForm.img3" placeholder="请上传图片">
+						<el-form-item label="PC列表大图" prop="pimg3">
+							<el-input type="text" v-model="addForm.pimg3" placeholder="请上传图片">
 								<el-upload slot="append"
 								  :action="uploadUrl"
-								  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'img3');}"
+								  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'pimg3');}"
 								  :show-file-list="false">
 								  <el-button icon="el-icon-upload"></el-button>
 								</el-upload>
 							</el-input>
 						</el-form-item>
-						<el-form-item label="移动大图二" prop="img4">
-							<el-input type="text" v-model="addForm.img4" placeholder="备用，移动大图">
+						<el-form-item label="移动首页Q图" prop="mimg1">
+							<el-input type="text" v-model="addForm.mimg1" placeholder="请上传图片">
 								<el-upload slot="append"
 								  :action="uploadUrl"
-								  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'img4');}"
+								  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'mimg1');}"
+								  :show-file-list="false">
+								  <el-button icon="el-icon-upload"></el-button>
+								</el-upload>
+							</el-input>
+						</el-form-item>
+						<el-form-item label="移动首页大图" prop="mimg2">
+							<el-input type="text" v-model="addForm.mimg2" placeholder="请上传图片">
+								<el-upload slot="append"
+								  :action="uploadUrl"
+								  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'mimg2');}"
+								  :show-file-list="false">
+								  <el-button icon="el-icon-upload"></el-button>
+								</el-upload>
+							</el-input>
+						</el-form-item>
+						<el-form-item label="移动列表大图" prop="mimg3">
+							<el-input type="text" v-model="addForm.mimg3" placeholder="请上传图片">
+								<el-upload slot="append"
+								  :action="uploadUrl"
+								  :on-success="function(res, file){return handleUpload(res, file, 'addForm', 'mimg3');}"
 								  :show-file-list="false">
 								  <el-button icon="el-icon-upload"></el-button>
 								</el-upload>
@@ -563,41 +593,61 @@
 								</el-upload>
 							</el-input>
 						</el-form-item>
-						<el-form-item label="PC大图一" prop="img1">
-							<el-input type="text" v-model="editForm.img1" placeholder="请上传图片">
+						<el-form-item label="PC首页Q图" prop="pimg1">
+							<el-input type="text" v-model="editForm.pimg1" placeholder="请上传图片">
 								<el-upload slot="append"
 								  :action="uploadUrl"
-								  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'img1');}"
+								  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'pimg1');}"
 								  :show-file-list="false">
 								  <el-button icon="el-icon-upload"></el-button>
 								</el-upload>
 							</el-input>
 						</el-form-item>
-						<el-form-item label="PC大图二" prop="img2">
-							<el-input type="text" v-model="editForm.img2" placeholder="备用，PC大图">
+						<el-form-item label="PC首页大图" prop="pimg2">
+							<el-input type="text" v-model="editForm.pimg2" placeholder="请上传图片">
 								<el-upload slot="append"
 								  :action="uploadUrl"
-								  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'img2');}"
+								  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'pimg2');}"
 								  :show-file-list="false">
 								  <el-button icon="el-icon-upload"></el-button>
 								</el-upload>
 							</el-input>
 						</el-form-item>
-						<el-form-item label="移动大图一" prop="img3">
-							<el-input type="text" v-model="editForm.img3" placeholder="请上传图片">
+						<el-form-item label="PC列表大图" prop="pimg3">
+							<el-input type="text" v-model="editForm.pimg3" placeholder="请上传图片">
 								<el-upload slot="append"
 								  :action="uploadUrl"
-								  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'img3');}"
+								  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'pimg3');}"
 								  :show-file-list="false">
 								  <el-button icon="el-icon-upload"></el-button>
 								</el-upload>
 							</el-input>
 						</el-form-item>
-						<el-form-item label="移动大图二" prop="img4">
-							<el-input type="text" v-model="editForm.img4" placeholder="备用，移动大图">
+						<el-form-item label="移动首页Q图" prop="mimg1">
+							<el-input type="text" v-model="editForm.mimg1" placeholder="请上传图片">
 								<el-upload slot="append"
 								  :action="uploadUrl"
-								  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'img4');}"
+								  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'mimg1');}"
+								  :show-file-list="false">
+								  <el-button icon="el-icon-upload"></el-button>
+								</el-upload>
+							</el-input>
+						</el-form-item>
+						<el-form-item label="移动首页大图" prop="mimg2">
+							<el-input type="text" v-model="editForm.mimg2" placeholder="请上传图片">
+								<el-upload slot="append"
+								  :action="uploadUrl"
+								  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'mimg2');}"
+								  :show-file-list="false">
+								  <el-button icon="el-icon-upload"></el-button>
+								</el-upload>
+							</el-input>
+						</el-form-item>
+						<el-form-item label="移动列表大图" prop="mimg3">
+							<el-input type="text" v-model="editForm.mimg3" placeholder="请上传图片">
+								<el-upload slot="append"
+								  :action="uploadUrl"
+								  :on-success="function(res, file){return handleUpload(res, file, 'editForm', 'mimg3');}"
 								  :show-file-list="false">
 								  <el-button icon="el-icon-upload"></el-button>
 								</el-upload>
@@ -710,24 +760,34 @@
 		          </el-form-item>
 		          <el-form-item>
 		          </el-form-item>
-		          <el-form-item label="PC大图一">
+		          <el-form-item label="PC首页Q图">
 		            <div style="max-width: 100px; max-height: 100px;">
-		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.img1" :src="'/'+viewForm.img1"/>
+		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.pimg1" :src="'/'+viewForm.pimg1"/>
 		            </div>
 		          </el-form-item>
-		          <el-form-item label="PC大图二">
+		          <el-form-item label="PC首页大图">
 		            <div style="max-width: 100px; max-height: 100px;">
-		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.img2" :src="'/'+viewForm.img2"/>
+		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.pimg2" :src="'/'+viewForm.pimg2"/>
 		            </div>
 		          </el-form-item>
-		          <el-form-item label="移动大图一">
+		          <el-form-item label="PC列表大图">
 		            <div style="max-width: 100px; max-height: 100px;">
-		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.img3" :src="'/'+viewForm.img3"/>
+		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.pimg3" :src="'/'+viewForm.pimg3"/>
 		            </div>
 		          </el-form-item>
-		          <el-form-item label="移动大图二">
+		          <el-form-item label="移动首页Q图">
 		            <div style="max-width: 100px; max-height: 100px;">
-		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.img4" :src="'/'+viewForm.img4"/>
+		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.mimg1" :src="'/'+viewForm.mimg1"/>
+		            </div>
+		          </el-form-item>
+		          <el-form-item label="移动首页大图">
+		            <div style="max-width: 100px; max-height: 100px;">
+		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.mimg2" :src="'/'+viewForm.mimg2"/>
+		            </div>
+		          </el-form-item>
+		          <el-form-item label="移动列表大图">
+		            <div style="max-width: 100px; max-height: 100px;">
+		            	<img style="max-width: 100%;max-height: 100%" :alt="viewForm.mimg3" :src="'/'+viewForm.mimg3"/>
 		            </div>
 		          </el-form-item>
 			</el-form>

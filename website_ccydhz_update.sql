@@ -196,10 +196,12 @@ CREATE TABLE `s_heroes` (
   `sicon4` varchar(255) DEFAULT '' COMMENT '技能四图标',
   `sdesc4` varchar(255) DEFAULT '' COMMENT '技能四描述',
   `icon` varchar(255) DEFAULT '' COMMENT '头像',
-  `img1` varchar(255) DEFAULT '' COMMENT 'PC图片一',
-  `img2` varchar(255) DEFAULT '' COMMENT 'PC图片二',
-  `img3` varchar(255) DEFAULT '' COMMENT '移动图片一',
-  `img4` varchar(255) DEFAULT '' COMMENT '移动图片二',
+  `pimg1` varchar(255) DEFAULT '' COMMENT 'PC首页Q图',
+  `pimg2` varchar(255) DEFAULT '' COMMENT 'PC首页大图',
+  `pimg3` varchar(255) DEFAULT '' COMMENT 'PC列表大图',
+  `mimg1` varchar(255) DEFAULT '' COMMENT '移动首页Q图',
+  `mimg2` varchar(255) DEFAULT '' COMMENT '移动首页大图',
+  `mimg3` varchar(255) DEFAULT '' COMMENT '移动列表大图',
   PRIMARY KEY (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

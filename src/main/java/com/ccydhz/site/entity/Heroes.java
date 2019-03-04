@@ -63,14 +63,18 @@ public class Heroes  extends Base<Heroes> {
 	private String sdesc4;
 	@Excel(name="头像", sort=23, length="255", isNull=1 )
 	private String icon;
-	@Excel(name="PC图片一", sort=24, length="255", isNull=1 )
-	private String img1;
-	@Excel(name="PC图片二", sort=25, length="255", isNull=1 )
-	private String img2;
-	@Excel(name="移动图片一", sort=26, length="255", isNull=1 )
-	private String img3;
-	@Excel(name="移动图片二", sort=27, length="255", isNull=1 )
-	private String img4;
+	@Excel(name="PC首页Q图", sort=24, length="255", isNull=1 )
+	private String pimg1;
+	@Excel(name="PC首页大图", sort=25, length="255", isNull=1 )
+	private String pimg2;
+	@Excel(name="PC列表大图", sort=26, length="255", isNull=1 )
+	private String pimg3;
+	@Excel(name="移动首页Q图", sort=27, length="255", isNull=1 )
+	private String mimg1;
+	@Excel(name="移动首页大图", sort=28, length="255", isNull=1 )
+	private String mimg2;
+	@Excel(name="移动列表大图", sort=29, length="255", isNull=1 )
+	private String mimg3;
 	
 	//get set
 	public int getPid() {
@@ -217,29 +221,41 @@ public class Heroes  extends Base<Heroes> {
 	public void setIcon(String icon) {
 		this.icon = icon;
 	}
-	public String getImg1() {
-		return img1;
+	public String getPimg1() {
+		return pimg1;
 	}
-	public void setImg1(String img1) {
-		this.img1 = img1;
+	public void setPimg1(String pimg1) {
+		this.pimg1 = pimg1;
 	}
-	public String getImg2() {
-		return img2;
+	public String getPimg2() {
+		return pimg2;
 	}
-	public void setImg2(String img2) {
-		this.img2 = img2;
+	public void setPimg2(String pimg2) {
+		this.pimg2 = pimg2;
 	}
-	public String getImg3() {
-		return img3;
+	public String getPimg3() {
+		return pimg3;
 	}
-	public void setImg3(String img3) {
-		this.img3 = img3;
+	public void setPimg3(String pimg3) {
+		this.pimg3 = pimg3;
 	}
-	public String getImg4() {
-		return img4;
+	public String getMimg1() {
+		return mimg1;
 	}
-	public void setImg4(String img4) {
-		this.img4 = img4;
+	public void setMimg1(String mimg1) {
+		this.mimg1 = mimg1;
+	}
+	public String getMimg2() {
+		return mimg2;
+	}
+	public void setMimg2(String mimg2) {
+		this.mimg2 = mimg2;
+	}
+	public String getMimg3() {
+		return mimg3;
+	}
+	public void setMimg3(String mimg3) {
+		this.mimg3 = mimg3;
 	}
 
 }
