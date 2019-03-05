@@ -466,6 +466,7 @@ CREATE TABLE `s_picture` (
   `highlight` tinyint(2) DEFAULT '0' COMMENT '加精  0--否，1--是',
   `sort` int(11) DEFAULT '999' COMMENT '排序',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态   0：禁用，1：启用',
+  `size` int(11) DEFAULT '0' COMMENT '图片大小（KB）',
   PRIMARY KEY (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -650,6 +651,7 @@ CREATE TABLE `s_video` (
   `down` varchar(255) DEFAULT '' COMMENT '下载地址',
   `sort` int(11) DEFAULT '999' COMMENT '排序',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态   0：禁用，1：启用',
+  `size` int(11) DEFAULT '0' COMMENT '时长（秒）',
   PRIMARY KEY (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
