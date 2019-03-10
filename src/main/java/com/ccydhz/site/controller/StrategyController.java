@@ -336,5 +336,35 @@ public class StrategyController extends BaseController<Strategy> {
 		long total = service.getDao().baseSize(sqlc, condition);
         return ResultTools.custom(Tips.ERROR1).put(ResultKey.TOTAL, total).put(ResultKey.DATA, list).toJSONString();
 	}
-	
+
+	@RequestMapping("/findByPid")
+    @ResponseBody
+	@API(name="查询详情", 
+		info="前端查询使用", 
+		request={
+				@ParamsInfo(name="pid", type="int", isNull=0,  info="pid"),
+		}, 
+		response={
+				@ParamsInfo(name=ResultKey.CODE, type="int", info="返回码"),
+				@ParamsInfo(name=ResultKey.MSG, type="String", info="状态描述"),
+				@ParamsInfo(name=ResultKey.DATA, type="Object", info="数据集"),
+		})
+	public String findByPid(HttpServletRequest req) {
+		Map<String, Object> vMap = null;
+		//sign
+		vMap = verifySign(req);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		
+		//参数
+		String pid = Tools.getReqParamSafe(req, "pid");
+		vMap = Tools.verifyParam("pid", pid, 0, 0, true);
+		if(vMap != null){
+			return JsonTools.toJsonString(vMap);
+		}
+		//查询
+		Strategy res = service.findOne(MapTools.custom().put("pid", pid).build());
+        return ResultTools.custom(Tips.ERROR1).put(ResultKey.DATA, res).toJSONString();
+	}
 }
