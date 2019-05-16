@@ -5,11 +5,13 @@ import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ccydhz.site.config.Config;
 import com.ccydhz.site.util.UploadUtils;
 import com.jian.tools.core.ResultTools;
 import com.jian.tools.core.Tips;
@@ -20,10 +22,18 @@ import com.jian.tools.core.Tools;
 @RequestMapping("/api/file")
 public class FileUploadController {
 	
+	@Autowired
+	private Config config;
+	
 	@ResponseBody
 	@RequestMapping("/uploadImg")
 	public String upload(HttpServletRequest request, HttpServletResponse response, MultipartFile file) {
 		String dir = Tools.getReqParamSafe(request, "dir");
+		
+		String prefix = Tools.isNullOrEmpty(config.upload_proxy_prefix) ? "" : config.upload_proxy_prefix.endsWith("/") ? config.upload_proxy_prefix : config.upload_proxy_prefix + "/";
+		
+		dir = Tools.isNullOrEmpty(dir) ? prefix : prefix + dir;
+
 		dir = Tools.isNullOrEmpty(dir) ? "" : dir.endsWith("/") ? dir : dir + "/";
 		
 		try {
@@ -39,6 +49,11 @@ public class FileUploadController {
 	@RequestMapping("/uploadFile")
 	public String uploadFile(HttpServletRequest request, HttpServletResponse response, MultipartFile file) {
 		String dir = Tools.getReqParamSafe(request, "dir");
+		
+		String prefix = Tools.isNullOrEmpty(config.upload_proxy_prefix) ? "" : config.upload_proxy_prefix.endsWith("/") ? config.upload_proxy_prefix : config.upload_proxy_prefix + "/";
+		
+		dir = Tools.isNullOrEmpty(dir) ? prefix : prefix + dir;
+
 		dir = Tools.isNullOrEmpty(dir) ? "" : dir.endsWith("/") ? dir : dir + "/";
 		
 		try {

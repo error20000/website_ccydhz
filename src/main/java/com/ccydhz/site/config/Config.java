@@ -75,7 +75,9 @@ public class Config {
 	public String appSecret;
 	@Value("${jssdkDebug}")
 	public String jssdkDebug;
-	
+
+	@Value("${upload_proxy_prefix}")
+	public String upload_proxy_prefix;
 
 	public static Map<String, Integer> bespeakCountCache = new HashMap<>();
 	
